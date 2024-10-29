@@ -207,4 +207,190 @@ public class LoginPanel extends JPanel {
 		
 	}
 
+	public JTextField getUserName() {
+		return userName;
+	}
+
+	public void setUserName(JTextField userName) {
+		this.userName = userName;
+	}
+
+	public JLabel getIndUser() {
+		return indUser;
+	}
+
+	public void setIndUser(JLabel indUser) {
+		this.indUser = indUser;
+	}
+
+	public JLabel getIndPass() {
+		return indPass;
+	}
+
+	public void setIndPass(JLabel indPass) {
+		this.indPass = indPass;
+	}
+
+	public JLabel getBox() {
+		return box;
+	}
+
+	public void setBox(JLabel box) {
+		this.box = box;
+	}
+
+	public JLabel getShadow() {
+		return shadow;
+	}
+
+	public void setShadow(JLabel shadow) {
+		this.shadow = shadow;
+	}
+
+	public JLabel getTitle() {
+		return title;
+	}
+
+	public void setTitle(JLabel title) {
+		this.title = title;
+	}
+
+	public JLabel getIndButton() {
+		return indButton;
+	}
+
+	public void setIndButton(JLabel indButton) {
+		this.indButton = indButton;
+	}
+
+	public JButton getJoin() {
+		return join;
+	}
+
+	public void setJoin(JButton join) {
+		this.join = join;
+	}
+
+	public JButton getRecoverKey() {
+		return recoverKey;
+	}
+
+	public void setRecoverKey(JButton recoverKey) {
+		this.recoverKey = recoverKey;
+	}
+
+	public JPasswordField getPassword() {
+		return password;
+	}
+
+	public void setPassword(JPasswordField password) {
+		this.password = password;
+	}
+
+	public JToggleButton getShowPass() {
+		return showPass;
+	}
+
+	public void setShowPass(JToggleButton showPass) {
+		this.showPass = showPass;
+	}
+
+	public JLabel getTitleRec() {
+		return titleRec;
+	}
+
+	public void setTitleRec(JLabel titleRec) {
+		this.titleRec = titleRec;
+	}
+
+	public JLabel getIndUserRec() {
+		return indUserRec;
+	}
+
+	public void setIndUserRec(JLabel indUserRec) {
+		this.indUserRec = indUserRec;
+	}
+
+	public JLabel getIndCancel() {
+		return indCancel;
+	}
+
+	public void setIndCancel(JLabel indCancel) {
+		this.indCancel = indCancel;
+	}
+
+	public JLabel getIndFollow() {
+		return indFollow;
+	}
+
+	public void setIndFollow(JLabel indFollow) {
+		this.indFollow = indFollow;
+	}
+
+	public JTextField getUserNameRec() {
+		return userNameRec;
+	}
+
+	public void setUserNameRec(JTextField userNameRec) {
+		this.userNameRec = userNameRec;
+	}
+
+	public JButton getCancel() {
+		return cancel;
+	}
+
+	public void setCancel(JButton cancel) {
+		this.cancel = cancel;
+	}
+
+	public JButton getFollow() {
+		return follow;
+	}
+
+	public void setFollow(JButton follow) {
+		this.follow = follow;
+	}
+
+	public JLabel getIndUserChoose() {
+		return indUserChoose;
+	}
+
+	public void setIndUserChoose(JLabel indUserChoose) {
+		this.indUserChoose = indUserChoose;
+	}
+
+	public JLabel getIndQuestion() {
+		return indQuestion;
+	}
+
+	public void setIndQuestion(JLabel indQuestion) {
+		this.indQuestion = indQuestion;
+	}
+
+	public JLabel getIndAnswer() {
+		return indAnswer;
+	}
+
+	public void setIndAnswer(JLabel indAnswer) {
+		this.indAnswer = indAnswer;
+	}
+
+	public JTextField getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(JTextField answer) {
+		this.answer = answer;
+	}
+
+	public JButton getCheckanswer() {
+		return checkanswer;
+	}
+
+	public void setCheckanswer(JButton checkanswer) {
+		this.checkanswer = checkanswer;
+	}
+
+	
+	
 }
