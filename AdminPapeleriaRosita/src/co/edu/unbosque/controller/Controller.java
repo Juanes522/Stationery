@@ -16,6 +16,10 @@ public class Controller implements ActionListener{
 	
 	public void run() {
 		mw.getLoginPanel().setVisible(true);
+		mw.getAdminControlPanel().setVisible(false);
+		mw.getSupplierPanel().setVisible(false);
+		mw.getAddUpdateSupplierPanel().setVisible(false);
+//		mw.getInventoryPanel().setVisible(true);
 	}
 	
 	public void addReaders() {
@@ -34,6 +38,53 @@ public class Controller implements ActionListener{
 		mw.getLoginPanel().getCheckanswer().addActionListener(this);
 		mw.getLoginPanel().getCheckanswer().setActionCommand("checkAns");
 		
+//		_______________________________________________________________________
+//		control de admin		
+		
+		mw.getAdminControlPanel().getInventory().addActionListener(this);
+		mw.getAdminControlPanel().getInventory().setActionCommand("inventoryAdmin");
+		
+		mw.getAdminControlPanel().getSuppliers().addActionListener(this);
+		mw.getAdminControlPanel().getSuppliers().setActionCommand("supplierAdmin");
+		
+		mw.getAdminControlPanel().getSales().addActionListener(this);
+		mw.getAdminControlPanel().getSales().setActionCommand("salesAdmin");
+		
+		mw.getAdminControlPanel().getUserControl().addActionListener(this);
+		mw.getAdminControlPanel().getUserControl().setActionCommand("userControl");
+		
+		mw.getAdminControlPanel().getCashControl().addActionListener(this);
+		mw.getAdminControlPanel().getCashControl().setActionCommand("cashControl");
+		
+		mw.getAdminControlPanel().getPurchase().addActionListener(this);
+		mw.getAdminControlPanel().getPurchase().setActionCommand("purchaseAdmin");
+		
+		mw.getAdminControlPanel().getExit().addActionListener(this);
+		mw.getAdminControlPanel().getExit().setActionCommand("exitAdmin");
+		
+//		_______________________________________________________________________
+//		panel proveedor
+		
+		mw.getSupplierPanel().getAddSup().addActionListener(this);
+		mw.getSupplierPanel().getAddSup().setActionCommand("addSupplier");
+		
+		mw.getSupplierPanel().getDelSup().addActionListener(this);
+		mw.getSupplierPanel().getDelSup().setActionCommand("deleteSupplier");
+		
+		mw.getSupplierPanel().getUpSup().addActionListener(this);
+		mw.getSupplierPanel().getUpSup().setActionCommand("upSupplier");
+		
+//		_______________________________________________________________________
+//		agregar o actualizar proveedor	
+		
+		mw.getAddUpdateSupplierPanel().getRegisterSup().addActionListener(this);
+		mw.getAddUpdateSupplierPanel().getRegisterSup().setActionCommand("registerSupplier");
+		
+		mw.getAddUpdateSupplierPanel().getUpdateSup().addActionListener(this);
+		mw.getAddUpdateSupplierPanel().getUpdateSup().setActionCommand("updateSupplier");
+		
+		mw.getAddUpdateSupplierPanel().getClose().addActionListener(this);
+		mw.getAddUpdateSupplierPanel().getClose().setActionCommand("closeSupplier");
 	}
 
 	@Override
@@ -41,7 +92,11 @@ public class Controller implements ActionListener{
 		
 		switch (e.getActionCommand()) {
 		case "join":{
-			//entra al sistema
+//			verificar entre admin y vendedor
+			
+			mw.getLoginPanel().setVisible(false);
+			
+			mw.getAdminControlPanel().setVisible(true);
 			break;
 		}
 		case "recoverKey":{
@@ -122,9 +177,57 @@ public class Controller implements ActionListener{
 			break;
 			
 		}
+		case "supplierAdmin":{
+			
+			mw.getSupplierPanel().setVisible(true);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
 			
 			
+			mw.getAdminControlPanel().getTitleSupplier().setVisible(true);
 			
+			break;
+		}
+		case "addSupplier":{
+			mw.getSupplierPanel().setVisible(false);
+			
+			mw.getAddUpdateSupplierPanel().setVisible(true);
+			mw.getAddUpdateSupplierPanel().getTitleRegister().setVisible(true);
+			mw.getAddUpdateSupplierPanel().getRegisterSup().setVisible(true);
+			mw.getAddUpdateSupplierPanel().getIndRegisterSup().setVisible(true);
+			mw.getAddUpdateSupplierPanel().getTitleUpdate().setVisible(false);
+			mw.getAddUpdateSupplierPanel().getUpdateSup().setVisible(false);
+			mw.getAddUpdateSupplierPanel().getIndUpdateSup().setVisible(false);
+			break;
+		}
+		case "deleteSupplier":{
+//			borrar de la lista
+			break;
+		}
+		case "upSupplier":{
+			mw.getSupplierPanel().setVisible(false);
+			
+			mw.getAddUpdateSupplierPanel().setVisible(true);
+			mw.getAddUpdateSupplierPanel().getTitleRegister().setVisible(false);
+			mw.getAddUpdateSupplierPanel().getRegisterSup().setVisible(false);
+			mw.getAddUpdateSupplierPanel().getIndRegisterSup().setVisible(false);
+			mw.getAddUpdateSupplierPanel().getTitleUpdate().setVisible(true);
+			mw.getAddUpdateSupplierPanel().getUpdateSup().setVisible(true);
+			mw.getAddUpdateSupplierPanel().getIndUpdateSup().setVisible(true);
+			break;
+		}
+		case "registerSupplier":{
+//			agregar proveedor a la lista
+			break;
+		}
+		case "updateSupplier":{
+//			actualizar proveedor en la lista
+			break;
+		}
+		case "closeSupplier":{
+			mw.getSupplierPanel().setVisible(true);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			break;
+		}
 
 		default:
 			break;
