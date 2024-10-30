@@ -94,7 +94,7 @@ public class LoginPanel extends JPanel {
 		indButton = new JLabel("Ingresar");
 		indButton.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indButton.setForeground(Color.WHITE);
-		indButton.setBounds(150, 296, 150, 30);
+		indButton.setBounds(155, 296, 150, 30);
 		box.add(indButton);
 		
 		join = new JButton();
