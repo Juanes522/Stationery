@@ -24,6 +24,9 @@ public class Controller implements ActionListener {
 
 		mw.getInventoryPanel().setVisible(false);
 		mw.getAddUpdateInventoryPanel().setVisible(false);
+
+		mw.getSalesPanel().setVisible(false);
+		mw.getAddUpdateSalesPanel().setVisible(false);
 	}
 
 	public void addReaders() {
@@ -113,6 +116,30 @@ public class Controller implements ActionListener {
 
 		mw.getAddUpdateInventoryPanel().getCloseIn().addActionListener(this);
 		mw.getAddUpdateInventoryPanel().getCloseIn().setActionCommand("closeProduct");
+
+//		_______________________________________________________________________
+//		panel ventas
+
+		mw.getSalesPanel().getAddSa().addActionListener(this);
+		mw.getSalesPanel().getAddSa().setActionCommand("addSale");
+
+		mw.getSalesPanel().getDelSa().addActionListener(this);
+		mw.getSalesPanel().getDelSa().setActionCommand("deleteSale");
+
+		mw.getSalesPanel().getUpSa().addActionListener(this);
+		mw.getSalesPanel().getUpSa().setActionCommand("upSa");
+
+//		_______________________________________________________________________
+//		agregar o actualizar venta
+
+		mw.getAddUpdateSalesPanel().getRegisterSa().addActionListener(this);
+		mw.getAddUpdateSalesPanel().getRegisterSa().setActionCommand("registerSale");
+
+		mw.getAddUpdateSalesPanel().getUpdateSa().addActionListener(this);
+		mw.getAddUpdateSalesPanel().getUpdateSa().setActionCommand("updateSale");
+
+		mw.getAddUpdateSalesPanel().getCloseSa().addActionListener(this);
+		mw.getAddUpdateSalesPanel().getCloseSa().setActionCommand("closeSale");
 	}
 
 	@Override
@@ -213,9 +240,13 @@ public class Controller implements ActionListener {
 
 			mw.getAdminControlPanel().getTitleSupplier().setVisible(true);
 			mw.getAdminControlPanel().getTitleInventory().setVisible(false);
+			mw.getAdminControlPanel().getTitleSales().setVisible(false);
 
 			mw.getInventoryPanel().setVisible(false);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
 			break;
 		}
 		case "addSupplier": {
@@ -231,6 +262,9 @@ public class Controller implements ActionListener {
 
 			mw.getInventoryPanel().setVisible(false);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
 			break;
 		}
 		case "deleteSupplier": {
@@ -250,6 +284,9 @@ public class Controller implements ActionListener {
 
 			mw.getInventoryPanel().setVisible(false);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
 			break;
 		}
 		case "registerSupplier": {
@@ -269,11 +306,15 @@ public class Controller implements ActionListener {
 			mw.getInventoryPanel().setVisible(true);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getAdminControlPanel().getTitleSupplier().setVisible(false);
 			mw.getAdminControlPanel().getTitleInventory().setVisible(true);
+			mw.getAdminControlPanel().getTitleSupplier().setVisible(false);
+			mw.getAdminControlPanel().getTitleSales().setVisible(false);
 
 			mw.getSupplierPanel().setVisible(false);
 			mw.getAddUpdateSupplierPanel().setVisible(false);
+
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
 
 			break;
 		}
@@ -290,6 +331,9 @@ public class Controller implements ActionListener {
 
 			mw.getSupplierPanel().setVisible(false);
 			mw.getAddUpdateSupplierPanel().setVisible(false);
+
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
 			break;
 		}
 		case "deleteProduct": {
@@ -309,22 +353,94 @@ public class Controller implements ActionListener {
 
 			mw.getSupplierPanel().setVisible(false);
 			mw.getAddUpdateSupplierPanel().setVisible(false);
+
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
 			break;
 		}
-		case "registerProduct":{
+		case "registerProduct": {
 //			registrar producto en la lista
 			break;
 		}
-		case "updateProduct":{
+		case "updateProduct": {
 //			actualizar producto en la lista
 			break;
 		}
-		case "closeProduct":{
+		case "closeProduct": {
 			mw.getInventoryPanel().setVisible(true);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
 			break;
 		}
+		case "salesAdmin": {
+			mw.getSalesPanel().setVisible(true);
+			mw.getAddUpdateSalesPanel().setVisible(false);
 
+			mw.getAdminControlPanel().getTitleSupplier().setVisible(false);
+			mw.getAdminControlPanel().getTitleInventory().setVisible(false);
+			mw.getAdminControlPanel().getTitleSales().setVisible(true);
+
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+
+			break;
+		}
+		case "addSale": {
+			mw.getSalesPanel().setVisible(false);
+
+			mw.getAddUpdateSalesPanel().setVisible(true);
+			mw.getAddUpdateSalesPanel().getTitleRegisterSa().setVisible(true);
+			mw.getAddUpdateSalesPanel().getRegisterSa().setVisible(true);
+			mw.getAddUpdateSalesPanel().getIndRegisterSale().setVisible(true);
+			mw.getAddUpdateSalesPanel().getTitleUpdateSa().setVisible(false);
+			mw.getAddUpdateSalesPanel().getUpdateSa().setVisible(false);
+			mw.getAddUpdateSalesPanel().getIndUpdateSale().setVisible(false);
+
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+
+			break;
+		}
+		case "deleteSale": {
+//			borrar de la lista
+			break;
+		}
+		case "upSa": {
+			mw.getSalesPanel().setVisible(false);
+
+			mw.getAddUpdateSalesPanel().setVisible(true);
+			mw.getAddUpdateSalesPanel().getTitleRegisterSa().setVisible(false);
+			mw.getAddUpdateSalesPanel().getRegisterSa().setVisible(false);
+			mw.getAddUpdateSalesPanel().getIndRegisterSale().setVisible(false);
+			mw.getAddUpdateSalesPanel().getTitleUpdateSa().setVisible(true);
+			mw.getAddUpdateSalesPanel().getUpdateSa().setVisible(true);
+			mw.getAddUpdateSalesPanel().getIndUpdateSale().setVisible(true);
+
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			break;
+		}
+		case "registerSale": {
+//			registar venta
+			break;
+		}
+		case "updateSale": {
+//			actualizar venta
+			break;
+		}
+		case "closeSale": {
+			mw.getSalesPanel().setVisible(true);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			break;
+		}
 		default:
 			break;
 		}

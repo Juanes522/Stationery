@@ -33,9 +33,10 @@ public class InventoryPanel extends JPanel {
 		titleIn.setForeground(new Color(2, 58, 98));
 		add(titleIn);
 
-		listInventory = new JList<>();
-		listInventory.setBounds(0, 0, 400, 350);
 		modelInventory = new DefaultListModel<>();
+		
+		listInventory = new JList<>(modelInventory);
+		listInventory.setBounds(0, 0, 400, 350);
 		listInventory.setBackground(Color.LIGHT_GRAY);
 		listInventory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
