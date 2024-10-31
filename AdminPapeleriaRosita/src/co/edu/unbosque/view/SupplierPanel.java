@@ -33,9 +33,10 @@ public class SupplierPanel extends JPanel {
 		titleSup.setForeground(new Color(2, 58, 98));
 		add(titleSup);
 
-		listSupplier = new JList<>();
-		listSupplier.setBounds(0, 0, 400, 350);
 		modelSupplier = new DefaultListModel<>();
+
+		listSupplier = new JList<>(modelSupplier);
+		listSupplier.setBounds(0, 0, 400, 350);
 		listSupplier.setBackground(Color.LIGHT_GRAY);
 		listSupplier.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
