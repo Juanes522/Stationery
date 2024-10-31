@@ -12,6 +12,8 @@ public class MainWindow extends JFrame {
 	private AddUpdateInventoryPanel addUpdateInventoryPanel;
 	private SalesPanel salesPanel;
 	private addUpdateSalesPanel addUpdateSalesPanel;
+	private UserControlPanel userControlPanel;
+	private AddUpdateUserControlPanel addUpdateUserControlPanel;
 
 	public MainWindow() {
 
@@ -30,6 +32,8 @@ public class MainWindow extends JFrame {
 		addUpdateInventoryPanel = new AddUpdateInventoryPanel();
 		salesPanel = new SalesPanel();
 		addUpdateSalesPanel = new addUpdateSalesPanel();
+		userControlPanel = new UserControlPanel();
+		addUpdateUserControlPanel = new AddUpdateUserControlPanel();
 
 		add(loginPanel).setVisible(false);
 		add(supplierPanel).setVisible(false);
@@ -38,6 +42,8 @@ public class MainWindow extends JFrame {
 		add(addUpdateInventoryPanel).setVisible(false);
 		add(salesPanel).setVisible(false);
 		add(addUpdateSalesPanel).setVisible(false);
+		add(userControlPanel).setVisible(false);
+		add(addUpdateUserControlPanel).setVisible(false);
 
 		add(adminControlPanel).setVisible(false);
 		setVisible(true);
@@ -105,6 +111,22 @@ public class MainWindow extends JFrame {
 
 	public void setAddUpdateSalesPanel(addUpdateSalesPanel addUpdateSalesPanel) {
 		this.addUpdateSalesPanel = addUpdateSalesPanel;
+	}
+
+	public UserControlPanel getUserControlPanel() {
+		return userControlPanel;
+	}
+
+	public void setUserControlPanel(UserControlPanel userControlPanel) {
+		this.userControlPanel = userControlPanel;
+	}
+
+	public AddUpdateUserControlPanel getAddUpdateUserControlPanel() {
+		return addUpdateUserControlPanel;
+	}
+
+	public void setAddUpdateUserControlPanel(AddUpdateUserControlPanel addUpdateUserControlPanel) {
+		this.addUpdateUserControlPanel = addUpdateUserControlPanel;
 	}
 
 }
