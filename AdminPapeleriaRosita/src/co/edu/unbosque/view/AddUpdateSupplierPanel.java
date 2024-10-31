@@ -11,48 +11,49 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
 
-public class AddUpdateSupplierPanel extends JPanel{
-	
-	private JLabel form, titleRegister, titleUpdate ,indNameSup, indPhoneSup, indDirSup, indRegisterSup, indUpdateSup;
+public class AddUpdateSupplierPanel extends JPanel {
+
+	private JLabel formS, titleRegisterS, titleUpdateS, indNameSup, indPhoneSup, indDirSup, indRegisterSup,
+			indUpdateSup;
 	private JTextField nameSup, phoneSup, directionSup;
-	private JButton registerSup, updateSup, close;
+	private JButton registerSup, updateSup, closeSup;
 
 	public AddUpdateSupplierPanel() {
-		
+
 		setBounds(216, 120, 512, 344);
 		setLayout(null);
 		setBackground(Color.WHITE);
-		
-		form = new JLabel(new ImageIcon("src/Assets/form.png"));
-		form.setBounds(0, 0, 512, 344);
-		form.setLayout(null);
-		add(form);
-		
-		titleRegister = new JLabel("Registrar Proveedor");
-		titleRegister.setFont(new Font("Leelawadee", Font.BOLD, 26));
-		titleRegister.setForeground(Color.WHITE);
-		titleRegister.setBounds(125, 20, 250, 30);
-		form.add(titleRegister).setVisible(false);
-		
-		titleUpdate = new JLabel("Actualizar Proveedor");
-		titleUpdate.setFont(new Font("Leelawadee", Font.BOLD, 26));
-		titleUpdate.setForeground(Color.WHITE);
-		titleUpdate.setBounds(125, 20, 280, 30);
-		form.add(titleUpdate).setVisible(false);
-		
-		close = new JButton(new ImageIcon("src/Assets/xwhite.png"));
-		close.setBounds(450, 20, 32, 32);
-		close.setFocusable(false);
-		close.setBorderPainted(false);
-		close.setContentAreaFilled(false);
-		form.add(close);
-	
+
+		formS = new JLabel(new ImageIcon("src/Assets/form.png"));
+		formS.setBounds(0, 0, 512, 344);
+		formS.setLayout(null);
+		add(formS);
+
+		titleRegisterS = new JLabel("Registrar Proveedor");
+		titleRegisterS.setFont(new Font("Leelawadee", Font.BOLD, 26));
+		titleRegisterS.setForeground(Color.WHITE);
+		titleRegisterS.setBounds(125, 20, 250, 30);
+		formS.add(titleRegisterS).setVisible(false);
+
+		titleUpdateS = new JLabel("Actualizar Proveedor");
+		titleUpdateS.setFont(new Font("Leelawadee", Font.BOLD, 26));
+		titleUpdateS.setForeground(Color.WHITE);
+		titleUpdateS.setBounds(125, 20, 280, 30);
+		formS.add(titleUpdateS).setVisible(false);
+
+		closeSup = new JButton(new ImageIcon("src/Assets/xwhite.png"));
+		closeSup.setBounds(450, 20, 32, 32);
+		closeSup.setFocusable(false);
+		closeSup.setBorderPainted(false);
+		closeSup.setContentAreaFilled(false);
+		formS.add(closeSup);
+
 		indNameSup = new JLabel("Nombre del proveedor");
 		indNameSup.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indNameSup.setForeground(Color.WHITE);
 		indNameSup.setBounds(40, 80, 220, 30);
-		form.add(indNameSup);
-		
+		formS.add(indNameSup);
+
 		nameSup = new JTextField();
 		nameSup.setBounds(40, 120, 175, 30);
 		MatteBorder borderName = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
@@ -60,14 +61,14 @@ public class AddUpdateSupplierPanel extends JPanel{
 		nameSup.setOpaque(false);
 		nameSup.setForeground(Color.WHITE);
 		nameSup.setFont(new Font("Leelawadee", Font.BOLD, 20));
-		form.add(nameSup);
-		
+		formS.add(nameSup);
+
 		indPhoneSup = new JLabel("Teléfono");
 		indPhoneSup.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indPhoneSup.setForeground(Color.WHITE);
 		indPhoneSup.setBounds(300, 80, 220, 30);
-		form.add(indPhoneSup);
-		
+		formS.add(indPhoneSup);
+
 		phoneSup = new JTextField();
 		phoneSup.setBounds(300, 120, 175, 30);
 		MatteBorder borderPhone = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
@@ -75,14 +76,14 @@ public class AddUpdateSupplierPanel extends JPanel{
 		phoneSup.setOpaque(false);
 		phoneSup.setForeground(Color.WHITE);
 		phoneSup.setFont(new Font("Leelawadee", Font.BOLD, 20));
-		form.add(phoneSup);
-	
+		formS.add(phoneSup);
+
 		indDirSup = new JLabel("Dirección");
 		indDirSup.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indDirSup.setForeground(Color.WHITE);
 		indDirSup.setBounds(40, 180, 220, 30);
-		form.add(indDirSup);
-		
+		formS.add(indDirSup);
+
 		directionSup = new JTextField();
 		directionSup.setBounds(40, 220, 175, 30);
 		MatteBorder borderDir = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
@@ -90,52 +91,51 @@ public class AddUpdateSupplierPanel extends JPanel{
 		directionSup.setOpaque(false);
 		directionSup.setForeground(Color.WHITE);
 		directionSup.setFont(new Font("Leelawadee", Font.BOLD, 20));
-		form.add(directionSup);
-		
-		
+		formS.add(directionSup);
+
 //		botones e indicador
-		
+
 		indRegisterSup = new JLabel("Registrar");
 		indRegisterSup.setFont(new Font("Leelawadee", Font.BOLD, 22));
-		indRegisterSup.setForeground(new Color(2,58,98));
+		indRegisterSup.setForeground(new Color(2, 58, 98));
 		indRegisterSup.setBounds(208, 285, 150, 30);
-		form.add(indRegisterSup).setVisible(false);
-		
+		formS.add(indRegisterSup).setVisible(false);
+
 		indUpdateSup = new JLabel("Actualizar");
 		indUpdateSup.setFont(new Font("Leelawadee", Font.BOLD, 22));
-		indUpdateSup.setForeground(new Color(2,58,98));
+		indUpdateSup.setForeground(new Color(2, 58, 98));
 		indUpdateSup.setBounds(205, 285, 150, 30);
-		form.add(indUpdateSup).setVisible(false);
-		
+		formS.add(indUpdateSup).setVisible(false);
+
 		registerSup = new JButton(new ImageIcon("src/Assets/register.png"));
 		registerSup.setBounds(198, 280, 115, 45);
 		registerSup.setFocusable(false);
 		registerSup.setBorderPainted(false);
 		registerSup.setContentAreaFilled(false);
-		form.add(registerSup).setVisible(false);
-		
+		formS.add(registerSup).setVisible(false);
+
 		updateSup = new JButton(new ImageIcon("src/Assets/update.png"));
 		updateSup.setBounds(195, 280, 123, 45);
 		updateSup.setFocusable(false);
 		updateSup.setBorderPainted(false);
 		updateSup.setContentAreaFilled(false);
-		form.add(updateSup).setVisible(false);
+		formS.add(updateSup).setVisible(false);
 	}
 
-	public JLabel getTitleRegister() {
-		return titleRegister;
+	public JLabel getTitleRegisterS() {
+		return titleRegisterS;
 	}
 
-	public void setTitleRegister(JLabel titleRegister) {
-		this.titleRegister = titleRegister;
+	public void setTitleRegisterS(JLabel titleRegisterS) {
+		this.titleRegisterS = titleRegisterS;
 	}
 
-	public JLabel getTitleUpdate() {
-		return titleUpdate;
+	public JLabel getTitleUpdateS() {
+		return titleUpdateS;
 	}
 
-	public void setTitleUpdate(JLabel titleUpdate) {
-		this.titleUpdate = titleUpdate;
+	public void setTitleUpdateS(JLabel titleUpdateS) {
+		this.titleUpdateS = titleUpdateS;
 	}
 
 	public JLabel getIndRegisterSup() {
@@ -194,13 +194,12 @@ public class AddUpdateSupplierPanel extends JPanel{
 		this.updateSup = updateSup;
 	}
 
-	public JButton getClose() {
-		return close;
+	public JButton getCloseSup() {
+		return closeSup;
 	}
 
-	public void setClose(JButton close) {
-		this.close = close;
+	public void setCloseSup(JButton closeSup) {
+		this.closeSup = closeSup;
 	}
-	
-	
+
 }
