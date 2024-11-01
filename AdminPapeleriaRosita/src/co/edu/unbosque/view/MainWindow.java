@@ -11,9 +11,10 @@ public class MainWindow extends JFrame {
 	private InventoryPanel inventoryPanel;
 	private AddUpdateInventoryPanel addUpdateInventoryPanel;
 	private SalesPanel salesPanel;
-	private addUpdateSalesPanel addUpdateSalesPanel;
+	private AddUpdateSalesPanel addUpdateSalesPanel;
 	private UserControlPanel userControlPanel;
 	private AddUpdateUserControlPanel addUpdateUserControlPanel;
+	private CashControlPanel cashControlPanel;
 
 	public MainWindow() {
 
@@ -31,9 +32,10 @@ public class MainWindow extends JFrame {
 		inventoryPanel = new InventoryPanel();
 		addUpdateInventoryPanel = new AddUpdateInventoryPanel();
 		salesPanel = new SalesPanel();
-		addUpdateSalesPanel = new addUpdateSalesPanel();
+		addUpdateSalesPanel = new AddUpdateSalesPanel();
 		userControlPanel = new UserControlPanel();
 		addUpdateUserControlPanel = new AddUpdateUserControlPanel();
+		cashControlPanel = new CashControlPanel();
 
 		add(loginPanel).setVisible(false);
 		add(supplierPanel).setVisible(false);
@@ -44,6 +46,7 @@ public class MainWindow extends JFrame {
 		add(addUpdateSalesPanel).setVisible(false);
 		add(userControlPanel).setVisible(false);
 		add(addUpdateUserControlPanel).setVisible(false);
+		add(cashControlPanel).setVisible(false);
 
 		add(adminControlPanel).setVisible(false);
 		setVisible(true);
@@ -105,11 +108,11 @@ public class MainWindow extends JFrame {
 		this.salesPanel = salesPanel;
 	}
 
-	public addUpdateSalesPanel getAddUpdateSalesPanel() {
+	public AddUpdateSalesPanel getAddUpdateSalesPanel() {
 		return addUpdateSalesPanel;
 	}
 
-	public void setAddUpdateSalesPanel(addUpdateSalesPanel addUpdateSalesPanel) {
+	public void setAddUpdateSalesPanel(AddUpdateSalesPanel addUpdateSalesPanel) {
 		this.addUpdateSalesPanel = addUpdateSalesPanel;
 	}
 
@@ -127,6 +130,14 @@ public class MainWindow extends JFrame {
 
 	public void setAddUpdateUserControlPanel(AddUpdateUserControlPanel addUpdateUserControlPanel) {
 		this.addUpdateUserControlPanel = addUpdateUserControlPanel;
+	}
+
+	public CashControlPanel getCashControlPanel() {
+		return cashControlPanel;
+	}
+
+	public void setCashControlPanel(CashControlPanel cashControlPanel) {
+		this.cashControlPanel = cashControlPanel;
 	}
 
 }

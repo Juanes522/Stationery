@@ -17,7 +17,7 @@ public class Controller implements ActionListener {
 	public void run() {
 		mw.getLoginPanel().setVisible(true);
 
-		mw.getAdminControlPanel().setVisible(false);
+		mw.getAdminControlPanel().setVisible(true);
 
 		mw.getSupplierPanel().setVisible(false);
 		mw.getAddUpdateSupplierPanel().setVisible(false);
@@ -30,6 +30,8 @@ public class Controller implements ActionListener {
 		
 		mw.getUserControlPanel().setVisible(false);
 		mw.getAddUpdateUserControlPanel().setVisible(false);
+		
+		mw.getCashControlPanel().setVisible(false);
 	}
 
 	public void addReaders() {
@@ -274,6 +276,7 @@ public class Controller implements ActionListener {
 			mw.getAdminControlPanel().getTitleInventory().setVisible(false);
 			mw.getAdminControlPanel().getTitleSales().setVisible(false);
 			mw.getAdminControlPanel().getTitleConUser().setVisible(false);
+			mw.getAdminControlPanel().getTitleConCash().setVisible(false);
 
 			mw.getInventoryPanel().setVisible(false);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
@@ -283,6 +286,8 @@ public class Controller implements ActionListener {
 			
 			mw.getUserControlPanel().setVisible(false);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
 			break;
 		}
 		case "addSupplier": {
@@ -304,6 +309,8 @@ public class Controller implements ActionListener {
 			
 			mw.getUserControlPanel().setVisible(false);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
 			break;
 		}
 		case "deleteSupplier": {
@@ -329,6 +336,8 @@ public class Controller implements ActionListener {
 			
 			mw.getUserControlPanel().setVisible(false);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
 			break;
 		}
 		case "registerSupplier": {
@@ -352,6 +361,7 @@ public class Controller implements ActionListener {
 			mw.getAdminControlPanel().getTitleSupplier().setVisible(false);
 			mw.getAdminControlPanel().getTitleSales().setVisible(false);
 			mw.getAdminControlPanel().getTitleConUser().setVisible(false);
+			mw.getAdminControlPanel().getTitleConCash().setVisible(false);
 
 			mw.getSupplierPanel().setVisible(false);
 			mw.getAddUpdateSupplierPanel().setVisible(false);
@@ -361,6 +371,8 @@ public class Controller implements ActionListener {
 			
 			mw.getUserControlPanel().setVisible(false);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
 
 			break;
 		}
@@ -383,6 +395,8 @@ public class Controller implements ActionListener {
 			
 			mw.getUserControlPanel().setVisible(false);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
 			break;
 		}
 		case "deleteProduct": {
@@ -408,6 +422,8 @@ public class Controller implements ActionListener {
 			
 			mw.getUserControlPanel().setVisible(false);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
 			break;
 		}
 		case "registerProduct": {
@@ -431,6 +447,7 @@ public class Controller implements ActionListener {
 			mw.getAdminControlPanel().getTitleInventory().setVisible(false);
 			mw.getAdminControlPanel().getTitleSales().setVisible(true);
 			mw.getAdminControlPanel().getTitleConUser().setVisible(false);
+			mw.getAdminControlPanel().getTitleConCash().setVisible(false);
 
 			mw.getInventoryPanel().setVisible(false);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
@@ -440,6 +457,8 @@ public class Controller implements ActionListener {
 			
 			mw.getUserControlPanel().setVisible(false);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
 
 			break;
 		}
@@ -462,6 +481,8 @@ public class Controller implements ActionListener {
 			
 			mw.getUserControlPanel().setVisible(false);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
 
 			break;
 		}
@@ -488,6 +509,8 @@ public class Controller implements ActionListener {
 			
 			mw.getUserControlPanel().setVisible(false);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
 			break;
 		}
 		case "registerSale": {
@@ -511,6 +534,7 @@ public class Controller implements ActionListener {
 			mw.getAdminControlPanel().getTitleInventory().setVisible(false);
 			mw.getAdminControlPanel().getTitleSales().setVisible(false);
 			mw.getAdminControlPanel().getTitleConUser().setVisible(true);
+			mw.getAdminControlPanel().getTitleConCash().setVisible(false);
 
 			mw.getInventoryPanel().setVisible(false);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
@@ -520,6 +544,8 @@ public class Controller implements ActionListener {
 			
 			mw.getSalesPanel().setVisible(false);
 			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
 			break;
 		}
 		case "addUser":{
@@ -542,6 +568,8 @@ public class Controller implements ActionListener {
 			
 			mw.getSalesPanel().setVisible(false);
 			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
 			break;
 		}
 		case "deleteUser":{
@@ -568,6 +596,8 @@ public class Controller implements ActionListener {
 			
 			mw.getSalesPanel().setVisible(false);
 			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
 			break;
 		}
 		case "registerUser":{
@@ -590,6 +620,29 @@ public class Controller implements ActionListener {
 		case "notAdmin":{
 //			marcar que es vendedor
 			break;
+		}
+		case "cashControlAdmin":{
+			
+			mw.getCashControlPanel().setVisible(true);
+			
+			mw.getAdminControlPanel().getTitleSupplier().setVisible(false);
+			mw.getAdminControlPanel().getTitleInventory().setVisible(false);
+			mw.getAdminControlPanel().getTitleSales().setVisible(false);
+			mw.getAdminControlPanel().getTitleConUser().setVisible(false);
+			mw.getAdminControlPanel().getTitleConCash().setVisible(true);
+			
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
 		}
 
 		default:
