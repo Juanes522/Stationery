@@ -10,16 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-/*
- * 
- * ELEMENTO SPINNER PARA AUMENTAR Y DISMINUIR
- * 
- * 
- * */
-
 public class AdminControlPanel extends JPanel {
 
-	private JLabel curretUser, name, icInv, icSup, icSal, icUsCo, icCaCo, icPur, icEx;
+	private JLabel curretUser, nameSt, icInv, icSup, icSal, icUsCo, icCaCo, icPur, icEx;
 	private JButton inventory, suppliers, sales, userControl, cashControl, purchase, exit;
 	private JPanel titlePanel, buttonsPanel;
 
@@ -31,10 +24,10 @@ public class AdminControlPanel extends JPanel {
 		setBackground(Color.WHITE);
 		setLayout(null);
 
-		name = new JLabel(new ImageIcon("src/Assets/name.png"));
-		name.setBounds(160, 150, 630, 300);
-		name.setLayout(null);
-		add(name).setVisible(false);
+		nameSt = new JLabel(new ImageIcon("src/Assets/name.png"));
+		nameSt.setBounds(160, 150, 630, 300);
+		nameSt.setLayout(null);
+		add(nameSt).setVisible(false);
 
 		titlePanel = new JPanel();
 		titlePanel.setBounds(0, 0, 800, 50);
@@ -394,6 +387,12 @@ public class AdminControlPanel extends JPanel {
 		this.titlePurchase = titlePurchase;
 	}
 
-	
-	
+	public JLabel getNameSt() {
+		return nameSt;
+	}
+
+	public void setNameSt(JLabel nameSt) {
+		this.nameSt = nameSt;
+	}
+
 }
