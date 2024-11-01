@@ -16,7 +16,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class addUpdateSalesPanel extends JPanel {
+public class AddUpdateSalesPanel extends JPanel {
 
 	private JLabel formSa, titleRegisterSa, titleUpdateSa, indTotal, indSellerName, indChoosePro, indRegisterSale,
 			indUpdateSale;
@@ -27,7 +27,7 @@ public class addUpdateSalesPanel extends JPanel {
 	private JPanel tablePanel;
 	private JScrollPane barSa;
 
-	public addUpdateSalesPanel() {
+	public AddUpdateSalesPanel() {
 
 		setBounds(202, 70, 540, 450);
 		setLayout(null);
