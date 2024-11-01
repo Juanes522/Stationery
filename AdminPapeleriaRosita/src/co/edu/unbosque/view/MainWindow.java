@@ -15,6 +15,9 @@ public class MainWindow extends JFrame {
 	private UserControlPanel userControlPanel;
 	private AddUpdateUserControlPanel addUpdateUserControlPanel;
 	private CashControlPanel cashControlPanel;
+	private PurchasePanel purchasePanel;
+	private AddPurchasePanel addPurchasePanel;
+	private RegisterPurchasePanel registerPurchasePanel;
 
 	public MainWindow() {
 
@@ -36,6 +39,9 @@ public class MainWindow extends JFrame {
 		userControlPanel = new UserControlPanel();
 		addUpdateUserControlPanel = new AddUpdateUserControlPanel();
 		cashControlPanel = new CashControlPanel();
+		purchasePanel = new PurchasePanel();
+		addPurchasePanel = new AddPurchasePanel();
+		registerPurchasePanel = new RegisterPurchasePanel();
 
 		add(loginPanel).setVisible(false);
 		add(supplierPanel).setVisible(false);
@@ -47,6 +53,9 @@ public class MainWindow extends JFrame {
 		add(userControlPanel).setVisible(false);
 		add(addUpdateUserControlPanel).setVisible(false);
 		add(cashControlPanel).setVisible(false);
+		add(purchasePanel).setVisible(false);
+		add(addPurchasePanel).setVisible(false);
+		add(registerPurchasePanel).setVisible(false);
 
 		add(adminControlPanel).setVisible(false);
 		setVisible(true);
@@ -138,6 +147,30 @@ public class MainWindow extends JFrame {
 
 	public void setCashControlPanel(CashControlPanel cashControlPanel) {
 		this.cashControlPanel = cashControlPanel;
+	}
+
+	public PurchasePanel getPurchasePanel() {
+		return purchasePanel;
+	}
+
+	public void setPurchasePanel(PurchasePanel purchasePanel) {
+		this.purchasePanel = purchasePanel;
+	}
+
+	public AddPurchasePanel getAddPurchasePanel() {
+		return addPurchasePanel;
+	}
+
+	public void setAddPurchasePanel(AddPurchasePanel addPurchasePanel) {
+		this.addPurchasePanel = addPurchasePanel;
+	}
+
+	public RegisterPurchasePanel getRegisterPurchasePanel() {
+		return registerPurchasePanel;
+	}
+
+	public void setRegisterPurchasePanel(RegisterPurchasePanel registerPurchasePanel) {
+		this.registerPurchasePanel = registerPurchasePanel;
 	}
 
 }

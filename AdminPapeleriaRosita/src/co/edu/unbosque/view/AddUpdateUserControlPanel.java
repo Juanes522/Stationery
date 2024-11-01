@@ -62,6 +62,7 @@ public class AddUpdateUserControlPanel extends JPanel {
 		nameUser.setOpaque(false);
 		nameUser.setForeground(Color.WHITE);
 		nameUser.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		nameUser.setCaretColor(Color.WHITE);
 		formU.add(nameUser);
 
 		indPassUs = new JLabel("Contraseña");
@@ -77,6 +78,7 @@ public class AddUpdateUserControlPanel extends JPanel {
 		passUser.setOpaque(false);
 		passUser.setForeground(Color.WHITE);
 		passUser.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		passUser.setCaretColor(Color.WHITE);
 		formU.add(passUser);
 
 		indIsAdmin = new JLabel("Es Administrador?");

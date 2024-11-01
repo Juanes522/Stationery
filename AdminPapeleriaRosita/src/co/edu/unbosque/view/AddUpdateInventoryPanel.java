@@ -35,7 +35,7 @@ public class AddUpdateInventoryPanel extends JPanel {
 		titleRegisterIn.setFont(new Font("Leelawadee", Font.BOLD, 26));
 		titleRegisterIn.setForeground(Color.WHITE);
 		titleRegisterIn.setBounds(125, 20, 250, 30);
-		formIn.add(titleRegisterIn).setVisible(true);
+		formIn.add(titleRegisterIn).setVisible(false);
 
 		titleUpdateIn = new JLabel("Actualizar Producto");
 		titleUpdateIn.setFont(new Font("Leelawadee", Font.BOLD, 26));
@@ -63,6 +63,7 @@ public class AddUpdateInventoryPanel extends JPanel {
 		namePro.setOpaque(false);
 		namePro.setForeground(Color.WHITE);
 		namePro.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		namePro.setCaretColor(Color.WHITE);
 		formIn.add(namePro);
 
 		indQuaPro = new JLabel("Cantidad");
@@ -78,6 +79,7 @@ public class AddUpdateInventoryPanel extends JPanel {
 		quantityPro.setOpaque(false);
 		quantityPro.setForeground(Color.WHITE);
 		quantityPro.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		quantityPro.setCaretColor(Color.WHITE);
 		formIn.add(quantityPro);
 
 		indPriPro = new JLabel("Precio");
@@ -93,6 +95,7 @@ public class AddUpdateInventoryPanel extends JPanel {
 		pricePro.setOpaque(false);
 		pricePro.setForeground(Color.WHITE);
 		pricePro.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		pricePro.setCaretColor(Color.WHITE);
 		formIn.add(pricePro);
 
 		indCosPro = new JLabel("Costo");
@@ -108,6 +111,7 @@ public class AddUpdateInventoryPanel extends JPanel {
 		costPro.setOpaque(false);
 		costPro.setForeground(Color.WHITE);
 		costPro.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		costPro.setCaretColor(Color.WHITE);
 		formIn.add(costPro);
 
 		indSupAss = new JLabel("Proveedor Asociado");

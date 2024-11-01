@@ -33,9 +33,10 @@ public class SalesPanel extends JPanel {
 		titleSa.setForeground(new Color(2, 58, 98));
 		add(titleSa);
 
-		listSales = new JList<>();
-		listSales.setBounds(0, 0, 400, 350);
 		modelSales = new DefaultListModel<>();
+
+		listSales = new JList<>(modelSales);
+		listSales.setBounds(0, 0, 400, 350);
 		listSales.setBackground(Color.LIGHT_GRAY);
 		listSales.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
