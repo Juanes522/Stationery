@@ -61,6 +61,7 @@ public class AddUpdateSupplierPanel extends JPanel {
 		nameSup.setOpaque(false);
 		nameSup.setForeground(Color.WHITE);
 		nameSup.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		nameSup.setCaretColor(Color.WHITE);
 		formS.add(nameSup);
 
 		indPhoneSup = new JLabel("Teléfono");
@@ -76,6 +77,7 @@ public class AddUpdateSupplierPanel extends JPanel {
 		phoneSup.setOpaque(false);
 		phoneSup.setForeground(Color.WHITE);
 		phoneSup.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		phoneSup.setCaretColor(Color.WHITE);
 		formS.add(phoneSup);
 
 		indDirSup = new JLabel("Dirección");
@@ -91,6 +93,7 @@ public class AddUpdateSupplierPanel extends JPanel {
 		directionSup.setOpaque(false);
 		directionSup.setForeground(Color.WHITE);
 		directionSup.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		directionSup.setCaretColor(Color.WHITE);
 		formS.add(directionSup);
 
 //		botones e indicador

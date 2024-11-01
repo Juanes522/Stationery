@@ -67,6 +67,7 @@ public class AddUpdateSalesPanel extends JPanel {
 		sellerName.setOpaque(false);
 		sellerName.setForeground(Color.WHITE);
 		sellerName.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		sellerName.setCaretColor(Color.WHITE);
 		formSa.add(sellerName);
 
 //		botones e indicador

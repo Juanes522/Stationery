@@ -17,7 +17,7 @@ public class Controller implements ActionListener {
 	public void run() {
 		mw.getLoginPanel().setVisible(true);
 
-		mw.getAdminControlPanel().setVisible(true);
+		mw.getAdminControlPanel().setVisible(false);
 
 		mw.getSupplierPanel().setVisible(false);
 		mw.getAddUpdateSupplierPanel().setVisible(false);
@@ -32,6 +32,10 @@ public class Controller implements ActionListener {
 		mw.getAddUpdateUserControlPanel().setVisible(false);
 		
 		mw.getCashControlPanel().setVisible(false);
+		
+		mw.getPurchasePanel().setVisible(false);
+		mw.getAddPurchasePanel().setVisible(false);
+		mw.getRegisterPurchasePanel().setVisible(false);
 	}
 
 	public void addReaders() {
@@ -174,6 +178,33 @@ public class Controller implements ActionListener {
 		
 		mw.getAddUpdateUserControlPanel().getNotAdmin().addActionListener(this);
 		mw.getAddUpdateUserControlPanel().getNotAdmin().setActionCommand("notAdmin");
+		
+//		_______________________________________________________________________
+//		agregar compra
+		
+		mw.getPurchasePanel().getAddPur().addActionListener(this);
+		mw.getPurchasePanel().getAddPur().setActionCommand("addPurchase");
+//		_______________________________________________________________________
+//		registro de compras
+		
+		mw.getAddPurchasePanel().getRegisterPur().addActionListener(this);
+		mw.getAddPurchasePanel().getRegisterPur().setActionCommand("addPrePurchase");
+		
+		mw.getAddPurchasePanel().getEndPur().addActionListener(this);
+		mw.getAddPurchasePanel().getEndPur().setActionCommand("endPurchase");
+		
+		mw.getAddPurchasePanel().getClosePur().addActionListener(this);
+		mw.getAddPurchasePanel().getClosePur().setActionCommand("closePurchase");
+		
+//		_______________________________________________________________________
+//		registro por elemento
+		
+		mw.getRegisterPurchasePanel().getRegisterProPur().addActionListener(this);
+		mw.getRegisterPurchasePanel().getRegisterProPur().setActionCommand("registerPurchase");
+		
+		mw.getRegisterPurchasePanel().getClosePurPanel().addActionListener(this);
+		mw.getRegisterPurchasePanel().getClosePurPanel().setActionCommand("closePurchasePanel");
+		
 	}
 
 	@Override
@@ -277,6 +308,7 @@ public class Controller implements ActionListener {
 			mw.getAdminControlPanel().getTitleSales().setVisible(false);
 			mw.getAdminControlPanel().getTitleConUser().setVisible(false);
 			mw.getAdminControlPanel().getTitleConCash().setVisible(false);
+			mw.getAdminControlPanel().getTitlePurchase().setVisible(false);
 
 			mw.getInventoryPanel().setVisible(false);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
@@ -288,6 +320,10 @@ public class Controller implements ActionListener {
 			mw.getAddUpdateUserControlPanel().setVisible(false);
 			
 			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 			break;
 		}
 		case "addSupplier": {
@@ -311,6 +347,10 @@ public class Controller implements ActionListener {
 			mw.getAddUpdateUserControlPanel().setVisible(false);
 			
 			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 			break;
 		}
 		case "deleteSupplier": {
@@ -338,14 +378,55 @@ public class Controller implements ActionListener {
 			mw.getAddUpdateUserControlPanel().setVisible(false);
 			
 			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 			break;
 		}
 		case "registerSupplier": {
 //			agregar proveedor a la lista
+			
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(true);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 			break;
 		}
 		case "updateSupplier": {
 //			actualizar proveedor en la lista
+			
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(true);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			
 			break;
 		}
 		case "closeSupplier": {
@@ -362,6 +443,7 @@ public class Controller implements ActionListener {
 			mw.getAdminControlPanel().getTitleSales().setVisible(false);
 			mw.getAdminControlPanel().getTitleConUser().setVisible(false);
 			mw.getAdminControlPanel().getTitleConCash().setVisible(false);
+			mw.getAdminControlPanel().getTitlePurchase().setVisible(false);
 
 			mw.getSupplierPanel().setVisible(false);
 			mw.getAddUpdateSupplierPanel().setVisible(false);
@@ -373,6 +455,10 @@ public class Controller implements ActionListener {
 			mw.getAddUpdateUserControlPanel().setVisible(false);
 			
 			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 
 			break;
 		}
@@ -397,6 +483,10 @@ public class Controller implements ActionListener {
 			mw.getAddUpdateUserControlPanel().setVisible(false);
 			
 			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 			break;
 		}
 		case "deleteProduct": {
@@ -424,14 +514,55 @@ public class Controller implements ActionListener {
 			mw.getAddUpdateUserControlPanel().setVisible(false);
 			
 			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 			break;
 		}
 		case "registerProduct": {
 //			registrar producto en la lista
+			
+			mw.getInventoryPanel().setVisible(true);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 			break;
 		}
 		case "updateProduct": {
 //			actualizar producto en la lista
+			
+			mw.getInventoryPanel().setVisible(true);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			
 			break;
 		}
 		case "closeProduct": {
@@ -448,6 +579,7 @@ public class Controller implements ActionListener {
 			mw.getAdminControlPanel().getTitleSales().setVisible(true);
 			mw.getAdminControlPanel().getTitleConUser().setVisible(false);
 			mw.getAdminControlPanel().getTitleConCash().setVisible(false);
+			mw.getAdminControlPanel().getTitlePurchase().setVisible(false);
 
 			mw.getInventoryPanel().setVisible(false);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
@@ -459,6 +591,10 @@ public class Controller implements ActionListener {
 			mw.getAddUpdateUserControlPanel().setVisible(false);
 			
 			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 
 			break;
 		}
@@ -483,6 +619,10 @@ public class Controller implements ActionListener {
 			mw.getAddUpdateUserControlPanel().setVisible(false);
 			
 			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 
 			break;
 		}
@@ -511,14 +651,56 @@ public class Controller implements ActionListener {
 			mw.getAddUpdateUserControlPanel().setVisible(false);
 			
 			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 			break;
 		}
 		case "registerSale": {
 //			registar venta
+			
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(true);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			
 			break;
 		}
 		case "updateSale": {
 //			actualizar venta
+			
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(true);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			
 			break;
 		}
 		case "closeSale": {
@@ -535,7 +717,8 @@ public class Controller implements ActionListener {
 			mw.getAdminControlPanel().getTitleSales().setVisible(false);
 			mw.getAdminControlPanel().getTitleConUser().setVisible(true);
 			mw.getAdminControlPanel().getTitleConCash().setVisible(false);
-
+			mw.getAdminControlPanel().getTitlePurchase().setVisible(false);
+			
 			mw.getInventoryPanel().setVisible(false);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
 
@@ -546,6 +729,10 @@ public class Controller implements ActionListener {
 			mw.getAddUpdateSalesPanel().setVisible(false);
 			
 			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 			break;
 		}
 		case "addUser":{
@@ -570,6 +757,10 @@ public class Controller implements ActionListener {
 			mw.getAddUpdateSalesPanel().setVisible(false);
 			
 			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 			break;
 		}
 		case "deleteUser":{
@@ -598,14 +789,56 @@ public class Controller implements ActionListener {
 			mw.getAddUpdateSalesPanel().setVisible(false);
 			
 			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
 			break;
 		}
 		case "registerUser":{
 //			registrar usuario
+			
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(true);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			
 			break;
 		}
 		case "updateUser":{
 //			actualizar usuario
+						
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(true);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			
 			break;
 		}
 		case "closeUser":{
@@ -630,6 +863,7 @@ public class Controller implements ActionListener {
 			mw.getAdminControlPanel().getTitleSales().setVisible(false);
 			mw.getAdminControlPanel().getTitleConUser().setVisible(false);
 			mw.getAdminControlPanel().getTitleConCash().setVisible(true);
+			mw.getAdminControlPanel().getTitlePurchase().setVisible(false);
 			
 			mw.getInventoryPanel().setVisible(false);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
@@ -643,8 +877,166 @@ public class Controller implements ActionListener {
 			mw.getUserControlPanel().setVisible(false);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
 			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			break;
 		}
+		case "purchaseAdmin":{
+			
+			mw.getPurchasePanel().setVisible(true);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			
+			mw.getAdminControlPanel().getTitleSupplier().setVisible(false);
+			mw.getAdminControlPanel().getTitleInventory().setVisible(false);
+			mw.getAdminControlPanel().getTitleSales().setVisible(false);
+			mw.getAdminControlPanel().getTitleConUser().setVisible(false);
+			mw.getAdminControlPanel().getTitleConCash().setVisible(false);
+			mw.getAdminControlPanel().getTitlePurchase().setVisible(true);
+			
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
 
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			
+			break;
+		}
+		case "addPurchase":{
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(true);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			
+			break;
+		}
+		case "addPrePurchase":{
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(true);
+			
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			break;
+		}
+		case "endPurchase":{
+			
+//			preguntar por confirmar si desea terminar la compra
+			
+			mw.getPurchasePanel().setVisible(true);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			break;
+		}
+		case "closePurchase":{
+			mw.getPurchasePanel().setVisible(true);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			break;
+		}
+		case "registerPurchase":{
+//			registrar el producto seleccionado en compra
+			
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(true);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			break;
+		}
+		case "closePurchasePanel":{
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(true);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			break;
+		}
+		case "exitAdmin":{
+			mw.getLoginPanel().setVisible(true);
+
+			mw.getAdminControlPanel().setVisible(false);
+			
+			mw.getPurchasePanel().setVisible(false);
+			mw.getAddPurchasePanel().setVisible(false);
+			mw.getRegisterPurchasePanel().setVisible(false);
+			
+			mw.getInventoryPanel().setVisible(false);
+			mw.getAddUpdateInventoryPanel().setVisible(false);
+
+			mw.getSupplierPanel().setVisible(false);
+			mw.getAddUpdateSupplierPanel().setVisible(false);
+			
+			mw.getSalesPanel().setVisible(false);
+			mw.getAddUpdateSalesPanel().setVisible(false);
+			
+			mw.getUserControlPanel().setVisible(false);
+			mw.getAddUpdateUserControlPanel().setVisible(false);
+			
+			mw.getCashControlPanel().setVisible(false);
+			
+			break;
+		}
+		
 		default:
 			break;
 		}
