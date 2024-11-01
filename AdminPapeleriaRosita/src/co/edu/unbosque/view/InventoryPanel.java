@@ -34,7 +34,7 @@ public class InventoryPanel extends JPanel {
 		add(titleIn);
 
 		modelInventory = new DefaultListModel<>();
-		
+
 		listInventory = new JList<>(modelInventory);
 		listInventory.setBounds(0, 0, 400, 350);
 		listInventory.setBackground(Color.LIGHT_GRAY);
@@ -129,5 +129,39 @@ public class InventoryPanel extends JPanel {
 	public void setUpPro(JButton upPro) {
 		this.upPro = upPro;
 	}
+
+	public JLabel getIndAddP() {
+		return indAddP;
+	}
+
+	public void setIndAddP(JLabel indAddP) {
+		this.indAddP = indAddP;
+	}
+
+	public JLabel getIndDelP() {
+		return indDelP;
+	}
+
+	public void setIndDelP(JLabel indDelP) {
+		this.indDelP = indDelP;
+	}
+
+	public JLabel getIndUpP() {
+		return indUpP;
+	}
+
+	public void setIndUpP(JLabel indUpP) {
+		this.indUpP = indUpP;
+	}
+
+	public JLabel getTitleIn() {
+		return titleIn;
+	}
+
+	public void setTitleIn(JLabel titleIn) {
+		this.titleIn = titleIn;
+	}
+	
+	
 
 }

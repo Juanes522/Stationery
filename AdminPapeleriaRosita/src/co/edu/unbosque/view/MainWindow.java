@@ -6,6 +6,7 @@ public class MainWindow extends JFrame {
 
 	private LoginPanel loginPanel;
 	private AdminControlPanel adminControlPanel;
+	private SellerControlPanel sellerControlPanel;
 	private SupplierPanel supplierPanel;
 	private AddUpdateSupplierPanel addUpdateSupplierPanel;
 	private InventoryPanel inventoryPanel;
@@ -42,6 +43,7 @@ public class MainWindow extends JFrame {
 		purchasePanel = new PurchasePanel();
 		addPurchasePanel = new AddPurchasePanel();
 		registerPurchasePanel = new RegisterPurchasePanel();
+		sellerControlPanel = new SellerControlPanel();
 
 		add(loginPanel).setVisible(false);
 		add(supplierPanel).setVisible(false);
@@ -58,6 +60,7 @@ public class MainWindow extends JFrame {
 		add(registerPurchasePanel).setVisible(false);
 
 		add(adminControlPanel).setVisible(false);
+		add(sellerControlPanel).setVisible(false);
 		setVisible(true);
 	}
 
@@ -171,6 +174,14 @@ public class MainWindow extends JFrame {
 
 	public void setRegisterPurchasePanel(RegisterPurchasePanel registerPurchasePanel) {
 		this.registerPurchasePanel = registerPurchasePanel;
+	}
+
+	public SellerControlPanel getSellerControlPanel() {
+		return sellerControlPanel;
+	}
+
+	public void setSellerControlPanel(SellerControlPanel sellerControlPanel) {
+		this.sellerControlPanel = sellerControlPanel;
 	}
 
 }
