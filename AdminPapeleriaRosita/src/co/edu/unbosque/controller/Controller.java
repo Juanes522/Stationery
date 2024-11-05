@@ -3,14 +3,21 @@ package co.edu.unbosque.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import co.edu.unbosque.model.UserDTO;
+import co.edu.unbosque.model.persistence.UserDAO;
 import co.edu.unbosque.view.MainWindow;
+import co.edu.unbosque.view.PopUpMessages;
 
 public class Controller implements ActionListener {
 
 	private MainWindow mw;
+	private UserDAO users;
+	private UserDTO userToRecover;
 
 	public Controller() {
 		mw = new MainWindow();
+		users=new UserDAO();
+		userToRecover=new UserDTO();
 		addReaders();
 	}
 
@@ -223,31 +230,35 @@ public class Controller implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		switch (e.getActionCommand()) {
 		case "join": {
-//			verificar entre admin y vendedor
 			
-			if(mw.getLoginPanel().getUserName().getText().equals("a")) {
+			String username=mw.getLoginPanel().getUserName().getText();
+			String password=new String(mw.getLoginPanel().getPassword().getPassword());
+			
+			int login=users.verifyUser(username, password);
+			
+			if(login==0) {
 				
 				mw.getAdminControlPanel().setVisible(true);
+				mw.getLoginPanel().getUserName().setText("");
+				mw.getLoginPanel().getPassword().setText("");
 				mw.getAdminControlPanel().getNameSt().setVisible(true);
+				mw.getLoginPanel().setVisible(false);
 				
 			}
-			else if(mw.getLoginPanel().getUserName().getText().equals("s")) {
+			else if(login==1) {
 				
 				mw.getSellerControlPanel().setVisible(true);
+				mw.getLoginPanel().getUserName().setText("");
+				mw.getLoginPanel().getPassword().setText("");
 				mw.getSellerControlPanel().getNameStSe().setVisible(true);
+				mw.getLoginPanel().setVisible(false);
+				
 			}
 			else {
-//				de mientras 
-				mw.getAdminControlPanel().setVisible(true);
-				mw.getAdminControlPanel().getNameSt().setVisible(true);
+				PopUpMessages.errorMessage(mw, "El usuario o contraseña son inavlidos.");
 			}
-			
-			mw.getLoginPanel().setVisible(false);
-
-			mw.getAdminControlPanel().getNameSt().setVisible(true);
 			break;
 		}
 		case "recoverKey": {
@@ -280,7 +291,7 @@ public class Controller implements ActionListener {
 			mw.getLoginPanel().getIndButton().setVisible(true);
 			mw.getLoginPanel().getJoin().setVisible(true);
 			mw.getLoginPanel().getRecoverKey().setVisible(true);
-
+			mw.getLoginPanel().getUserNameRec().setText("");
 			mw.getLoginPanel().getTitleRec().setVisible(false);
 			mw.getLoginPanel().getIndUserRec().setVisible(false);
 			mw.getLoginPanel().getUserNameRec().setVisible(false);
@@ -292,39 +303,64 @@ public class Controller implements ActionListener {
 
 		}
 		case "followRec": {
-			mw.getLoginPanel().getTitleRec().setVisible(true);
-			mw.getLoginPanel().getIndUserRec().setVisible(false);
-			mw.getLoginPanel().getUserNameRec().setVisible(false);
-			mw.getLoginPanel().getIndCancel().setVisible(false);
-			mw.getLoginPanel().getIndFollow().setVisible(true);
-			mw.getLoginPanel().getCancel().setVisible(false);
-			mw.getLoginPanel().getFollow().setVisible(false);
-
-			mw.getLoginPanel().getIndUserChoose().setVisible(true);
-			mw.getLoginPanel().getIndQuestion().setVisible(true);
-			mw.getLoginPanel().getIndAnswer().setVisible(true);
-			mw.getLoginPanel().getAnswer().setVisible(true);
-			mw.getLoginPanel().getCheckanswer().setVisible(true);
+			String username=mw.getLoginPanel().getUserNameRec().getText();
+			userToRecover=users.getUser(username);
+			if(userToRecover!=null) {
+				mw.getLoginPanel().getTitleRec().setVisible(true);
+				mw.getLoginPanel().getIndUserRec().setVisible(false);
+				mw.getLoginPanel().getUserNameRec().setVisible(false);
+				mw.getLoginPanel().getIndCancel().setVisible(false);
+				mw.getLoginPanel().getIndFollow().setVisible(true);
+				mw.getLoginPanel().getCancel().setVisible(false);
+				mw.getLoginPanel().getFollow().setVisible(false);
+				mw.getLoginPanel().getUserNameRec().setText("");
+				mw.getLoginPanel().getIndAnswer().setText(userToRecover.getQuestion());
+				mw.getLoginPanel().getIndUserChoose().setVisible(true);
+				mw.getLoginPanel().getIndQuestion().setVisible(true);
+				mw.getLoginPanel().getIndAnswer().setVisible(true);
+				mw.getLoginPanel().getAnswer().setVisible(true);
+				mw.getLoginPanel().getCheckanswer().setVisible(true);
+			}
+			else {
+				PopUpMessages.errorMessage(mw, "Nombre de ususario invalido.");
+			}
 			break;
 		}
 		case "checkAns": {
-			mw.getLoginPanel().getTitleRec().setVisible(false);
-			mw.getLoginPanel().getIndUserChoose().setVisible(false);
-			mw.getLoginPanel().getIndQuestion().setVisible(false);
-			mw.getLoginPanel().getIndAnswer().setVisible(false);
-			mw.getLoginPanel().getAnswer().setVisible(false);
-			mw.getLoginPanel().getCheckanswer().setVisible(false);
-			mw.getLoginPanel().getIndFollow().setVisible(false);
-
-			mw.getLoginPanel().getTitle().setVisible(true);
-			mw.getLoginPanel().getIndUser().setVisible(true);
-			mw.getLoginPanel().getUserName().setVisible(true);
-			mw.getLoginPanel().getIndPass().setVisible(true);
-			mw.getLoginPanel().getPassword().setVisible(true);
-			mw.getLoginPanel().getShowPass().setVisible(true);
-			mw.getLoginPanel().getIndButton().setVisible(true);
-			mw.getLoginPanel().getJoin().setVisible(true);
-			mw.getLoginPanel().getRecoverKey().setVisible(true);
+			String answer=mw.getLoginPanel().getAnswer().getText();
+			if(userToRecover.getAnswer().equals(answer)){
+				String newPassword=PopUpMessages.inputMessage(mw,"Ingrese nueva contraseña: ","Recuperación de credenciales.");
+				if(newPassword!=null&&newPassword.length()>0&&newPassword.length()<=255) {
+					int id=users.getId(userToRecover.getName());
+					userToRecover.setPassword(newPassword);
+					users.update(id, userToRecover);
+					PopUpMessages.informationMessage(mw, "Contraseña cambiada exitosamente.");
+					mw.getLoginPanel().getTitleRec().setVisible(false);
+					mw.getLoginPanel().getIndUserChoose().setVisible(false);
+					mw.getLoginPanel().getIndQuestion().setVisible(false);
+					mw.getLoginPanel().getIndAnswer().setVisible(false);
+					mw.getLoginPanel().getAnswer().setVisible(false);
+					mw.getLoginPanel().getCheckanswer().setVisible(false);
+					mw.getLoginPanel().getIndFollow().setVisible(false);
+					mw.getLoginPanel().getIndAnswer().setText("");
+					mw.getLoginPanel().getAnswer().setText("");
+					mw.getLoginPanel().getTitle().setVisible(true);
+					mw.getLoginPanel().getIndUser().setVisible(true);
+					mw.getLoginPanel().getUserName().setVisible(true);
+					mw.getLoginPanel().getIndPass().setVisible(true);
+					mw.getLoginPanel().getPassword().setVisible(true);
+					mw.getLoginPanel().getShowPass().setVisible(true);
+					mw.getLoginPanel().getIndButton().setVisible(true);
+					mw.getLoginPanel().getJoin().setVisible(true);
+					mw.getLoginPanel().getRecoverKey().setVisible(true);
+				}
+				else if(newPassword!=null) {
+					PopUpMessages.errorMessage(mw,"Contraseña invalida.\nLa contraseña esta vacia o tiene mas de 255 caracteres.");
+				}
+			}else {
+				PopUpMessages.errorMessage(mw, "Respuesta incorrecta.");
+			}
+			
 			break;
 
 		}
