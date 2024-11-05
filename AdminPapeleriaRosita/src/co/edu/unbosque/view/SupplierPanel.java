@@ -3,19 +3,19 @@ package co.edu.unbosque.view;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.DefaultListModel;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 public class SupplierPanel extends JPanel {
 
-	private JList<String> listSupplier;
-	private DefaultListModel<String> modelSupplier;
+	private JTable listSupplier;
 	private JPanel listSupPanel;
 	private JLabel titleSup, indAddSup, indDelSup, indUpSup;
 	private JButton addSup, delSup, upSup;
@@ -33,9 +33,7 @@ public class SupplierPanel extends JPanel {
 		titleSup.setForeground(new Color(2, 58, 98));
 		add(titleSup);
 
-		modelSupplier = new DefaultListModel<>();
-
-		listSupplier = new JList<>(modelSupplier);
+		listSupplier = new JTable();
 		listSupplier.setBounds(0, 0, 400, 350);
 		listSupplier.setBackground(Color.LIGHT_GRAY);
 		listSupplier.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -88,21 +86,23 @@ public class SupplierPanel extends JPanel {
 		upSup.setContentAreaFilled(false);
 		add(upSup);
 	}
+	
+	public void fillTable(String[][] information) {
+		DefaultTableModel model=new DefaultTableModel(information,new String[]{"ID","Nombre","Direccion","Telefono"}) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		listSupplier.setModel(model);
+	}
 
-	public JList<String> getListSupplier() {
+	public JTable getListSupplier() {
 		return listSupplier;
 	}
 
-	public void setListSupplier(JList<String> listSupplier) {
+	public void setListSupplier(JTable listSupplier) {
 		this.listSupplier = listSupplier;
-	}
-
-	public DefaultListModel<String> getModelSupplier() {
-		return modelSupplier;
-	}
-
-	public void setModelSupplier(DefaultListModel<String> modelSupplier) {
-		this.modelSupplier = modelSupplier;
 	}
 
 	public JButton getAddSup() {

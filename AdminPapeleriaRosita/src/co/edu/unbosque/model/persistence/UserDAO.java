@@ -19,7 +19,7 @@ public class UserDAO implements OperationsDAO<UserDTO> {
     }
 
     @Override
-    public int create(UserDTO object) {
+    public void create(UserDTO object) {
     	UserDTO newUser=object;
         dbcon.initConnection();
         try {
@@ -34,22 +34,19 @@ public class UserDAO implements OperationsDAO<UserDTO> {
             ResultSet key = dbcon.getPreparedstatement().getGeneratedKeys();
             if (!key.next()) {
             	dbcon.close();
-                return 1;
             }
             users.put(key.getInt(1), newUser);
         } catch (SQLException e) {
         	dbcon.close();
-            return 2; 
         }
         dbcon.close();
-        return 0;
     }
 
     @Override
-    public int update(int id, UserDTO object) {
+    public void update(int id, UserDTO object) {
     	UserDTO updateUser=object;
     	if(!users.containsKey(id)) {
-    		return 1;
+    		
     	}
         dbcon.initConnection();
         try {
@@ -63,17 +60,17 @@ public class UserDAO implements OperationsDAO<UserDTO> {
             dbcon.getPreparedstatement().executeUpdate();
         } catch (SQLException e) {
             dbcon.close();
-            return 2;
+           
         }
         dbcon.close();
         users.replace(id, updateUser);
-        return 0;
+        
     }
 
     @Override
-    public int delete(int id) {
+    public void delete(int id) {
         if (!users.containsKey(id)) {
-            return 1;
+        	
         }
         dbcon.initConnection();
         try {
@@ -82,11 +79,11 @@ public class UserDAO implements OperationsDAO<UserDTO> {
             dbcon.getPreparedstatement().executeUpdate();
         } catch (SQLException e) {
         	dbcon.close();
-        	return 2;
+        	
         }
         dbcon.close();
         users.remove(id);
-        return 0;
+        
     }
 
     public HashMap<Integer, UserDTO> loadUsers() {

@@ -3,8 +3,11 @@ package co.edu.unbosque.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import co.edu.unbosque.model.SupplierDTO;
 import co.edu.unbosque.model.UserDTO;
+import co.edu.unbosque.model.persistence.SupplierDAO;
 import co.edu.unbosque.model.persistence.UserDAO;
+import co.edu.unbosque.util.exception.SupplierException;
 import co.edu.unbosque.view.MainWindow;
 import co.edu.unbosque.view.PopUpMessages;
 
@@ -12,12 +15,16 @@ public class Controller implements ActionListener {
 
 	private MainWindow mw;
 	private UserDAO users;
+	private SupplierDAO suppliers;
+	private int idUpdate;
 	private UserDTO userToRecover;
 
 	public Controller() {
 		mw = new MainWindow();
 		users=new UserDAO();
+		suppliers=new SupplierDAO();
 		userToRecover=new UserDTO();
+		idUpdate=-1;
 		addReaders();
 	}
 
@@ -368,6 +375,7 @@ public class Controller implements ActionListener {
 		case "supplierAdmin": {
 
 			mw.getSupplierPanel().setVisible(true);
+			mw.getSupplierPanel().fillTable(suppliers.showAll());
 			mw.getAddUpdateSupplierPanel().setVisible(false);
 
 			mw.getAdminControlPanel().getTitleSupplier().setVisible(true);
@@ -424,83 +432,139 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "deleteSupplier": {
-//			borrar de la lista
+			int selectedRow=mw.getSupplierPanel().getListSupplier().getSelectedRow();
+			if(selectedRow!=-1) {
+				int id=Integer.parseInt((String)mw.getSupplierPanel().getListSupplier().getValueAt(selectedRow, 0));
+				int res=PopUpMessages.confirmMessage("¿Seguro que quiere eliminar permanentemente el proveedor?", mw);
+				if(res==0) {
+					try {
+						suppliers.delete(id);
+						mw.getSupplierPanel().fillTable(suppliers.showAll());
+					} catch (SupplierException error) {
+						PopUpMessages.errorMessage(mw, error.getMessage());
+					}
+				}
+			}
+			else {
+				PopUpMessages.informationMessage(mw, "No se ha seleccionado un proveedor a eliminar.");
+			}
 			break;
 		}
 		case "upSupplier": {
-			mw.getSupplierPanel().setVisible(false);
+			int selectedRow=mw.getSupplierPanel().getListSupplier().getSelectedRow();
+			if(selectedRow!=-1) {
+				idUpdate=Integer.parseInt((String)mw.getSupplierPanel().getListSupplier().getValueAt(selectedRow, 0));
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(true);
+				mw.getAddUpdateSupplierPanel().getTitleRegisterS().setVisible(false);
+				mw.getAddUpdateSupplierPanel().getRegisterSup().setVisible(false);
+				mw.getAddUpdateSupplierPanel().getIndRegisterSup().setVisible(false);
+				mw.getAddUpdateSupplierPanel().getTitleUpdateS().setVisible(true);
+				mw.getAddUpdateSupplierPanel().getUpdateSup().setVisible(true);
+				mw.getAddUpdateSupplierPanel().getIndUpdateSup().setVisible(true);
 
-			mw.getAddUpdateSupplierPanel().setVisible(true);
-			mw.getAddUpdateSupplierPanel().getTitleRegisterS().setVisible(false);
-			mw.getAddUpdateSupplierPanel().getRegisterSup().setVisible(false);
-			mw.getAddUpdateSupplierPanel().getIndRegisterSup().setVisible(false);
-			mw.getAddUpdateSupplierPanel().getTitleUpdateS().setVisible(true);
-			mw.getAddUpdateSupplierPanel().getUpdateSup().setVisible(true);
-			mw.getAddUpdateSupplierPanel().getIndUpdateSup().setVisible(true);
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
-
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
+			}
+			else {
+				PopUpMessages.informationMessage(mw, "No se ha seleccionado un proveedor a actualizar.");
+			}
 			break;
 		}
 		case "registerSupplier": {
 //			agregar proveedor a la lista
-			
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
-
-			mw.getSupplierPanel().setVisible(true);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
+			boolean add=false;
+			try {
+				String name=mw.getAddUpdateSupplierPanel().getNameSup().getText();
+				String address=mw.getAddUpdateSupplierPanel().getDirectionSup().getText();
+				String phone=mw.getAddUpdateSupplierPanel().getPhoneSup().getText();
+				suppliers.create(new SupplierDTO(name, address, phone));
+				add=true;
+			} catch (SupplierException error) {
+				PopUpMessages.errorMessage(mw, error.getMessage());
+			}
+			if(add) {
+				PopUpMessages.informationMessage(mw, "Proveedor agregado exitosamente.");
+				mw.getAddUpdateSupplierPanel().getNameSup().setText("");
+				mw.getAddUpdateSupplierPanel().getDirectionSup().setText("");
+				mw.getAddUpdateSupplierPanel().getPhoneSup().setText("");
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
+				
+				mw.getSupplierPanel().fillTable(suppliers.showAll());
+				mw.getSupplierPanel().setVisible(true);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
+			}
 			break;
 		}
 		case "updateSupplier": {
 //			actualizar proveedor en la lista
-			
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
+			boolean add=false;
+			try {
+				String name=mw.getAddUpdateSupplierPanel().getNameSup().getText();
+				String address=mw.getAddUpdateSupplierPanel().getDirectionSup().getText();
+				String phone=mw.getAddUpdateSupplierPanel().getPhoneSup().getText();
+				suppliers.update(idUpdate,new SupplierDTO(name, address, phone));
+				add=true;
+			} catch (SupplierException error) {
+				PopUpMessages.errorMessage(mw, error.getMessage());
+			}
+			if(add) {
+				PopUpMessages.informationMessage(mw, "Proveedor actualizado exitosamente.");
+				mw.getAddUpdateSupplierPanel().getNameSup().setText("");
+				mw.getAddUpdateSupplierPanel().getDirectionSup().setText("");
+				mw.getAddUpdateSupplierPanel().getPhoneSup().setText("");
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getSupplierPanel().setVisible(true);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
+				mw.getSupplierPanel().fillTable(suppliers.showAll());
+				mw.getSupplierPanel().setVisible(true);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
+			}
 			
 			break;
 		}
 		case "closeSupplier": {
 			mw.getSupplierPanel().setVisible(true);
+			mw.getAddUpdateSupplierPanel().getNameSup().setText("");
+			mw.getAddUpdateSupplierPanel().getDirectionSup().setText("");
+			mw.getAddUpdateSupplierPanel().getPhoneSup().setText("");
 			mw.getAddUpdateSupplierPanel().setVisible(false);
 			break;
 		}
