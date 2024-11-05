@@ -64,7 +64,7 @@ public class SupplierDAO implements OperationsDAO<SupplierDTO> {
 		if(!suppliers.containsKey(id)) {
 			throw new SupplierException(7);
 		}
-		if(repeatedName(updateSupplier.getName())) {
+		if(repeatedName(updateSupplier.getName(),id)) {
 			throw new SupplierException(1);
 		}
 		else if(updateSupplier.getName().trim().length()<=0||updateSupplier.getName().trim().length()>60) {
@@ -89,6 +89,7 @@ public class SupplierDAO implements OperationsDAO<SupplierDTO> {
 			dbcon.getPreparedstatement().executeUpdate();
 		} catch (SQLException e) {
 			dbcon.close();
+			e.printStackTrace();
 			throw new SupplierException(9);
 		}
 		dbcon.close();
@@ -136,7 +137,16 @@ public class SupplierDAO implements OperationsDAO<SupplierDTO> {
 	
 	public boolean repeatedName(String name) {
 		for(SupplierDTO sup:suppliers.values()) {
-			if(sup.getName().equals(name)) {
+			if(sup.getName().toLowerCase().equals(name.toLowerCase())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean repeatedName(String name, int id) {
+		for(int idSup:suppliers.keySet()) {
+			if(suppliers.get(idSup).getName().toLowerCase().equals(name.toLowerCase())&&idSup!=id) {
 				return true;
 			}
 		}
@@ -155,6 +165,22 @@ public class SupplierDAO implements OperationsDAO<SupplierDTO> {
 			i++;
 		}
 		return result;
+	}
+
+	public DBConnection getDbcon() {
+		return dbcon;
+	}
+
+	public void setDbcon(DBConnection dbcon) {
+		this.dbcon = dbcon;
+	}
+
+	public HashMap<Integer, SupplierDTO> getSuppliers() {
+		return suppliers;
+	}
+
+	public void setSuppliers(HashMap<Integer, SupplierDTO> suppliers) {
+		this.suppliers = suppliers;
 	}
 
 }

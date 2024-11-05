@@ -2,6 +2,7 @@ package co.edu.unbosque.view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -153,6 +154,13 @@ public class AddUpdateInventoryPanel extends JPanel {
 		updatePro.setContentAreaFilled(false);
 		formIn.add(updatePro).setVisible(false);
 
+	}
+	
+	public void addSuplliers(Set<String> supplierNames) {
+		supplierA.removeAllItems();
+		for(String sn:supplierNames) {
+			supplierA.addItem(sn);
+		}
 	}
 
 	public JLabel getTitleRegisterIn() {

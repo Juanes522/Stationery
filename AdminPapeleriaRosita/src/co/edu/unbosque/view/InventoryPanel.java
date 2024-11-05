@@ -10,12 +10,14 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 public class InventoryPanel extends JPanel {
 
-	private JList<String> listInventory;
-	private DefaultListModel<String> modelInventory;
+	private JTable listInventory;
+	
 	private JPanel listInPanel;
 	private JLabel titleIn, indAddP, indDelP, indUpP;
 	private JButton addPro, delPro, upPro;
@@ -33,9 +35,7 @@ public class InventoryPanel extends JPanel {
 		titleIn.setForeground(new Color(2, 58, 98));
 		add(titleIn);
 
-		modelInventory = new DefaultListModel<>();
-
-		listInventory = new JList<>(modelInventory);
+		listInventory = new JTable();
 		listInventory.setBounds(0, 0, 400, 350);
 		listInventory.setBackground(Color.LIGHT_GRAY);
 		listInventory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -89,22 +89,44 @@ public class InventoryPanel extends JPanel {
 		add(upPro);
 
 	}
+	
+	public void fillTable(String[][] information) {
+		DefaultTableModel model=new DefaultTableModel(information,new String[]{"ID","Nombre","Precio","Costo","Quantity","Proveedor"}) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		listInventory.setModel(model);
+	}
 
-	public JList<String> getListInventory() {
+	public JTable getListInventory() {
 		return listInventory;
 	}
 
-	public void setListInventory(JList<String> listInventory) {
+	public void setListInventory(JTable listInventory) {
 		this.listInventory = listInventory;
 	}
 
-	public DefaultListModel<String> getModelInventory() {
-		return modelInventory;
+	public JPanel getListInPanel() {
+		return listInPanel;
 	}
 
-	public void setModelInventory(DefaultListModel<String> modelInventory) {
-		this.modelInventory = modelInventory;
+	public void setListInPanel(JPanel listInPanel) {
+		this.listInPanel = listInPanel;
 	}
+
+	public JScrollPane getBarIn() {
+		return barIn;
+	}
+
+
+
+	public void setBarIn(JScrollPane barIn) {
+		this.barIn = barIn;
+	}
+
+
 
 	public JButton getAddPro() {
 		return addPro;
