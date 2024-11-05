@@ -2,11 +2,15 @@ package co.edu.unbosque.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
+import co.edu.unbosque.model.ProductDTO;
 import co.edu.unbosque.model.SupplierDTO;
 import co.edu.unbosque.model.UserDTO;
+import co.edu.unbosque.model.persistence.ProductDAO;
 import co.edu.unbosque.model.persistence.SupplierDAO;
 import co.edu.unbosque.model.persistence.UserDAO;
+import co.edu.unbosque.util.exception.ProductException;
 import co.edu.unbosque.util.exception.SupplierException;
 import co.edu.unbosque.view.MainWindow;
 import co.edu.unbosque.view.PopUpMessages;
@@ -17,12 +21,15 @@ public class Controller implements ActionListener {
 	private UserDAO users;
 	private SupplierDAO suppliers;
 	private int idUpdate;
+	private HashMap<String, Integer>supplierProduct;
 	private UserDTO userToRecover;
+	private ProductDAO products;
 
 	public Controller() {
 		mw = new MainWindow();
 		users=new UserDAO();
 		suppliers=new SupplierDAO();
+		products=new ProductDAO();
 		userToRecover=new UserDTO();
 		idUpdate=-1;
 		addReaders();
@@ -454,6 +461,10 @@ public class Controller implements ActionListener {
 			int selectedRow=mw.getSupplierPanel().getListSupplier().getSelectedRow();
 			if(selectedRow!=-1) {
 				idUpdate=Integer.parseInt((String)mw.getSupplierPanel().getListSupplier().getValueAt(selectedRow, 0));
+				SupplierDTO sup=suppliers.getSuppliers().get(idUpdate);
+				mw.getAddUpdateSupplierPanel().getNameSup().setText(sup.getName());
+				mw.getAddUpdateSupplierPanel().getDirectionSup().setText(sup.getAddress());
+				mw.getAddUpdateSupplierPanel().getPhoneSup().setText(sup.getPhone());
 				mw.getSupplierPanel().setVisible(false);
 				mw.getAddUpdateSupplierPanel().setVisible(true);
 				mw.getAddUpdateSupplierPanel().getTitleRegisterS().setVisible(false);
@@ -569,6 +580,7 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "inventoryAdmin": {
+			mw.getInventoryPanel().fillTable(products.showAll(suppliers.getSuppliers()));
 			mw.getInventoryPanel().setVisible(true);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
 
@@ -600,7 +612,12 @@ public class Controller implements ActionListener {
 		}
 		case "addProduct": {
 			mw.getInventoryPanel().setVisible(false);
-
+			supplierProduct=new HashMap<>();
+			for(int idSup:suppliers.getSuppliers().keySet()) {
+				String nameSup=suppliers.getSuppliers().get(idSup).getName();
+				supplierProduct.put(nameSup, idSup);
+			}
+			mw.getAddUpdateInventoryPanel().addSuplliers(supplierProduct.keySet());
 			mw.getAddUpdateInventoryPanel().setVisible(true);
 			mw.getAddUpdateInventoryPanel().getTitleRegisterIn().setVisible(true);
 			mw.getAddUpdateInventoryPanel().getRegisterPro().setVisible(true);
@@ -626,82 +643,188 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "deleteProduct": {
-//			borrar de la lista
+			int selectedRow=mw.getInventoryPanel().getListInventory().getSelectedRow();
+			if(selectedRow!=-1) {
+				int id=Integer.parseInt((String)mw.getInventoryPanel().getListInventory().getValueAt(selectedRow, 0));
+				int res=PopUpMessages.confirmMessage("¿Seguro que quiere eliminar permanentemente el producto?", mw);
+				if(res==0) {
+					try {
+						products.delete(id);
+						mw.getInventoryPanel().fillTable(products.showAll(suppliers.getSuppliers()));
+					} catch (ProductException error) {
+						PopUpMessages.errorMessage(mw, error.getMessage());
+					}
+				}
+			}
+			else {
+				PopUpMessages.informationMessage(mw, "No se ha seleccionado un producto a eliminar.");
+			}
 			break;
 		}
 		case "upProduct": {
-			mw.getInventoryPanel().setVisible(false);
+			int selectedRow=mw.getInventoryPanel().getListInventory().getSelectedRow();
+			if(selectedRow!=-1) {
+				idUpdate=Integer.parseInt((String)mw.getInventoryPanel().getListInventory().getValueAt(selectedRow, 0));
+				ProductDTO pro=products.getProducts().get(idUpdate);
+				mw.getAddUpdateInventoryPanel().getPricePro().setText(Double.toString(pro.getPrice()));
+				mw.getAddUpdateInventoryPanel().getNamePro().setText(pro.getName());
+				mw.getAddUpdateInventoryPanel().getCostPro().setText(Double.toString(pro.getCost()));
+				mw.getAddUpdateInventoryPanel().getQuantityPro().setText(Integer.toString(pro.getQuantity()));
+				supplierProduct=new HashMap<>();
+				String selectedProv="";
+				for(int idSup:suppliers.getSuppliers().keySet()) {
+					String nameSup=suppliers.getSuppliers().get(idSup).getName();
+					supplierProduct.put(nameSup, idSup);
+					if(idSup==pro.getIdSuplierPartner()) {
+						selectedProv=nameSup;
+					}
+				}
+				mw.getAddUpdateInventoryPanel().addSuplliers(supplierProduct.keySet());
+				mw.getAddUpdateInventoryPanel().getSupplierA().setSelectedItem(selectedProv);
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(true);
+				mw.getAddUpdateInventoryPanel().getTitleRegisterIn().setVisible(false);
+				mw.getAddUpdateInventoryPanel().getRegisterPro().setVisible(false);
+				mw.getAddUpdateInventoryPanel().getIndRegisterPro().setVisible(false);
+				mw.getAddUpdateInventoryPanel().getTitleUpdateIn().setVisible(true);
+				mw.getAddUpdateInventoryPanel().getUpdatePro().setVisible(true);
+				mw.getAddUpdateInventoryPanel().getIndUpdatePro().setVisible(true);
 
-			mw.getAddUpdateInventoryPanel().setVisible(true);
-			mw.getAddUpdateInventoryPanel().getTitleRegisterIn().setVisible(false);
-			mw.getAddUpdateInventoryPanel().getRegisterPro().setVisible(false);
-			mw.getAddUpdateInventoryPanel().getIndRegisterPro().setVisible(false);
-			mw.getAddUpdateInventoryPanel().getTitleUpdateIn().setVisible(true);
-			mw.getAddUpdateInventoryPanel().getUpdatePro().setVisible(true);
-			mw.getAddUpdateInventoryPanel().getIndUpdatePro().setVisible(true);
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
 
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
+			}
+			else {
+				PopUpMessages.informationMessage(mw, "No se ha seleccionado un producto a actualizar.");
+			}
 			break;
 		}
 		case "registerProduct": {
 //			registrar producto en la lista
-			
-			mw.getInventoryPanel().setVisible(true);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
-
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
+			boolean add=false;
+			try {
+				String name=mw.getAddUpdateInventoryPanel().getNamePro().getText();
+				double price=0.0;
+				try {
+					price=Double.parseDouble(mw.getAddUpdateInventoryPanel().getPricePro().getText());
+				} catch (NumberFormatException error) {
+					throw new ProductException(2);
+				}
+				double cost=0.0;
+				try {
+					cost=Double.parseDouble(mw.getAddUpdateInventoryPanel().getCostPro().getText());
+				} catch (NumberFormatException error) {
+					throw new ProductException(3);
+				}
+				int quantity=0;
+				try {
+					quantity=Integer.parseInt(mw.getAddUpdateInventoryPanel().getQuantityPro().getText());
+				} catch (NumberFormatException error) {
+					throw new ProductException(4);
+				}
+				int idSup=supplierProduct.get((String)mw.getAddUpdateInventoryPanel().getSupplierA().getSelectedItem());
+				products.create(new ProductDTO(name, price, cost, quantity, idSup));
+				add=true;
+				
+			} catch (ProductException err) {
+				PopUpMessages.errorMessage(mw, err.getMessage());
+			}
+			if(add) {
+				PopUpMessages.informationMessage(mw, "Producto agregado exitosamente.");
+				mw.getAddUpdateInventoryPanel().getPricePro().setText("");
+				mw.getAddUpdateInventoryPanel().getNamePro().setText("");
+				mw.getAddUpdateInventoryPanel().getCostPro().setText("");
+				mw.getAddUpdateInventoryPanel().getQuantityPro().setText("");
+				mw.getInventoryPanel().fillTable(products.showAll(suppliers.getSuppliers()));
+				mw.getInventoryPanel().setVisible(true);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
+			}
 			break;
 		}
 		case "updateProduct": {
-//			actualizar producto en la lista
-			
-			mw.getInventoryPanel().setVisible(true);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
+			boolean add=false;
+			try {
+				String name=mw.getAddUpdateInventoryPanel().getNamePro().getText();
+				double price=0.0;
+				try {
+					price=Double.parseDouble(mw.getAddUpdateInventoryPanel().getPricePro().getText());
+				} catch (NumberFormatException error) {
+					throw new ProductException(2);
+				}
+				double cost=0.0;
+				try {
+					cost=Double.parseDouble(mw.getAddUpdateInventoryPanel().getCostPro().getText());
+				} catch (NumberFormatException error) {
+					throw new ProductException(3);
+				}
+				int quantity=0;
+				try {
+					quantity=Integer.parseInt(mw.getAddUpdateInventoryPanel().getQuantityPro().getText());
+				} catch (NumberFormatException error) {
+					throw new ProductException(4);
+				}
+				int idSup=supplierProduct.get((String)mw.getAddUpdateInventoryPanel().getSupplierA().getSelectedItem());
+				products.update(idUpdate, new ProductDTO(name, price, cost, quantity, idSup));
+				add=true;
+			} catch (ProductException err) {
+				PopUpMessages.errorMessage(mw, err.getMessage());
+			}
+			if(add) {
+				PopUpMessages.informationMessage(mw, "Producto actualizado exitosamente.");
+				mw.getAddUpdateInventoryPanel().getPricePro().setText("");
+				mw.getAddUpdateInventoryPanel().getNamePro().setText("");
+				mw.getAddUpdateInventoryPanel().getCostPro().setText("");
+				mw.getAddUpdateInventoryPanel().getQuantityPro().setText("");
+				mw.getInventoryPanel().fillTable(products.showAll(suppliers.getSuppliers()));
+				mw.getInventoryPanel().setVisible(true);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
-			
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
+			}
 			break;
 		}
 		case "closeProduct": {
+			mw.getAddUpdateInventoryPanel().getPricePro().setText("");
+			mw.getAddUpdateInventoryPanel().getNamePro().setText("");
+			mw.getAddUpdateInventoryPanel().getCostPro().setText("");
+			mw.getAddUpdateInventoryPanel().getQuantityPro().setText("");
 			mw.getInventoryPanel().setVisible(true);
 			mw.getAddUpdateInventoryPanel().setVisible(false);
 			break;
@@ -1311,4 +1434,5 @@ public class Controller implements ActionListener {
 			break;
 		}
 	}
+	
 }
