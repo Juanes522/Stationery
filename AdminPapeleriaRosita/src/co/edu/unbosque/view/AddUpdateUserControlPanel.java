@@ -14,32 +14,32 @@ import javax.swing.border.MatteBorder;
 
 public class AddUpdateUserControlPanel extends JPanel {
 
-	private JLabel formU, titleRegisterU, titleUpdateU, indNameUs, indPassUs, indIsAdmin, indRegisterUs, indUpdateUs;
-	private JTextField nameUser, passUser;
+	private JLabel formU, titleRegisterU, titleUpdateU, indNameUs, indPassUs, indIsAdmin, indQuestion, indAnswer, indRegisterUs, indUpdateUs;
+	private JTextField nameUser, passUser, questionUser, answerUser;
 	private JButton registerUser, updateUser, closeUser;
 	private JRadioButton isAdmin, notAdmin;
 
 	public AddUpdateUserControlPanel() {
 
-		setBounds(216, 120, 512, 344);
+		setBounds(216, 120, 513, 382);
 		setLayout(null);
 		setBackground(Color.WHITE);
 
-		formU = new JLabel(new ImageIcon("src/Assets/form.png"));
-		formU.setBounds(0, 0, 512, 344);
+		formU = new JLabel(new ImageIcon("src/Assets/bigform.png"));
+		formU.setBounds(0, 0, 513, 382);
 		formU.setLayout(null);
 		add(formU);
 
 		titleRegisterU = new JLabel("Registrar Usuario");
 		titleRegisterU.setFont(new Font("Leelawadee", Font.BOLD, 26));
 		titleRegisterU.setForeground(Color.WHITE);
-		titleRegisterU.setBounds(140, 20, 250, 30);
+		titleRegisterU.setBounds(145, 20, 250, 30);
 		formU.add(titleRegisterU).setVisible(false);
 
 		titleUpdateU = new JLabel("Actualizar Usuario");
 		titleUpdateU.setFont(new Font("Leelawadee", Font.BOLD, 26));
 		titleUpdateU.setForeground(Color.WHITE);
-		titleUpdateU.setBounds(140, 20, 280, 30);
+		titleUpdateU.setBounds(145, 20, 280, 30);
 		formU.add(titleUpdateU).setVisible(false);
 
 		closeUser = new JButton(new ImageIcon("src/Assets/xwhite.png"));
@@ -52,11 +52,11 @@ public class AddUpdateUserControlPanel extends JPanel {
 		indNameUs = new JLabel("Nombre de usuario");
 		indNameUs.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indNameUs.setForeground(Color.WHITE);
-		indNameUs.setBounds(40, 80, 220, 30);
+		indNameUs.setBounds(30, 60, 220, 30);
 		formU.add(indNameUs);
 
 		nameUser = new JTextField();
-		nameUser.setBounds(40, 120, 175, 30);
+		nameUser.setBounds(30, 100, 175, 30);
 		MatteBorder borderName = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
 		nameUser.setBorder(borderName);
 		nameUser.setOpaque(false);
@@ -68,11 +68,11 @@ public class AddUpdateUserControlPanel extends JPanel {
 		indPassUs = new JLabel("Contraseña");
 		indPassUs.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indPassUs.setForeground(Color.WHITE);
-		indPassUs.setBounds(300, 80, 220, 30);
+		indPassUs.setBounds(290, 60, 220, 30);
 		formU.add(indPassUs);
 
 		passUser = new JTextField();
-		passUser.setBounds(300, 120, 175, 30);
+		passUser.setBounds(290, 100, 175, 30);
 		MatteBorder borderPhone = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
 		passUser.setBorder(borderPhone);
 		passUser.setOpaque(false);
@@ -84,12 +84,12 @@ public class AddUpdateUserControlPanel extends JPanel {
 		indIsAdmin = new JLabel("Es Administrador?");
 		indIsAdmin.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indIsAdmin.setForeground(Color.WHITE);
-		indIsAdmin.setBounds(40, 180, 220, 30);
+		indIsAdmin.setBounds(30, 140, 220, 30);
 		formU.add(indIsAdmin);
 
 		isAdmin = new JRadioButton("Sí");
 		isAdmin.setFocusPainted(false);
-		isAdmin.setBounds(40, 220, 50, 30);
+		isAdmin.setBounds(30, 180, 50, 30);
 		isAdmin.setForeground(Color.WHITE);
 		isAdmin.setContentAreaFilled(false);
 		isAdmin.setBackground(new Color(2, 58, 98));
@@ -99,7 +99,7 @@ public class AddUpdateUserControlPanel extends JPanel {
 
 		notAdmin = new JRadioButton("No");
 		notAdmin.setFocusPainted(false);
-		notAdmin.setBounds(160, 220, 60, 30);
+		notAdmin.setBounds(150, 180, 60, 30);
 		notAdmin.setForeground(Color.WHITE);
 		notAdmin.setContentAreaFilled(false);
 		notAdmin.setBackground(new Color(2, 58, 98));
@@ -107,29 +107,61 @@ public class AddUpdateUserControlPanel extends JPanel {
 		notAdmin.setBorderPainted(false);
 		formU.add(notAdmin);
 
+		indQuestion = new JLabel("Pregunta de usuario");
+		indQuestion.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		indQuestion.setForeground(Color.WHITE);
+		indQuestion.setBounds(290, 140, 220, 30);
+		formU.add(indQuestion);
+		
+		questionUser = new JTextField();
+		questionUser.setBounds(290, 180, 175, 30);
+		MatteBorder borderQ = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
+		questionUser.setBorder(borderQ);
+		questionUser.setOpaque(false);
+		questionUser.setForeground(Color.WHITE);
+		questionUser.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		questionUser.setCaretColor(Color.WHITE);
+		formU.add(questionUser);
+		
+		indAnswer = new JLabel("Respuesta de la pregunta");
+		indAnswer.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		indAnswer.setForeground(Color.WHITE);
+		indAnswer.setBounds(30, 220, 260, 30);
+		formU.add(indAnswer);
+		
+		answerUser = new JTextField();
+		answerUser.setBounds(30, 260, 175, 30);
+		MatteBorder borderA = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
+		answerUser.setBorder(borderA);
+		answerUser.setOpaque(false);
+		answerUser.setForeground(Color.WHITE);
+		answerUser.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		answerUser.setCaretColor(Color.WHITE);
+		formU.add(answerUser);
+		
 //		botones e indicador
 
 		indRegisterUs = new JLabel("Registrar");
 		indRegisterUs.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indRegisterUs.setForeground(new Color(2, 58, 98));
-		indRegisterUs.setBounds(208, 285, 150, 30);
+		indRegisterUs.setBounds(208, 325, 150, 30);
 		formU.add(indRegisterUs).setVisible(false);
 
 		indUpdateUs = new JLabel("Actualizar");
 		indUpdateUs.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indUpdateUs.setForeground(new Color(2, 58, 98));
-		indUpdateUs.setBounds(205, 285, 150, 30);
+		indUpdateUs.setBounds(205, 325, 150, 30);
 		formU.add(indUpdateUs).setVisible(false);
 
 		registerUser = new JButton(new ImageIcon("src/Assets/register.png"));
-		registerUser.setBounds(198, 280, 115, 45);
+		registerUser.setBounds(198, 320, 115, 45);
 		registerUser.setFocusable(false);
 		registerUser.setBorderPainted(false);
 		registerUser.setContentAreaFilled(false);
 		formU.add(registerUser).setVisible(false);
 
 		updateUser = new JButton(new ImageIcon("src/Assets/update.png"));
-		updateUser.setBounds(195, 280, 123, 45);
+		updateUser.setBounds(195, 320, 123, 45);
 		updateUser.setFocusable(false);
 		updateUser.setBorderPainted(false);
 		updateUser.setContentAreaFilled(false);
