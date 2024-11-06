@@ -29,7 +29,6 @@ public class UserDAO implements OperationsDAO<UserDTO> {
             dbcon.getPreparedstatement().setString(3, newUser.getQuestion());
             dbcon.getPreparedstatement().setString(4, newUser.getAnswer());
             dbcon.getPreparedstatement().setBoolean(5, newUser.isAdministrator());
-            
             dbcon.getPreparedstatement().executeUpdate();
             ResultSet key = dbcon.getPreparedstatement().getGeneratedKeys();
             if (!key.next()) {
