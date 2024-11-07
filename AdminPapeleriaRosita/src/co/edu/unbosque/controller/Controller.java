@@ -12,6 +12,7 @@ import co.edu.unbosque.model.persistence.SupplierDAO;
 import co.edu.unbosque.model.persistence.UserDAO;
 import co.edu.unbosque.util.exception.ProductException;
 import co.edu.unbosque.util.exception.SupplierException;
+import co.edu.unbosque.util.exception.UserException;
 import co.edu.unbosque.view.MainWindow;
 import co.edu.unbosque.view.PopUpMessages;
 
@@ -347,26 +348,31 @@ public class Controller implements ActionListener {
 				if(newPassword!=null&&newPassword.length()>0&&newPassword.length()<=255) {
 					int id=users.getId(userToRecover.getName());
 					userToRecover.setPassword(newPassword);
-					users.update(id, userToRecover);
-					PopUpMessages.informationMessage(mw, "Contraseña cambiada exitosamente.");
-					mw.getLoginPanel().getTitleRec().setVisible(false);
-					mw.getLoginPanel().getIndUserChoose().setVisible(false);
-					mw.getLoginPanel().getIndQuestion().setVisible(false);
-					mw.getLoginPanel().getIndAnswer().setVisible(false);
-					mw.getLoginPanel().getAnswer().setVisible(false);
-					mw.getLoginPanel().getCheckanswer().setVisible(false);
-					mw.getLoginPanel().getIndFollow().setVisible(false);
-					mw.getLoginPanel().getIndAnswer().setText("");
-					mw.getLoginPanel().getAnswer().setText("");
-					mw.getLoginPanel().getTitle().setVisible(true);
-					mw.getLoginPanel().getIndUser().setVisible(true);
-					mw.getLoginPanel().getUserName().setVisible(true);
-					mw.getLoginPanel().getIndPass().setVisible(true);
-					mw.getLoginPanel().getPassword().setVisible(true);
-					mw.getLoginPanel().getShowPass().setVisible(true);
-					mw.getLoginPanel().getIndButton().setVisible(true);
-					mw.getLoginPanel().getJoin().setVisible(true);
-					mw.getLoginPanel().getRecoverKey().setVisible(true);
+					try {
+						users.update(id, userToRecover);
+						PopUpMessages.informationMessage(mw, "Contraseña cambiada exitosamente.");
+						mw.getLoginPanel().getTitleRec().setVisible(false);
+						mw.getLoginPanel().getIndUserChoose().setVisible(false);
+						mw.getLoginPanel().getIndQuestion().setVisible(false);
+						mw.getLoginPanel().getIndAnswer().setVisible(false);
+						mw.getLoginPanel().getAnswer().setVisible(false);
+						mw.getLoginPanel().getCheckanswer().setVisible(false);
+						mw.getLoginPanel().getIndFollow().setVisible(false);
+						mw.getLoginPanel().getIndAnswer().setText("");
+						mw.getLoginPanel().getAnswer().setText("");
+						mw.getLoginPanel().getTitle().setVisible(true);
+						mw.getLoginPanel().getIndUser().setVisible(true);
+						mw.getLoginPanel().getUserName().setVisible(true);
+						mw.getLoginPanel().getIndPass().setVisible(true);
+						mw.getLoginPanel().getPassword().setVisible(true);
+						mw.getLoginPanel().getShowPass().setVisible(true);
+						mw.getLoginPanel().getIndButton().setVisible(true);
+						mw.getLoginPanel().getJoin().setVisible(true);
+						mw.getLoginPanel().getRecoverKey().setVisible(true);
+					} catch (UserException e1) {
+						PopUpMessages.errorMessage(mw, e1.getMessage());
+					}
+					
 				}
 				else if(newPassword!=null) {
 					PopUpMessages.errorMessage(mw,"Contraseña invalida.\nLa contraseña esta vacia o tiene mas de 255 caracteres.");
@@ -970,9 +976,9 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "userControlAdmin":{
+			mw.getUserControlPanel().fillTable(users.showAll());
 			mw.getUserControlPanel().setVisible(true);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
 			mw.getAdminControlPanel().getTitleSupplier().setVisible(false);
 			mw.getAdminControlPanel().getTitleInventory().setVisible(false);
 			mw.getAdminControlPanel().getTitleSales().setVisible(false);
@@ -1028,84 +1034,154 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "deleteUser":{
-//			borrar de la lista
+			int selectedRow=mw.getUserControlPanel().getListUser().getSelectedRow();
+			if(selectedRow!=-1) {
+				int id=Integer.parseInt((String)mw.getUserControlPanel().getListUser().getValueAt(selectedRow, 0));
+				int res=PopUpMessages.confirmMessage("¿Seguro que quiere eliminar permanentemente el usuario?", mw);
+				if(res==0) {
+					try {
+						users.delete(id);
+						mw.getUserControlPanel().fillTable(users.showAll());
+					} catch (UserException error) {
+						PopUpMessages.errorMessage(mw, error.getMessage());
+					}
+				}
+			}
+			else {
+				PopUpMessages.informationMessage(mw, "No se ha seleccionado un usuario a eliminar.");
+			}
 			break;
 		}
 		case "upUser":{
-			mw.getUserControlPanel().setVisible(false);
+			int selectedRow=mw.getUserControlPanel().getListUser().getSelectedRow();
+			if(selectedRow!=-1) {
+				idUpdate=Integer.parseInt((String)mw.getUserControlPanel().getListUser().getValueAt(selectedRow, 0));
+				UserDTO user=users.getUsers().get(idUpdate);
+				mw.getAddUpdateUserControlPanel().getNameUser().setText(user.getName());
+				mw.getAddUpdateUserControlPanel().getPassUser().setText(user.getPassword());
+				mw.getAddUpdateUserControlPanel().getQuestionUser().setText(user.getQuestion());
+				mw.getAddUpdateUserControlPanel().getAnswerUser().setText(user.getAnswer());
+				mw.getAddUpdateUserControlPanel().getRol().clearSelection();
+				if(user.isAdministrator()) {
+					mw.getAddUpdateUserControlPanel().getIsAdmin().setSelected(true);
+				}
+				else{
+					mw.getAddUpdateUserControlPanel().getNotAdmin().setSelected(true);
+				}
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(true);
+				mw.getAddUpdateUserControlPanel().getTitleRegisterU().setVisible(false);
+				mw.getAddUpdateUserControlPanel().getRegisterUser().setVisible(false);
+				mw.getAddUpdateUserControlPanel().getIndRegisterUs().setVisible(false);
+				mw.getAddUpdateUserControlPanel().getTitleUpdateU().setVisible(true);
+				mw.getAddUpdateUserControlPanel().getUpdateUser().setVisible(true);
+				mw.getAddUpdateUserControlPanel().getIndUpdateUs().setVisible(true);
 
-			mw.getAddUpdateUserControlPanel().setVisible(true);
-			
-			mw.getAddUpdateUserControlPanel().getTitleRegisterU().setVisible(false);
-			mw.getAddUpdateUserControlPanel().getRegisterUser().setVisible(false);
-			mw.getAddUpdateUserControlPanel().getIndRegisterUs().setVisible(false);
-			mw.getAddUpdateUserControlPanel().getTitleUpdateU().setVisible(true);
-			mw.getAddUpdateUserControlPanel().getUpdateUser().setVisible(true);
-			mw.getAddUpdateUserControlPanel().getIndUpdateUs().setVisible(true);
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
-
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);	
+			}
 			break;
 		}
 		case "registerUser":{
-//			registrar usuario
 			
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
+			boolean add=false;
+			try {
+				String username=mw.getAddUpdateUserControlPanel().getNameUser().getText();
+				String password=mw.getAddUpdateUserControlPanel().getPassUser().getText();
+				String question=mw.getAddUpdateUserControlPanel().getQuestionUser().getText();
+				String answer=mw.getAddUpdateUserControlPanel().getAnswerUser().getText();
+				boolean isAdmin=mw.getAddUpdateUserControlPanel().getIsAdmin().isSelected();
+				users.create(new UserDTO(username, password, question, answer, isAdmin));
+				add=true;
+			} catch (UserException error) {
+				PopUpMessages.errorMessage(mw, error.getMessage());
+			}
+			
+			if(add) {
+				PopUpMessages.informationMessage(mw, "Usuario registrado exitosamente.");
+				mw.getAddUpdateUserControlPanel().getNameUser().setText("");
+				mw.getAddUpdateUserControlPanel().getPassUser().setText("");
+				mw.getAddUpdateUserControlPanel().getQuestionUser().setText("");
+				mw.getAddUpdateUserControlPanel().getAnswerUser().setText("");
+				mw.getUserControlPanel().fillTable(users.showAll());
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(true);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(true);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
+			}
 			
 			break;
 		}
 		case "updateUser":{
-//			actualizar usuario
-						
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
+			boolean add=false;
+			try {
+				String username=mw.getAddUpdateUserControlPanel().getNameUser().getText();
+				String password=mw.getAddUpdateUserControlPanel().getPassUser().getText();
+				String question=mw.getAddUpdateUserControlPanel().getQuestionUser().getText();
+				String answer=mw.getAddUpdateUserControlPanel().getAnswerUser().getText();
+				boolean isAdmin=mw.getAddUpdateUserControlPanel().getIsAdmin().isSelected();
+				users.update(idUpdate,new UserDTO(username, password, question, answer, isAdmin));
+				add=true;
+			} catch (UserException error) {
+				PopUpMessages.errorMessage(mw, error.getMessage());
+			}
+			if(add) {
+				PopUpMessages.informationMessage(mw, "Usuario actualizado exitosamente.");
+				mw.getAddUpdateUserControlPanel().getNameUser().setText("");
+				mw.getAddUpdateUserControlPanel().getPassUser().setText("");
+				mw.getAddUpdateUserControlPanel().getQuestionUser().setText("");
+				mw.getAddUpdateUserControlPanel().getAnswerUser().setText("");
+				mw.getUserControlPanel().fillTable(users.showAll());
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(true);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
-			
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(true);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
+			}
 			break;
 		}
 		case "closeUser":{
+			mw.getAddUpdateUserControlPanel().getNameUser().setText("");
+			mw.getAddUpdateUserControlPanel().getPassUser().setText("");
+			mw.getAddUpdateUserControlPanel().getQuestionUser().setText("");
+			mw.getAddUpdateUserControlPanel().getAnswerUser().setText("");
 			mw.getUserControlPanel().setVisible(true);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
 			break;

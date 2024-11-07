@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import co.edu.unbosque.controller.DBConnection;
 import co.edu.unbosque.model.UserDTO;
+import co.edu.unbosque.util.exception.UserException;
 
 public class UserDAO implements OperationsDAO<UserDTO> {
 
@@ -19,8 +20,23 @@ public class UserDAO implements OperationsDAO<UserDTO> {
     }
 
     @Override
-    public void create(UserDTO object) {
+    public void create(UserDTO object) throws UserException {
     	UserDTO newUser=object;
+    	if(verifyUserName(newUser.getName())) {
+    		throw new UserException(1);
+    	}
+    	else if(newUser.getName().length()<=0||newUser.getName().length()>45) {
+    		throw new UserException(2);
+    	}
+    	else if(newUser.getPassword().length()<=0||newUser.getPassword().length()>255) {
+    		throw new UserException(3);
+    	}
+    	else if(newUser.getQuestion().length()<=0||newUser.getQuestion().length()>80) {
+    		throw new UserException(4);
+    	}
+    	else if(newUser.getAnswer().length()<=0||newUser.getAnswer().length()>80) {
+    		throw new UserException(5);
+    	}
         dbcon.initConnection();
         try {
             dbcon.setPreparedstatement(dbcon.getConnect().prepareStatement("INSERT INTO user_stationery (name_user, password_user, question, answer, is_administrator) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS));
@@ -33,19 +49,36 @@ public class UserDAO implements OperationsDAO<UserDTO> {
             ResultSet key = dbcon.getPreparedstatement().getGeneratedKeys();
             if (!key.next()) {
             	dbcon.close();
+            	throw new UserException(6);
             }
             users.put(key.getInt(1), newUser);
         } catch (SQLException e) {
         	dbcon.close();
+        	throw new UserException(6);
         }
         dbcon.close();
     }
 
     @Override
-    public void update(int id, UserDTO object) {
+    public void update(int id, UserDTO object) throws UserException {
     	UserDTO updateUser=object;
     	if(!users.containsKey(id)) {
-    		
+    		throw new UserException(7);
+    	}
+    	if(verifyUserName(id,updateUser.getName())) {
+    		throw new UserException(1);
+    	}
+    	else if(updateUser.getName().length()<=0||updateUser.getName().length()>45) {
+    		throw new UserException(2);
+    	}
+    	else if(updateUser.getPassword().length()<=0||updateUser.getPassword().length()>255) {
+    		throw new UserException(3);
+    	}
+    	else if(updateUser.getQuestion().length()<=0||updateUser.getQuestion().length()>80) {
+    		throw new UserException(4);
+    	}
+    	else if(updateUser.getAnswer().length()<=0||updateUser.getAnswer().length()>80) {
+    		throw new UserException(5);
     	}
         dbcon.initConnection();
         try {
@@ -59,7 +92,7 @@ public class UserDAO implements OperationsDAO<UserDTO> {
             dbcon.getPreparedstatement().executeUpdate();
         } catch (SQLException e) {
             dbcon.close();
-           
+           throw new UserException(9);
         }
         dbcon.close();
         users.replace(id, updateUser);
@@ -67,9 +100,9 @@ public class UserDAO implements OperationsDAO<UserDTO> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws UserException {
         if (!users.containsKey(id)) {
-        	
+        	throw new UserException(7);
         }
         dbcon.initConnection();
         try {
@@ -78,6 +111,7 @@ public class UserDAO implements OperationsDAO<UserDTO> {
             dbcon.getPreparedstatement().executeUpdate();
         } catch (SQLException e) {
         	dbcon.close();
+        	throw new UserException(8);
         	
         }
         dbcon.close();
@@ -129,18 +163,60 @@ public class UserDAO implements OperationsDAO<UserDTO> {
     
     public UserDTO getUser(String username) {
     	for(UserDTO user:users.values()) {
-    		if(user.getName().equals(username)) {
+    		if(user.getName().toLowerCase().equals(username.toLowerCase())) {
     			return user;
     		}
     	}
     	return null;
     }
 
-    public String showAll() {
-        String result = "";
-        for (UserDTO user : users.values()) {
-            result += user.toString() + "\n";
-        }
-        return result;
+    public String[][] showAll() {
+		String[][] result=new String[users.size()][6];
+		int i=0;
+		for(int id:users.keySet()) {
+			UserDTO user=users.get(id);
+			result[i][0]=Integer.toString(id);
+			result[i][1]=user.getName();
+			result[i][2]=user.getPassword();
+			result[i][3]=user.getQuestion();
+			result[i][4]=user.getAnswer();
+			result[i][5]=(user.isAdministrator()?"Administrador":"Vendedor");
+			i++;
+		}
+		return result;
+	}
+    
+    public boolean verifyUserName(String username) {
+    	for(UserDTO user:users.values()) {
+    		if(user.getName().toLowerCase().equals(username.toLowerCase())) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
+    public boolean verifyUserName(int id,String username) {
+    	for(int idUs:users.keySet()) {
+    		if(users.get(idUs).getName().toLowerCase().equals(username.toLowerCase())&&id!=idUs) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+
+	public DBConnection getDbcon() {
+		return dbcon;
+	}
+
+	public void setDbcon(DBConnection dbcon) {
+		this.dbcon = dbcon;
+	}
+
+	public HashMap<Integer, UserDTO> getUsers() {
+		return users;
+	}
+
+	public void setUsers(HashMap<Integer, UserDTO> users) {
+		this.users = users;
+	}
+    
 }

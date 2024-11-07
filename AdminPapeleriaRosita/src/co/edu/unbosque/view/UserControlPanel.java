@@ -10,12 +10,13 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 public class UserControlPanel extends JPanel {
 
-	private JList<String> listUser;
-	private DefaultListModel<String> modelUser;
+	private JTable listUser;
 	private JPanel listUserPanel;
 	private JLabel titleUser, indAddUser, indDelUser, indUpUser;
 	private JButton addUser, delUser, upUser;
@@ -33,9 +34,7 @@ public class UserControlPanel extends JPanel {
 		titleUser.setForeground(new Color(2, 58, 98));
 		add(titleUser);
 
-		modelUser = new DefaultListModel<>();
-
-		listUser = new JList<>(modelUser);
+		listUser = new JTable();
 		listUser.setBounds(0, 0, 400, 350);
 		listUser.setBackground(Color.LIGHT_GRAY);
 		listUser.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -89,21 +88,31 @@ public class UserControlPanel extends JPanel {
 		add(upUser);
 
 	}
+	
+	public void fillTable(String[][] information) {
+		DefaultTableModel model=new DefaultTableModel(information,new String[]{"ID","Usuario","	Contraseña","Pregunta","Respuesta","Rol"}) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		listUser.setModel(model);
+	}
 
-	public JList<String> getListUser() {
+	public JTable getListUser() {
 		return listUser;
 	}
 
-	public void setListUser(JList<String> listUser) {
+	public void setListUser(JTable listUser) {
 		this.listUser = listUser;
 	}
 
-	public DefaultListModel<String> getModelUser() {
-		return modelUser;
+	public JPanel getListUserPanel() {
+		return listUserPanel;
 	}
 
-	public void setModelUser(DefaultListModel<String> modelUser) {
-		this.modelUser = modelUser;
+	public void setListUserPanel(JPanel listUserPanel) {
+		this.listUserPanel = listUserPanel;
 	}
 
 	public JButton getAddUser() {

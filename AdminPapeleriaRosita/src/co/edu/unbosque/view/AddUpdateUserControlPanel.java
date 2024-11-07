@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,6 +19,7 @@ public class AddUpdateUserControlPanel extends JPanel {
 	private JTextField nameUser, passUser, questionUser, answerUser;
 	private JButton registerUser, updateUser, closeUser;
 	private JRadioButton isAdmin, notAdmin;
+	private ButtonGroup rol;
 
 	public AddUpdateUserControlPanel() {
 
@@ -106,6 +108,12 @@ public class AddUpdateUserControlPanel extends JPanel {
 		notAdmin.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		notAdmin.setBorderPainted(false);
 		formU.add(notAdmin);
+		
+		rol = new ButtonGroup();
+		rol.add(isAdmin);
+		rol.add(notAdmin);
+		rol.clearSelection();
+		notAdmin.setSelected(true);
 
 		indQuestion = new JLabel("Pregunta de usuario");
 		indQuestion.setFont(new Font("Leelawadee", Font.BOLD, 20));
@@ -256,5 +264,79 @@ public class AddUpdateUserControlPanel extends JPanel {
 	public void setNotAdmin(JRadioButton notAdmin) {
 		this.notAdmin = notAdmin;
 	}
+
+	public ButtonGroup getRol() {
+		return rol;
+	}
+
+	public void setRol(ButtonGroup rol) {
+		this.rol = rol;
+	}
+
+	public JLabel getFormU() {
+		return formU;
+	}
+
+	public void setFormU(JLabel formU) {
+		this.formU = formU;
+	}
+
+	public JLabel getIndNameUs() {
+		return indNameUs;
+	}
+
+	public void setIndNameUs(JLabel indNameUs) {
+		this.indNameUs = indNameUs;
+	}
+
+	public JLabel getIndPassUs() {
+		return indPassUs;
+	}
+
+	public void setIndPassUs(JLabel indPassUs) {
+		this.indPassUs = indPassUs;
+	}
+
+	public JLabel getIndIsAdmin() {
+		return indIsAdmin;
+	}
+
+	public void setIndIsAdmin(JLabel indIsAdmin) {
+		this.indIsAdmin = indIsAdmin;
+	}
+
+	public JLabel getIndQuestion() {
+		return indQuestion;
+	}
+
+	public void setIndQuestion(JLabel indQuestion) {
+		this.indQuestion = indQuestion;
+	}
+
+	public JLabel getIndAnswer() {
+		return indAnswer;
+	}
+
+	public void setIndAnswer(JLabel indAnswer) {
+		this.indAnswer = indAnswer;
+	}
+
+	public JTextField getQuestionUser() {
+		return questionUser;
+	}
+
+	public void setQuestionUser(JTextField questionUser) {
+		this.questionUser = questionUser;
+	}
+
+	public JTextField getAnswerUser() {
+		return answerUser;
+	}
+
+	public void setAnswerUser(JTextField answerUser) {
+		this.answerUser = answerUser;
+	}
+	
+	
 
 }
