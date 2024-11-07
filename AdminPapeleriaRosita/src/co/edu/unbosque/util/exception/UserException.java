@@ -17,6 +17,10 @@ public class UserException  extends Exception{
 		case 3:return "Contraseña invalida. La contraseña esta vacia o tiene mas de 255 caracteres.";
 		case 4:return "Pregunta invalida. La pregunta esta vacia o tiene mas de 80 caracteres.";
 		case 5:return "Respuesta invalida. La respueta esta vacia o tiene mas de 80 caracteres.";
+		case 6:return "Error al agregar usuario intentlo de nuevo";
+		case 7:return "Usuario no encontrado.";
+		case 8:return "Error al eliminar usuario intentelo de nuevo";
+		case 9:return "Error al actualizar usuario intentelo de nuevo";
 		}
 		return "Ususario unvalido";
 	}
