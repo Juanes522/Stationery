@@ -17,6 +17,12 @@ public class PurchaseDTO {
 		this.totalPay = totalPay;
 	}
 
+	public PurchaseDTO(LocalDate purchaseDate, HashMap<Integer, Integer> products, double totalPay) {
+		this.purchaseDate = purchaseDate;
+		this.products = products;
+		this.totalPay = totalPay;
+	}
+
 	public LocalDate getPurchaseDate() {
 		return purchaseDate;
 	}

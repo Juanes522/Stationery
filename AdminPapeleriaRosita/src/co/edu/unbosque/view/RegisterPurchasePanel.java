@@ -6,16 +6,20 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.MatteBorder;
 
 public class RegisterPurchasePanel extends JPanel {
 
 	private JLabel formPur, titleRegisterPur, indNameProPur, indASupPur, indToCoPur, indUniCosPur, indQuaInPur,
 			indQuaToPur, indRegisterPur;
-	private JTextField nameProPur, aSupplierPur, totalCostPur, uniCostPur, quantityInPur, quantityToPur;
+	private JTextField nameProPur, aSupplierPur, totalCostPur, uniCostPur, quantityInPur;
+	private JSpinner quantityToPur;
 	private JButton registerProPur, closePurPanel;
 
 	public RegisterPurchasePanel() {
@@ -128,14 +132,17 @@ public class RegisterPurchasePanel extends JPanel {
 		indQuaToPur.setBounds(300, 220, 220, 30);
 		formPur.add(indQuaToPur);
 
-		quantityToPur = new JTextField();
+		quantityToPur = new JSpinner(new SpinnerNumberModel(0, 0,10000, 1));
 		quantityToPur.setBounds(300, 260, 175, 30);
-		MatteBorder borderQuaToPur = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
-		quantityToPur.setBorder(borderQuaToPur);
-		quantityToPur.setOpaque(false);
-		quantityToPur.setForeground(Color.WHITE);
 		quantityToPur.setFont(new Font("Leelawadee", Font.BOLD, 20));
-		quantityToPur.setCaretColor(Color.WHITE);
+		JComponent editor = quantityToPur.getEditor();
+		if (editor instanceof JSpinner.DefaultEditor) {
+			((JSpinner.DefaultEditor) editor).getTextField().setEditable(false);
+			((JSpinner.DefaultEditor) editor).getTextField().setBorder(borderQuaIn);
+			((JSpinner.DefaultEditor) editor).getTextField().setForeground(Color.WHITE);
+			((JSpinner.DefaultEditor) editor).getTextField().setFont(new Font("Leelawadee", Font.BOLD, 20));
+			((JSpinner.DefaultEditor) editor).getTextField().setBackground(new Color(2, 58, 98));
+		}
 		formPur.add(quantityToPur);
 
 //		boton e indicador
@@ -194,11 +201,11 @@ public class RegisterPurchasePanel extends JPanel {
 		this.quantityInPur = quantityInPur;
 	}
 
-	public JTextField getQuantityToPur() {
+	public JSpinner getQuantityToPur() {
 		return quantityToPur;
 	}
 
-	public void setQuantityToPur(JTextField quantityToPur) {
+	public void setQuantityToPur(JSpinner quantityToPur) {
 		this.quantityToPur = quantityToPur;
 	}
 

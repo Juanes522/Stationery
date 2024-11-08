@@ -1,15 +1,18 @@
 package co.edu.unbosque.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.MatteBorder;
@@ -19,9 +22,10 @@ public class AddPurchasePanel extends JPanel {
 	private JLabel formPrePur, indTotalPur, indRegisterPur, indEndPur, indChooseProPur;
 	private JTextField totalPurchase;
 	private JButton registerPur, endPur, closePur;
-	private JTable productsListPur;
+	private JList<String> productsListPur;
 	private JPanel listPurPanel;
 	private JScrollPane barPur;
+	private int ids[];
 
 	public AddPurchasePanel() {
 
@@ -52,10 +56,11 @@ public class AddPurchasePanel extends JPanel {
 
 //		botones e indicador
 
-		indRegisterPur = new JLabel("Realizar compra");
+		indRegisterPur = new JLabel("Agregar");
 		indRegisterPur.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indRegisterPur.setForeground(new Color(2, 58, 98));
 		indRegisterPur.setBounds(35, 137, 160, 30);
+		indRegisterPur.setHorizontalAlignment(JLabel.CENTER);
 		formPrePur.add(indRegisterPur);
 
 		indEndPur = new JLabel("Terminar compra");
@@ -94,9 +99,26 @@ public class AddPurchasePanel extends JPanel {
 		add(indChooseProPur);
 
 
-		productsListPur = new JTable();
+		productsListPur = new JList<>();
 		productsListPur.setBounds(0, 0, 270, 342);
 		productsListPur.setBackground(Color.LIGHT_GRAY);
+		productsListPur.setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+	        public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+	                                                        boolean isSelected, boolean cellHasFocus) {
+	            Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+	            if (c instanceof JLabel) {
+	                JLabel label = (JLabel) c;
+	                if (!isSelected) {
+	                    label.setBackground(index%2==0 ? new Color(0, 100, 255, 15):Color.white);
+	                }
+	                else {
+	                	label.setBorder(BorderFactory.createLineBorder(Color.black,2));
+	                }
+	            }
+	            return c;
+	        }
+		});
 		productsListPur.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		barPur = new JScrollPane(productsListPur);
@@ -108,6 +130,23 @@ public class AddPurchasePanel extends JPanel {
 		listPurPanel.add(barPur);
 		add(listPurPanel);
 
+	}
+	
+	public void fillList(Object productsName[][]) {
+		ids=new int[productsName.length];
+		DefaultListModel<String> model=new DefaultListModel<>();
+		for (int i = 0; i < productsName.length; i++) {
+			model.addElement((String)productsName[i][0]);
+			ids[i]=(int)productsName[i][1];
+		}
+		productsListPur.setModel(model);
+	}
+	
+	public int getID(int index) {
+		if(ids!=null) {
+			return ids[index];
+		}
+		return 0;
 	}
 
 	public JTextField getTotalPurchase() {
@@ -142,11 +181,11 @@ public class AddPurchasePanel extends JPanel {
 		this.closePur = closePur;
 	}
 
-	public JTable getProductsListPur() {
+	public JList<String> getProductsListPur() {
 		return productsListPur;
 	}
 
-	public void setProductsListPur(JTable productsListPur) {
+	public void setProductsListPur(JList<String> productsListPur) {
 		this.productsListPur = productsListPur;
 	}
 
