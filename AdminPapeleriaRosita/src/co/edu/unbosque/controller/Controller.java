@@ -6,15 +6,21 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import co.edu.unbosque.model.ProductDTO;
+import co.edu.unbosque.model.PurchaseDTO;
 import co.edu.unbosque.model.SaleDTO;
 import co.edu.unbosque.model.SupplierDTO;
 import co.edu.unbosque.model.UserDTO;
 import co.edu.unbosque.model.persistence.ProductDAO;
+import co.edu.unbosque.model.persistence.PurchaseDAO;
 import co.edu.unbosque.model.persistence.SaleDAO;
 import co.edu.unbosque.model.persistence.SupplierDAO;
 import co.edu.unbosque.model.persistence.UserDAO;
 import co.edu.unbosque.util.exception.ProductException;
+import co.edu.unbosque.util.exception.PurchaseException;
 import co.edu.unbosque.util.exception.SaleException;
 import co.edu.unbosque.util.exception.SupplierException;
 import co.edu.unbosque.util.exception.UserException;
@@ -32,6 +38,10 @@ public class Controller implements ActionListener {
 	private SaleDTO saleToUpdate;
 	private ProductDAO products;
 	private SaleDAO sales;
+	private PurchaseDAO purchases;
+	private int idPurchaseProduct;
+	private int previous;
+	private HashMap<Integer, Integer> productsPurchase;
 
 	public Controller() {
 		mw = new MainWindow();
@@ -39,8 +49,11 @@ public class Controller implements ActionListener {
 		suppliers=new SupplierDAO();
 		products=new ProductDAO();
 		userToRecover=new UserDTO();
+		purchases=new PurchaseDAO();
 		sales=new SaleDAO();
 		idUpdate=-1;
+		idPurchaseProduct=-1;
+		previous=0;
 		addReaders();
 	}
 
@@ -249,6 +262,25 @@ public class Controller implements ActionListener {
 		mw.getRegisterPurchasePanel().getClosePurPanel().addActionListener(this);
 		mw.getRegisterPurchasePanel().getClosePurPanel().setActionCommand("closePurchasePanel");
 		
+		mw.getRegisterPurchasePanel().getQuantityToPur().addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				int actual=(int)mw.getRegisterPurchasePanel().getQuantityToPur().getValue();
+				double price=products.getProducts().get(idPurchaseProduct).getCost();
+				double aux=Double.parseDouble(mw.getRegisterPurchasePanel().getTotalCostPur().getText());
+				double res=0.0;
+				if(previous<actual) {
+					res=aux+price;
+				}
+				else if(previous>actual) {
+					res=aux-price;
+				}
+				if(res<0)res=0.0;
+				mw.getRegisterPurchasePanel().getTotalCostPur().setText(Double.toString(res));
+				previous=actual;
+			}
+		});
+		
 	}
 
 	@Override
@@ -266,6 +298,7 @@ public class Controller implements ActionListener {
 				mw.getAdminControlPanel().setVisible(true);
 				mw.getLoginPanel().getUserName().setText("");
 				mw.getLoginPanel().getPassword().setText("");
+				mw.getAdminControlPanel().getCurretUser().setText(username);
 				mw.getAdminControlPanel().getNameSt().setVisible(true);
 				mw.getLoginPanel().setVisible(false);
 				
@@ -275,6 +308,7 @@ public class Controller implements ActionListener {
 				mw.getSellerControlPanel().setVisible(true);
 				mw.getLoginPanel().getUserName().setText("");
 				mw.getLoginPanel().getPassword().setText("");
+				mw.getSellerControlPanel().getCurretUserSe().setText(username);
 				mw.getSellerControlPanel().getNameStSe().setVisible(true);
 				mw.getLoginPanel().setVisible(false);
 				
@@ -1327,7 +1361,7 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "purchaseAdmin":{
-			
+			mw.getPurchasePanel().fillTable(purchases.showAll());
 			mw.getPurchasePanel().setVisible(true);
 			mw.getAddPurchasePanel().setVisible(false);
 			mw.getRegisterPurchasePanel().setVisible(false);
@@ -1358,6 +1392,10 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "addPurchase":{
+			
+			mw.getAddPurchasePanel().fillList(products.productsNamesAndIDs());
+			mw.getAddPurchasePanel().getTotalPurchase().setText("0");
+			productsPurchase=new HashMap<>();
 			mw.getPurchasePanel().setVisible(false);
 			mw.getAddPurchasePanel().setVisible(true);
 			mw.getRegisterPurchasePanel().setVisible(false);
@@ -1373,52 +1411,83 @@ public class Controller implements ActionListener {
 			
 			mw.getUserControlPanel().setVisible(false);
 			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
 			mw.getCashControlPanel().setVisible(false);
 			
 			break;
 		}
 		case "addPrePurchase":{
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(true);
-			
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
+			int selectedIndex=mw.getAddPurchasePanel().getProductsListPur().getSelectedIndex();
+			if(selectedIndex!=-1) {
+				idPurchaseProduct=mw.getAddPurchasePanel().getID(selectedIndex);
+				ProductDTO pro=products.getProducts().get(idPurchaseProduct);
+				mw.getRegisterPurchasePanel().getNameProPur().setText(pro.getName());
+				mw.getRegisterPurchasePanel().getaSupplierPur().setText(suppliers.getSuppliers().get(pro.getIdSuplierPartner()).getName());
+				mw.getRegisterPurchasePanel().getTotalCostPur().setText("0");
+				mw.getRegisterPurchasePanel().getUniCostPur().setText(Double.toString(pro.getCost()));
+				mw.getRegisterPurchasePanel().getQuantityInPur().setText(Integer.toString(pro.getQuantity()));
+				mw.getRegisterPurchasePanel().getQuantityToPur().setValue(0);
+				previous=0;
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(true);
+				
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+			}
+			else {
+				PopUpMessages.errorMessage(mw, "Por favor seleccione un producto a agregar a la compra.");
+			}
 			break;
 		}
 		case "endPurchase":{
 			
 //			preguntar por confirmar si desea terminar la compra
-			
-			mw.getPurchasePanel().setVisible(true);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
-			
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
+			boolean add=false;
+			try {
+				double totalPay=Double.parseDouble(mw.getAddPurchasePanel().getTotalPurchase().getText());
+				LocalDate date=LocalDate.now();
+				for(int idp:productsPurchase.keySet()) {
+					ProductDTO pro=products.getProducts().get(idp);
+					pro.setQuantity(pro.getQuantity()+productsPurchase.get(idp));
+					products.update(idp, pro);
+				}
+				purchases.create(new PurchaseDTO(date, productsPurchase, totalPay));
+				add=true;
+			} catch (PurchaseException | ProductException error) {
+				PopUpMessages.errorMessage(mw, error.getMessage());
+			}
+			if(add) {
+				PopUpMessages.informationMessage(mw, "Compra realizada exitosamente.");
+				mw.getPurchasePanel().fillTable(purchases.showAll());
+				mw.getPurchasePanel().setVisible(true);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
+				
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+			}
 			break;
 		}
 		case "closePurchase":{
@@ -1429,25 +1498,33 @@ public class Controller implements ActionListener {
 		}
 		case "registerPurchase":{
 //			registrar el producto seleccionado en compra
-			
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(true);
-			mw.getRegisterPurchasePanel().setVisible(false);
-			
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
+			int quantity=(int)mw.getRegisterPurchasePanel().getQuantityToPur().getValue();
+			if(quantity>0) {
+				double agre=Double.parseDouble(mw.getRegisterPurchasePanel().getTotalCostPur().getText());
+				double amount=Double.parseDouble(mw.getAddPurchasePanel().getTotalPurchase().getText());
+				mw.getAddPurchasePanel().getTotalPurchase().setText(Double.toString(agre+amount));
+				productsPurchase.put(idPurchaseProduct, productsPurchase.getOrDefault(idPurchaseProduct, 0)+quantity);
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(true);
+				mw.getRegisterPurchasePanel().setVisible(false);
+				
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+			}
+			else {
+				PopUpMessages.errorMessage(mw, "No se ha agragado ningun producto seleccione una cantidad mayor a cero.");
+			}
 			break;
 		}
 		case "closePurchasePanel":{

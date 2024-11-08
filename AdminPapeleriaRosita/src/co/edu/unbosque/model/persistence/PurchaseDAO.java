@@ -5,11 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.HashMap;
 
 import co.edu.unbosque.controller.DBConnection;
 import co.edu.unbosque.model.PurchaseDTO;
+import co.edu.unbosque.util.exception.PurchaseException;
 
 public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 	
@@ -22,16 +22,21 @@ public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 	}
 	
 	@Override
-	public void create(PurchaseDTO object) {
+	public void create(PurchaseDTO object) throws PurchaseException {
 		PurchaseDTO newPurchase=object;
 		dbcon.initConnection();
+		if(newPurchase.getTotalPay()==0) {
+			throw new PurchaseException(1);
+		}
 		try {
 			dbcon.setPreparedstatement(dbcon.getConnect().prepareStatement("INSERT INTO purchase(purchase_date, total_pay) VALUES(?,?)",Statement.RETURN_GENERATED_KEYS));
 			dbcon.getPreparedstatement().setDate(1, Date.valueOf(newPurchase.getPurchaseDate()));
 			dbcon.getPreparedstatement().setDouble(2, newPurchase.getTotalPay());
+			dbcon.getPreparedstatement().executeUpdate();
 			ResultSet key=dbcon.getPreparedstatement().getGeneratedKeys();
 			if(!key.next()) {
 				dbcon.close();
+				throw new PurchaseException(2);
 			}
 			int idPurchase=key.getInt(1);
 			purchases.put(idPurchase,newPurchase);
@@ -41,9 +46,11 @@ public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 				dbcon.getPreparedstatement().setInt(1,idPurchase);
 				dbcon.getPreparedstatement().setInt(2,idProduct);
 				dbcon.getPreparedstatement().setInt(3,aux.get(idProduct));
+				dbcon.getPreparedstatement().executeUpdate();
 			}
 		} catch (SQLException e) {
 			dbcon.close();
+			throw new PurchaseException(2);
 		}
 		dbcon.close();
 	}
@@ -107,7 +114,7 @@ public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 			dbcon.setResultset(dbcon.getStatement().executeQuery("SELECT * FROM purchase;"));
 			while(dbcon.getResultset().next()) {
 				int id=dbcon.getResultset().getInt("id_purchase");
-				LocalDate purchaseDate=dbcon.getResultset().getDate("purchase_date").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				LocalDate purchaseDate=dbcon.getResultset().getDate("purchase_date").toLocalDate();
 				double totalPay=dbcon.getResultset().getDouble("total_pay");
 				data.put(id, new PurchaseDTO(purchaseDate, totalPay));
 			}
@@ -127,7 +134,16 @@ public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 	}
 	
 	public String[][] showAll() {
-		return null;
+		String info[][]=new String[purchases.size()][3];
+		int i=0;
+		for(int id:purchases.keySet()) {
+			PurchaseDTO sale=purchases.get(id);
+			info[i][0]=Integer.toString(id);
+			info[i][1]=sale.getPurchaseDate().toString();
+			info[i][2]=Double.toString(sale.getTotalPay());
+			i++;
+		}
+		return info;
 	}
 
 	public DBConnection getDbcon() {

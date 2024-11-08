@@ -3,13 +3,16 @@ package co.edu.unbosque.view;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 public class PurchasePanel extends JPanel {
 
@@ -56,6 +59,15 @@ public class PurchasePanel extends JPanel {
 
 	}
 	
+	public void fillTable(String[][] information) {
+		DefaultTableModel model=new DefaultTableModel(information,new String[]{"ID","Fecha","Total pagado"}) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		listPurchase.setModel(model);
+	}
 
 	public JTable getListPurchase() {
 		return listPurchase;

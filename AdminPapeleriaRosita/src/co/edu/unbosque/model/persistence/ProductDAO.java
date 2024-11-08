@@ -164,6 +164,18 @@ public class ProductDAO implements OperationsDAO<ProductDTO>{
 		}
 		return info;
 	}
+	
+	public Object [][] productsNamesAndIDs() {
+		Object arr[][]=new Object[products.size()][2];
+		int i=0;
+		for(int idp:products.keySet()) {
+			ProductDTO pro=products.get(idp);
+			arr[i][0]=pro.getName();
+			arr[i][1]=idp;
+			i++;
+		}
+		return arr;
+	}
 
 	public DBConnection getDbcon() {
 		return dbcon;
