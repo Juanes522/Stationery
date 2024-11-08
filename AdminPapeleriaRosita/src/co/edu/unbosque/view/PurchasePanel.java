@@ -3,19 +3,17 @@ package co.edu.unbosque.view;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
 public class PurchasePanel extends JPanel {
 
-	private JList<String> listPurchase;
-	private DefaultListModel<String> modelPurchase;
+	private JTable listPurchase;
 	private JPanel listPurPanel;
 	private JLabel indAddPur;
 	private JButton addPur;
@@ -27,9 +25,8 @@ public class PurchasePanel extends JPanel {
 		setBackground(Color.WHITE);
 		setLayout(null);
 
-		modelPurchase = new DefaultListModel<>();
 
-		listPurchase = new JList<>(modelPurchase);
+		listPurchase = new JTable();
 		listPurchase.setBounds(0, 0, 400, 350);
 		listPurchase.setBackground(Color.LIGHT_GRAY);
 		listPurchase.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -58,21 +55,38 @@ public class PurchasePanel extends JPanel {
 		add(addPur);
 
 	}
+	
 
-	public JList<String> getListPurchase() {
+	public JTable getListPurchase() {
 		return listPurchase;
 	}
 
-	public void setListPurchase(JList<String> listPurchase) {
+	public void setListPurchase(JTable listPurchase) {
 		this.listPurchase = listPurchase;
 	}
 
-	public DefaultListModel<String> getModelPurchase() {
-		return modelPurchase;
+	public JPanel getListPurPanel() {
+		return listPurPanel;
 	}
 
-	public void setModelPurchase(DefaultListModel<String> modelPurchase) {
-		this.modelPurchase = modelPurchase;
+	public void setListPurPanel(JPanel listPurPanel) {
+		this.listPurPanel = listPurPanel;
+	}
+
+	public JLabel getIndAddPur() {
+		return indAddPur;
+	}
+
+	public void setIndAddPur(JLabel indAddPur) {
+		this.indAddPur = indAddPur;
+	}
+
+	public JScrollPane getBarPur() {
+		return barPur;
+	}
+
+	public void setBarPur(JScrollPane barPur) {
+		this.barPur = barPur;
 	}
 
 	public JButton getAddPur() {

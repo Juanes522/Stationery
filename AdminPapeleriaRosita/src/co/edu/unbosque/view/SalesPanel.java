@@ -10,12 +10,13 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 public class SalesPanel extends JPanel {
 
-	private JList<String> listSales;
-	private DefaultListModel<String> modelSales;
+	private JTable listSales;
 	private JPanel listSaPanel;
 	private JLabel titleSa, indAddSal, indDelSal, indUpSal;
 	private JButton addSa, delSa, upSa;
@@ -33,12 +34,11 @@ public class SalesPanel extends JPanel {
 		titleSa.setForeground(new Color(2, 58, 98));
 		add(titleSa);
 
-		modelSales = new DefaultListModel<>();
-
-		listSales = new JList<>(modelSales);
+		listSales = new JTable();
 		listSales.setBounds(0, 0, 400, 350);
 		listSales.setBackground(Color.LIGHT_GRAY);
 		listSales.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listSales.getTableHeader().setReorderingAllowed(false);
 
 		barSa = new JScrollPane(listSales);
 		barSa.setBounds(0, 0, 400, 350);
@@ -89,22 +89,26 @@ public class SalesPanel extends JPanel {
 		add(upSa);
 
 	}
+	
+	public void fillTable(String[][] information) {
+		DefaultTableModel model=new DefaultTableModel(information,new String[]{"ID","Vendedor","Fecha","Total pagado"}) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		listSales.setModel(model);
+	}
 
-	public JList<String> getListSales() {
+	public JTable getListSales() {
 		return listSales;
 	}
 
-	public void setListSales(JList<String> listSales) {
+
+	public void setListSales(JTable listSales) {
 		this.listSales = listSales;
 	}
 
-	public DefaultListModel<String> getModelSales() {
-		return modelSales;
-	}
-
-	public void setModelSales(DefaultListModel<String> modelSales) {
-		this.modelSales = modelSales;
-	}
 
 	public JButton getAddSa() {
 		return addSa;
