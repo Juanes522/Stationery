@@ -29,11 +29,12 @@ public class ProductDAO implements OperationsDAO<ProductDTO>{
 		}
 		dbcon.initConnection();
 		try {
-			dbcon.setPreparedstatement(dbcon.getConnect().prepareStatement("INSERT INTO product(name_product,price,cost,id_supplier) VALUES(?,?,?,?)",Statement.RETURN_GENERATED_KEYS));
+			dbcon.setPreparedstatement(dbcon.getConnect().prepareStatement("INSERT INTO product(name_product,price,cost,id_supplier, quantity) VALUES(?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS));
 			dbcon.getPreparedstatement().setString(1, newProduct.getName());
 			dbcon.getPreparedstatement().setDouble(2, newProduct.getPrice());
 			dbcon.getPreparedstatement().setDouble(3, newProduct.getCost());
 			dbcon.getPreparedstatement().setInt(4, newProduct.getIdSuplierPartner());
+			dbcon.getPreparedstatement().setInt(5, newProduct.getQuantity());
 			dbcon.getPreparedstatement().executeUpdate();
 			ResultSet key=dbcon.getPreparedstatement().getGeneratedKeys();
 			if(!key.next()) {
@@ -61,12 +62,13 @@ public class ProductDAO implements OperationsDAO<ProductDTO>{
 		}
 		dbcon.initConnection();
 		try {
-			dbcon.setPreparedstatement(dbcon.getConnect().prepareStatement("UPDATE product SET name_product=?, price=?, cost=?, id_supplier=? WHERE id_product=?"));
+			dbcon.setPreparedstatement(dbcon.getConnect().prepareStatement("UPDATE product SET name_product=?, price=?, cost=?, id_supplier=?, quantity=? WHERE id_product=?"));
 			dbcon.getPreparedstatement().setString(1, updateProduct.getName());
 			dbcon.getPreparedstatement().setDouble(2, updateProduct.getPrice());
 			dbcon.getPreparedstatement().setDouble(3, updateProduct.getCost());
 			dbcon.getPreparedstatement().setInt(4, updateProduct.getIdSuplierPartner());
-			dbcon.getPreparedstatement().setInt(5, id);
+			dbcon.getPreparedstatement().setInt(5, updateProduct.getQuantity());
+			dbcon.getPreparedstatement().setInt(6, id);
 			dbcon.getPreparedstatement().executeUpdate();
 		} catch (SQLException e) {
 			dbcon.close();
@@ -105,8 +107,9 @@ public class ProductDAO implements OperationsDAO<ProductDTO>{
 				String name=dbcon.getResultset().getString("name_product");
 				double price=dbcon.getResultset().getDouble("price");
 				double cost=dbcon.getResultset().getDouble("cost");
+				int quantity=dbcon.getResultset().getInt("quantity");
 				int idSupplier=dbcon.getResultset().getInt("id_supplier");
-				data.put(id,new ProductDTO(name, price, cost, idSupplier, idSupplier));
+				data.put(id,new ProductDTO(name, price, cost, quantity, idSupplier));
 			}
 		} catch (SQLException e) {
 			dbcon.close();
@@ -130,6 +133,36 @@ public class ProductDAO implements OperationsDAO<ProductDTO>{
 			i++;
 		}
 		return result;
+	}
+	
+	public Object[][] showForSales() {
+		Object[][] info=new Object[products.size()][5];
+		int i=0;
+		for(int id:products.keySet()) {
+			ProductDTO pro=products.get(id);
+			info[i][0]=id;
+			info[i][1]=pro.getName();
+			info[i][2]=pro.getQuantity();
+			info[i][3]=0;
+			info[i][4]=pro.getPrice();
+			i++;
+		}
+		return info;
+	}
+	
+	public Object[][] showForSales(HashMap<Integer, Integer> productsSale) {
+		Object[][] info=new Object[products.size()][5];
+		int i=0;
+		for(int id:products.keySet()) {
+			ProductDTO pro=products.get(id);
+			info[i][0]=id;
+			info[i][1]=pro.getName();
+			info[i][2]=pro.getQuantity();
+			info[i][3]=productsSale.getOrDefault(id,0);
+			info[i][4]=pro.getPrice();
+			i++;
+		}
+		return info;
 	}
 
 	public DBConnection getDbcon() {

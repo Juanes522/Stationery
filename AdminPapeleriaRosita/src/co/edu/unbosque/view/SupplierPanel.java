@@ -37,6 +37,7 @@ public class SupplierPanel extends JPanel {
 		listSupplier.setBounds(0, 0, 400, 350);
 		listSupplier.setBackground(Color.LIGHT_GRAY);
 		listSupplier.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listSupplier.getTableHeader().setReorderingAllowed(false);
 
 		barSup = new JScrollPane(listSupplier);
 		barSup.setBounds(0, 0, 400, 350);

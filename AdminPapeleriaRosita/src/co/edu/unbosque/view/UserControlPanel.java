@@ -38,6 +38,7 @@ public class UserControlPanel extends JPanel {
 		listUser.setBounds(0, 0, 400, 350);
 		listUser.setBackground(Color.LIGHT_GRAY);
 		listUser.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listUser.getTableHeader().setReorderingAllowed(false);
 
 		barUser = new JScrollPane(listUser);
 		barUser.setBounds(0, 0, 400, 350);

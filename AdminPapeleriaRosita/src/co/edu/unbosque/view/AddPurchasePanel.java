@@ -4,13 +4,12 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.MatteBorder;
@@ -20,8 +19,7 @@ public class AddPurchasePanel extends JPanel {
 	private JLabel formPrePur, indTotalPur, indRegisterPur, indEndPur, indChooseProPur;
 	private JTextField totalPurchase;
 	private JButton registerPur, endPur, closePur;
-	private JList<String> productsListPur;
-	private DefaultListModel<String> modelPurchase;
+	private JTable productsListPur;
 	private JPanel listPurPanel;
 	private JScrollPane barPur;
 
@@ -95,9 +93,8 @@ public class AddPurchasePanel extends JPanel {
 		indChooseProPur.setBounds(25, 70, 250, 30);
 		add(indChooseProPur);
 
-		modelPurchase = new DefaultListModel<>();
 
-		productsListPur = new JList<>(modelPurchase);
+		productsListPur = new JTable();
 		productsListPur.setBounds(0, 0, 270, 342);
 		productsListPur.setBackground(Color.LIGHT_GRAY);
 		productsListPur.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -145,20 +142,12 @@ public class AddPurchasePanel extends JPanel {
 		this.closePur = closePur;
 	}
 
-	public JList<String> getProductsListPur() {
+	public JTable getProductsListPur() {
 		return productsListPur;
 	}
 
-	public void setProductsListPur(JList<String> productsListPur) {
+	public void setProductsListPur(JTable productsListPur) {
 		this.productsListPur = productsListPur;
-	}
-
-	public DefaultListModel<String> getModelPurchase() {
-		return modelPurchase;
-	}
-
-	public void setModelPurchase(DefaultListModel<String> modelPurchase) {
-		this.modelPurchase = modelPurchase;
 	}
 
 }

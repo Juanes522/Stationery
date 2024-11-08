@@ -2,15 +2,20 @@ package co.edu.unbosque.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 
 import co.edu.unbosque.model.ProductDTO;
+import co.edu.unbosque.model.SaleDTO;
 import co.edu.unbosque.model.SupplierDTO;
 import co.edu.unbosque.model.UserDTO;
 import co.edu.unbosque.model.persistence.ProductDAO;
+import co.edu.unbosque.model.persistence.SaleDAO;
 import co.edu.unbosque.model.persistence.SupplierDAO;
 import co.edu.unbosque.model.persistence.UserDAO;
 import co.edu.unbosque.util.exception.ProductException;
+import co.edu.unbosque.util.exception.SaleException;
 import co.edu.unbosque.util.exception.SupplierException;
 import co.edu.unbosque.util.exception.UserException;
 import co.edu.unbosque.view.MainWindow;
@@ -24,7 +29,9 @@ public class Controller implements ActionListener {
 	private int idUpdate;
 	private HashMap<String, Integer>supplierProduct;
 	private UserDTO userToRecover;
+	private SaleDTO saleToUpdate;
 	private ProductDAO products;
+	private SaleDAO sales;
 
 	public Controller() {
 		mw = new MainWindow();
@@ -32,6 +39,7 @@ public class Controller implements ActionListener {
 		suppliers=new SupplierDAO();
 		products=new ProductDAO();
 		userToRecover=new UserDTO();
+		sales=new SaleDAO();
 		idUpdate=-1;
 		addReaders();
 	}
@@ -836,9 +844,10 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "salesAdmin": {
+			mw.getSalesPanel().fillTable(sales.showAll());
 			mw.getSalesPanel().setVisible(true);
 			mw.getAddUpdateSalesPanel().setVisible(false);
-
+			
 			mw.getAdminControlPanel().getTitleSupplier().setVisible(false);
 			mw.getAdminControlPanel().getTitleInventory().setVisible(false);
 			mw.getAdminControlPanel().getTitleSales().setVisible(true);
@@ -866,8 +875,14 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "addSale": {
+			mw.getAddUpdateSalesPanel().fillTable(products.showForSales());
+			String usernames[]=new String[users.getUsers().size()];
+			int i=0;
+			for(UserDTO us:users.getUsers().values()) {
+				usernames[i++]=us.getName();
+			}
+			mw.getAddUpdateSalesPanel().fillCB(usernames);
 			mw.getSalesPanel().setVisible(false);
-
 			mw.getAddUpdateSalesPanel().setVisible(true);
 			mw.getAddUpdateSalesPanel().getTitleRegisterSa().setVisible(true);
 			mw.getAddUpdateSalesPanel().getRegisterSa().setVisible(true);
@@ -894,80 +909,166 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "deleteSale": {
-//			borrar de la lista
+			int selectedRow=mw.getSalesPanel().getListSales().getSelectedRow();
+			if(selectedRow!=-1) {
+				int id=Integer.parseInt((String)mw.getSalesPanel().getListSales().getValueAt(selectedRow, 0));
+				int res=PopUpMessages.confirmMessage("¿Seguro que quiere eliminar permanentemente la venta?", mw);
+				if(res==0) {
+					try {
+						sales.delete(id);
+						mw.getSalesPanel().fillTable(sales.showAll());
+					} catch (SaleException error) {
+						PopUpMessages.errorMessage(mw, error.getMessage());
+					}
+				}
+			}
+			else {
+				PopUpMessages.informationMessage(mw, "No se ha seleccionado una venta a eliminar.");
+			}
 			break;
 		}
 		case "upSa": {
-			mw.getSalesPanel().setVisible(false);
+			int selectedRow=mw.getSalesPanel().getListSales().getSelectedRow();
+			if(selectedRow!=-1) {
+				idUpdate=Integer.parseInt((String)mw.getSalesPanel().getListSales().getValueAt(selectedRow, 0));
+				saleToUpdate=sales.getSales().get(idUpdate);
+				String usernames[]=new String[users.getUsers().size()];
+				int i=0;
+				for(UserDTO us:users.getUsers().values()) {
+					usernames[i++]=us.getName();
+				}
+				mw.getAddUpdateSalesPanel().fillTable(products.showForSales(saleToUpdate.getProducts()));
+				mw.getAddUpdateSalesPanel().getTotal().setText(Double.toString(saleToUpdate.getTotalPay()));
+				mw.getAddUpdateSalesPanel().getSellerName().setSelectedItem(saleToUpdate.getSeller());
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(true);
+				mw.getAddUpdateSalesPanel().getTitleRegisterSa().setVisible(false);
+				mw.getAddUpdateSalesPanel().getRegisterSa().setVisible(false);
+				mw.getAddUpdateSalesPanel().getIndRegisterSale().setVisible(false);
+				mw.getAddUpdateSalesPanel().getTitleUpdateSa().setVisible(true);
+				mw.getAddUpdateSalesPanel().getUpdateSa().setVisible(true);
+				mw.getAddUpdateSalesPanel().getIndUpdateSale().setVisible(true);
 
-			mw.getAddUpdateSalesPanel().setVisible(true);
-			mw.getAddUpdateSalesPanel().getTitleRegisterSa().setVisible(false);
-			mw.getAddUpdateSalesPanel().getRegisterSa().setVisible(false);
-			mw.getAddUpdateSalesPanel().getIndRegisterSale().setVisible(false);
-			mw.getAddUpdateSalesPanel().getTitleUpdateSa().setVisible(true);
-			mw.getAddUpdateSalesPanel().getUpdateSa().setVisible(true);
-			mw.getAddUpdateSalesPanel().getIndUpdateSale().setVisible(true);
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
-
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
+			}
+			else {
+				PopUpMessages.errorMessage(mw, "No se ha seleccionado venta a actualizar.");
+			}
 			break;
 		}
 		case "registerSale": {
-//			registar venta
-			
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
+			boolean add=false;
+			try {
+				double totalPay=Double.parseDouble(mw.getAddUpdateSalesPanel().getTotal().getText());
+				LocalDate date=LocalDate.now();
+				String seller=(String)mw.getAddUpdateSalesPanel().getSellerName().getSelectedItem();
+				HashMap<Integer, Integer> prod=new HashMap<>();
+				for(int selectetRow=0;selectetRow<mw.getAddUpdateSalesPanel().getProductsTable().getModel().getRowCount();selectetRow++) {
+					int val=mw.getAddUpdateSalesPanel().getQuantity(selectetRow);
+					if(val!=0) {
+						int idp=(int)mw.getAddUpdateSalesPanel().getProductsTable().getValueAt(selectetRow, 0);
+						prod.put(idp, val);
+						ProductDTO pro=products.getProducts().get(idp);
+						pro.setQuantity(pro.getQuantity()-val);
+						products.update(idp, pro);
+					}
+				}
+				sales.create(new SaleDTO(date, prod, seller, totalPay));
+				add=true;
+			}catch (SaleException | ProductException error) {
+				PopUpMessages.errorMessage(mw, error.getMessage());
+			}
+			if(add) {
+				PopUpMessages.informationMessage(mw, "Venta agragada exitosamente.");
+				mw.getSalesPanel().fillTable(sales.showAll());
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(true);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getSalesPanel().setVisible(true);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
+			}
 			
 			break;
 		}
 		case "updateSale": {
-//			actualizar venta
-			
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
+			boolean add=false;
+			try {
+				double totalPay=Double.parseDouble(mw.getAddUpdateSalesPanel().getTotal().getText());
+				LocalDate date=LocalDate.now();
+				String seller=(String)mw.getAddUpdateSalesPanel().getSellerName().getSelectedItem();
+				HashMap<Integer, Integer> prod=new HashMap<>();
+				for(int selectetRow=0;selectetRow<mw.getAddUpdateSalesPanel().getProductsTable().getModel().getRowCount();selectetRow++) {
+					int val=mw.getAddUpdateSalesPanel().getQuantity(selectetRow);
+					int idp=(int)mw.getAddUpdateSalesPanel().getProductsTable().getValueAt(selectetRow, 0);
+					if(val!=0) {
+						prod.put(idp, val);
+						ProductDTO pro=products.getProducts().get(idp);
+						int previous=saleToUpdate.getProducts().getOrDefault(idp, 0);
+						if(previous>val) {
+							pro.setQuantity(pro.getQuantity()+(previous-val));
+						}
+						else if(previous<val) {
+							pro.setQuantity(pro.getQuantity()-(val-previous));
+						}
+						products.update(idp, pro);
+					}
+					else if(saleToUpdate.getProducts().containsKey(idp)) {
+						ProductDTO pro=products.getProducts().get(idp);
+						pro.setQuantity(pro.getQuantity()+saleToUpdate.getProducts().get(idp));
+						products.update(idp, pro);
+					}
+				}
+				sales.update(idUpdate,new SaleDTO(date, prod, seller, totalPay));
+				add=true;
+			}catch (SaleException | ProductException error) {
+				PopUpMessages.errorMessage(mw, error.getMessage());
+			}
+			if(add) {
+				PopUpMessages.informationMessage(mw, "Venta actualizada exitosamente.");
+				mw.getSalesPanel().fillTable(sales.showAll());
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(true);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
-			
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getSalesPanel().setVisible(true);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
+			}
 			break;
 		}
 		case "closeSale": {
@@ -1257,7 +1358,6 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "addPurchase":{
-			
 			mw.getPurchasePanel().setVisible(false);
 			mw.getAddPurchasePanel().setVisible(true);
 			mw.getRegisterPurchasePanel().setVisible(false);

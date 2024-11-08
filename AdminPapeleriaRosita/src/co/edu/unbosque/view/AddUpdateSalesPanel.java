@@ -1,31 +1,43 @@
 package co.edu.unbosque.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.Arrays;
 
+import javax.swing.AbstractCellEditor;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 
 public class AddUpdateSalesPanel extends JPanel {
 
 	private JLabel formSa, titleRegisterSa, titleUpdateSa, indTotal, indSellerName, indChoosePro, indRegisterSale,
 			indUpdateSale;
-	private JTextField total, sellerName;
+	private JTextField total;
+	private JComboBox<String> sellerName;
 	private JButton registerSa, updateSa, closeSa;
 	private JTable productsTable;
-	private DefaultTableModel modelSales;
 	private JPanel tablePanel;
 	private JScrollPane barSa;
+	private int valuesQuan[];
 
 	public AddUpdateSalesPanel() {
 
@@ -44,12 +56,13 @@ public class AddUpdateSalesPanel extends JPanel {
 		indTotal.setBounds(45, 10, 220, 30);
 		formSa.add(indTotal);
 
-		total = new JTextField();
+		total = new JTextField("0");
 		total.setBounds(23, 50, 175, 30);
 		MatteBorder borderTotal = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
 		total.setBorder(borderTotal);
 		total.setOpaque(false);
 		total.setForeground(Color.WHITE);
+		total.setHorizontalAlignment(JTextField.CENTER);
 		total.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		total.setEditable(false);
 		formSa.add(total);
@@ -60,14 +73,22 @@ public class AddUpdateSalesPanel extends JPanel {
 		indSellerName.setBounds(63, 110, 220, 30);
 		formSa.add(indSellerName);
 
-		sellerName = new JTextField();
-		sellerName.setBounds(23, 150, 175, 30);
-		MatteBorder borderSeller = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
-		sellerName.setBorder(borderSeller);
-		sellerName.setOpaque(false);
-		sellerName.setForeground(Color.WHITE);
-		sellerName.setFont(new Font("Leelawadee", Font.BOLD, 20));
-		sellerName.setCaretColor(Color.WHITE);
+		sellerName = new JComboBox<>();
+		sellerName.setEditor(new BasicComboBoxEditor() {
+			@Override
+			protected JTextField createEditorComponent() {
+				JTextField editor = new JTextField();
+				MatteBorder borderTotal = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
+				editor.setBackground(new Color(2, 58, 98));
+				editor.setBorder(borderTotal);
+				editor.setForeground(Color.WHITE);
+				editor.setHorizontalAlignment(JTextField.CENTER);
+				editor.setFont(new Font("Leelawadee", Font.BOLD, 20));
+	            return editor;
+			}
+		});
+		sellerName.setEditable(true);
+		sellerName.setBounds(23, 150, 175, 30);;
 		formSa.add(sellerName);
 
 //		botones e indicador
@@ -125,12 +146,7 @@ public class AddUpdateSalesPanel extends JPanel {
 		indChoosePro.setBounds(25, 70, 250, 30);
 		add(indChoosePro);
 
-		modelSales = new DefaultTableModel();
-		modelSales.addColumn("Producto");
-		modelSales.addColumn("<html>Cantidad <br>disponible</html>");
-		modelSales.addColumn("<html>Cantidad a <br>vender</html>");
-
-		productsTable = new JTable(modelSales);
+		productsTable = new JTable();
 		productsTable.setBounds(0, 0, 270, 342);
 		productsTable.setBackground(Color.LIGHT_GRAY);
 		productsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -147,6 +163,89 @@ public class AddUpdateSalesPanel extends JPanel {
 		tablePanel.add(barSa);
 		add(tablePanel);
 
+	}
+	
+	public void fillCB(String users[]) {
+		sellerName.removeAllItems();
+		for(String user:users) {
+			sellerName.addItem(user);
+		}
+	}
+	
+	public void fillTable(Object[][] information) {
+		valuesQuan=new int[information.length];
+		for (int i = 0; i < information.length; i++) {
+			valuesQuan[i]=(int)information[i][3];
+		}
+		total.setText("0");
+		DefaultTableModel model=new DefaultTableModel(information,new String[] {"ID","Producto","<html>Cantidad <br>disponible</html>","<html>Cantidad a <br>vender</html>"}) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return column==3;
+			}
+		};
+		productsTable.setModel(model);
+		productsTable.getColumnModel().getColumn(3).setCellEditor(new SpinnerEditor(information));
+	}
+	
+	private class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
+		
+        private JSpinner spinner;
+        private Object[][] information;
+        private int row,previous[];
+
+   
+        public SpinnerEditor(Object[][] information) {
+        	this.information=information;
+            spinner = new JSpinner();
+            spinner.setValue(0);
+            row=0;
+            previous=new int[information.length];
+            for (int i = 0; i < information.length; i++) {
+    			previous[i]=(int)information[i][3];
+    		}
+            spinner.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                	int actual=(int)spinner.getValue();
+                	double price=(double)information[row][4];
+                	double aux=Double.parseDouble(total.getText());
+                	if(actual>previous[row]) {
+                		total.setText(Double.toString(aux+price));
+                	}
+                	else if(actual<previous[row]) {
+                		total.setText(Double.toString(aux-price));
+                	}
+                	previous[row]=actual;
+                	valuesQuan[row]=actual;
+                }
+            });
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return spinner.getValue();
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        	this.row=row;
+        	int max =(int)information[row][2];
+        	spinner.setModel(new SpinnerNumberModel((int)value, 0, max, 1));
+            JComponent editor = spinner.getEditor();
+            if (editor instanceof JSpinner.DefaultEditor) {
+                ((JSpinner.DefaultEditor) editor).getTextField().setEditable(false);
+                ((JSpinner.DefaultEditor) editor).getTextField().setHorizontalAlignment(JTextField.LEFT);
+            }
+            return spinner;
+        }
+    }
+	
+	public int getQuantity(int row) {
+		if(valuesQuan!=null) {
+			return valuesQuan[row];
+		}
+		return 0;
 	}
 
 	public JLabel getTitleRegisterSa() {
@@ -189,11 +288,11 @@ public class AddUpdateSalesPanel extends JPanel {
 		this.total = total;
 	}
 
-	public JTextField getSellerName() {
+	public JComboBox<String> getSellerName() {
 		return sellerName;
 	}
 
-	public void setSellerName(JTextField sellerName) {
+	public void setSellerName(JComboBox<String> sellerName) {
 		this.sellerName = sellerName;
 	}
 
@@ -227,14 +326,6 @@ public class AddUpdateSalesPanel extends JPanel {
 
 	public void setProductsTable(JTable productsTable) {
 		this.productsTable = productsTable;
-	}
-
-	public DefaultTableModel getModelSales() {
-		return modelSales;
-	}
-
-	public void setModelSales(DefaultTableModel modelSales) {
-		this.modelSales = modelSales;
 	}
 
 }

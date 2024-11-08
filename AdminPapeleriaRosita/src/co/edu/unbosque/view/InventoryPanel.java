@@ -39,6 +39,7 @@ public class InventoryPanel extends JPanel {
 		listInventory.setBounds(0, 0, 400, 350);
 		listInventory.setBackground(Color.LIGHT_GRAY);
 		listInventory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listInventory.getTableHeader().setReorderingAllowed(false);
 
 		barIn = new JScrollPane(listInventory);
 		barIn.setBounds(0, 0, 400, 350);
