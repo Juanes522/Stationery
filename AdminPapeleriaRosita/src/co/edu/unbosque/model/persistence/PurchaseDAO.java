@@ -18,7 +18,7 @@ public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 	
 	public PurchaseDAO() {
 		dbcon=new DBConnection();
-		purchases=new HashMap<>();
+		purchases=loadPurchases();
 	}
 	
 	@Override

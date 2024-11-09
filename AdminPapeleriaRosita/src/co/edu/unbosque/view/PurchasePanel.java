@@ -33,7 +33,8 @@ public class PurchasePanel extends JPanel {
 		listPurchase.setBounds(0, 0, 400, 350);
 		listPurchase.setBackground(Color.LIGHT_GRAY);
 		listPurchase.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+		listPurchase.getTableHeader().setReorderingAllowed(false);
+		
 		barPur = new JScrollPane(listPurchase);
 		barPur.setBounds(0, 0, 400, 350);
 

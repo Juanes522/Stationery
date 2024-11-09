@@ -41,6 +41,7 @@ public class Controller implements ActionListener {
 	private PurchaseDAO purchases;
 	private int idPurchaseProduct;
 	private int previous;
+	private int idCurrentUser;
 	private HashMap<Integer, Integer> productsPurchase;
 
 	public Controller() {
@@ -294,7 +295,7 @@ public class Controller implements ActionListener {
 			int login=users.verifyUser(username, password);
 			
 			if(login==0) {
-				
+				idCurrentUser=users.getId(username);
 				mw.getAdminControlPanel().setVisible(true);
 				mw.getLoginPanel().getUserName().setText("");
 				mw.getLoginPanel().getPassword().setText("");
@@ -304,7 +305,7 @@ public class Controller implements ActionListener {
 				
 			}
 			else if(login==1) {
-				
+				idCurrentUser=users.getId(username);
 				mw.getSellerControlPanel().setVisible(true);
 				mw.getLoginPanel().getUserName().setText("");
 				mw.getLoginPanel().getPassword().setText("");
@@ -490,11 +491,13 @@ public class Controller implements ActionListener {
 			int selectedRow=mw.getSupplierPanel().getListSupplier().getSelectedRow();
 			if(selectedRow!=-1) {
 				int id=Integer.parseInt((String)mw.getSupplierPanel().getListSupplier().getValueAt(selectedRow, 0));
-				int res=PopUpMessages.confirmMessage("¿Seguro que quiere eliminar permanentemente el proveedor?", mw);
+				int res=PopUpMessages.confirmMessage("¿Seguro que quiere eliminar permanentemente el proveedor.\n"
+						+ "Eliminara todos los productos asociados al proveedor?", mw);
 				if(res==0) {
 					try {
 						suppliers.delete(id);
 						mw.getSupplierPanel().fillTable(suppliers.showAll());
+						reload("supplier");
 					} catch (SupplierException error) {
 						PopUpMessages.errorMessage(mw, error.getMessage());
 					}
@@ -659,35 +662,40 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "addProduct": {
-			mw.getInventoryPanel().setVisible(false);
-			supplierProduct=new HashMap<>();
-			for(int idSup:suppliers.getSuppliers().keySet()) {
-				String nameSup=suppliers.getSuppliers().get(idSup).getName();
-				supplierProduct.put(nameSup, idSup);
+			if(suppliers.getSuppliers().size()>0) {
+				mw.getInventoryPanel().setVisible(false);
+				supplierProduct=new HashMap<>();
+				for(int idSup:suppliers.getSuppliers().keySet()) {
+					String nameSup=suppliers.getSuppliers().get(idSup).getName();
+					supplierProduct.put(nameSup, idSup);
+				}
+				mw.getAddUpdateInventoryPanel().addSuplliers(supplierProduct.keySet());
+				mw.getAddUpdateInventoryPanel().setVisible(true);
+				mw.getAddUpdateInventoryPanel().getTitleRegisterIn().setVisible(true);
+				mw.getAddUpdateInventoryPanel().getRegisterPro().setVisible(true);
+				mw.getAddUpdateInventoryPanel().getIndRegisterPro().setVisible(true);
+				mw.getAddUpdateInventoryPanel().getTitleUpdateIn().setVisible(false);
+				mw.getAddUpdateInventoryPanel().getUpdatePro().setVisible(false);
+				mw.getAddUpdateInventoryPanel().getIndUpdatePro().setVisible(false);
+
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
 			}
-			mw.getAddUpdateInventoryPanel().addSuplliers(supplierProduct.keySet());
-			mw.getAddUpdateInventoryPanel().setVisible(true);
-			mw.getAddUpdateInventoryPanel().getTitleRegisterIn().setVisible(true);
-			mw.getAddUpdateInventoryPanel().getRegisterPro().setVisible(true);
-			mw.getAddUpdateInventoryPanel().getIndRegisterPro().setVisible(true);
-			mw.getAddUpdateInventoryPanel().getTitleUpdateIn().setVisible(false);
-			mw.getAddUpdateInventoryPanel().getUpdatePro().setVisible(false);
-			mw.getAddUpdateInventoryPanel().getIndUpdatePro().setVisible(false);
-
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
+			else {
+				PopUpMessages.informationMessage(mw, "No se pueden agregar productos si no hay proveedores registrados.");
+			}
 			break;
 		}
 		case "deleteProduct": {
@@ -699,6 +707,7 @@ public class Controller implements ActionListener {
 					try {
 						products.delete(id);
 						mw.getInventoryPanel().fillTable(products.showAll(suppliers.getSuppliers()));
+						reload("product");
 					} catch (ProductException error) {
 						PopUpMessages.errorMessage(mw, error.getMessage());
 					}
@@ -909,36 +918,41 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "addSale": {
-			mw.getAddUpdateSalesPanel().fillTable(products.showForSales());
-			String usernames[]=new String[users.getUsers().size()];
-			int i=0;
-			for(UserDTO us:users.getUsers().values()) {
-				usernames[i++]=us.getName();
+			if(products.getProducts().size()>0) {
+				mw.getAddUpdateSalesPanel().fillTable(products.showForSales());
+				String usernames[]=new String[users.getUsers().size()];
+				int i=0;
+				for(UserDTO us:users.getUsers().values()) {
+					usernames[i++]=us.getName();
+				}
+				mw.getAddUpdateSalesPanel().fillCB(usernames);
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(true);
+				mw.getAddUpdateSalesPanel().getTitleRegisterSa().setVisible(true);
+				mw.getAddUpdateSalesPanel().getRegisterSa().setVisible(true);
+				mw.getAddUpdateSalesPanel().getIndRegisterSale().setVisible(true);
+				mw.getAddUpdateSalesPanel().getTitleUpdateSa().setVisible(false);
+				mw.getAddUpdateSalesPanel().getUpdateSa().setVisible(false);
+				mw.getAddUpdateSalesPanel().getIndUpdateSale().setVisible(false);
+
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
+
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				
+				mw.getCashControlPanel().setVisible(false);
+				
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(false);
+				mw.getRegisterPurchasePanel().setVisible(false);
 			}
-			mw.getAddUpdateSalesPanel().fillCB(usernames);
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(true);
-			mw.getAddUpdateSalesPanel().getTitleRegisterSa().setVisible(true);
-			mw.getAddUpdateSalesPanel().getRegisterSa().setVisible(true);
-			mw.getAddUpdateSalesPanel().getIndRegisterSale().setVisible(true);
-			mw.getAddUpdateSalesPanel().getTitleUpdateSa().setVisible(false);
-			mw.getAddUpdateSalesPanel().getUpdateSa().setVisible(false);
-			mw.getAddUpdateSalesPanel().getIndUpdateSale().setVisible(false);
-
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
-
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			
-			mw.getCashControlPanel().setVisible(false);
-			
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(false);
-			mw.getRegisterPurchasePanel().setVisible(false);
+			else {
+				PopUpMessages.informationMessage(mw, "No se pueden registrar ventas si no hay productos registrados.");
+			}
 
 			break;
 		}
@@ -963,7 +977,7 @@ public class Controller implements ActionListener {
 		}
 		case "upSa": {
 			int selectedRow=mw.getSalesPanel().getListSales().getSelectedRow();
-			if(selectedRow!=-1) {
+			if(selectedRow!=-1&&products.getProducts().size()>0) {
 				idUpdate=Integer.parseInt((String)mw.getSalesPanel().getListSales().getValueAt(selectedRow, 0));
 				saleToUpdate=sales.getSales().get(idUpdate);
 				String usernames[]=new String[users.getUsers().size()];
@@ -998,8 +1012,11 @@ public class Controller implements ActionListener {
 				mw.getAddPurchasePanel().setVisible(false);
 				mw.getRegisterPurchasePanel().setVisible(false);
 			}
+			else if(selectedRow==-1) {
+				PopUpMessages.informationMessage(mw, "No se ha seleccionado venta a actualizar.");
+			}
 			else {
-				PopUpMessages.errorMessage(mw, "No se ha seleccionado venta a actualizar.");
+				PopUpMessages.informationMessage(mw, "No se pueden actualizar ventas si no hay productos registrados.");
 			}
 			break;
 		}
@@ -1172,14 +1189,51 @@ public class Controller implements ActionListener {
 			int selectedRow=mw.getUserControlPanel().getListUser().getSelectedRow();
 			if(selectedRow!=-1) {
 				int id=Integer.parseInt((String)mw.getUserControlPanel().getListUser().getValueAt(selectedRow, 0));
-				int res=PopUpMessages.confirmMessage("¿Seguro que quiere eliminar permanentemente el usuario?", mw);
-				if(res==0) {
-					try {
-						users.delete(id);
-						mw.getUserControlPanel().fillTable(users.showAll());
-					} catch (UserException error) {
-						PopUpMessages.errorMessage(mw, error.getMessage());
+				if(id!=1) {
+					int res=PopUpMessages.confirmMessage("¿Seguro que quiere eliminar permanentemente el usuario?", mw);
+					if(res==0) {
+						try {
+							users.delete(id);
+							mw.getUserControlPanel().fillTable(users.showAll());
+						} catch (UserException error) {
+							PopUpMessages.errorMessage(mw, error.getMessage());
+						}
+						if(idCurrentUser==id) {
+							mw.getLoginPanel().setVisible(true);
+
+							mw.getAdminControlPanel().setVisible(false);
+							
+							mw.getPurchasePanel().setVisible(false);
+							mw.getAddPurchasePanel().setVisible(false);
+							mw.getRegisterPurchasePanel().setVisible(false);
+							
+							mw.getInventoryPanel().setVisible(false);
+							mw.getAddUpdateInventoryPanel().setVisible(false);
+
+							mw.getSupplierPanel().setVisible(false);
+							mw.getAddUpdateSupplierPanel().setVisible(false);
+							
+							mw.getSalesPanel().setVisible(false);
+							mw.getAddUpdateSalesPanel().setVisible(false);
+							
+							mw.getUserControlPanel().setVisible(false);
+							mw.getAddUpdateUserControlPanel().setVisible(false);
+							
+							mw.getCashControlPanel().setVisible(false);
+							
+							mw.getAdminControlPanel().getTitleInventory().setVisible(false);
+							mw.getAdminControlPanel().getTitleSupplier().setVisible(false);
+							mw.getAdminControlPanel().getTitleSales().setVisible(false);
+							mw.getAdminControlPanel().getTitleConUser().setVisible(false);
+							mw.getAdminControlPanel().getTitleConCash().setVisible(false);
+							mw.getAdminControlPanel().getTitlePurchase().setVisible(false);
+							mw.getSellerControlPanel().getTitleInventorySe().setVisible(false);
+							mw.getSellerControlPanel().getTitleSalesSe().setVisible(false);
+						}
 					}
+				}
+				else {
+					PopUpMessages.informationMessage(mw, "No se puede eliminar al administrador principal.");
 				}
 			}
 			else {
@@ -1191,41 +1245,49 @@ public class Controller implements ActionListener {
 			int selectedRow=mw.getUserControlPanel().getListUser().getSelectedRow();
 			if(selectedRow!=-1) {
 				idUpdate=Integer.parseInt((String)mw.getUserControlPanel().getListUser().getValueAt(selectedRow, 0));
-				UserDTO user=users.getUsers().get(idUpdate);
-				mw.getAddUpdateUserControlPanel().getNameUser().setText(user.getName());
-				mw.getAddUpdateUserControlPanel().getPassUser().setText(user.getPassword());
-				mw.getAddUpdateUserControlPanel().getQuestionUser().setText(user.getQuestion());
-				mw.getAddUpdateUserControlPanel().getAnswerUser().setText(user.getAnswer());
-				mw.getAddUpdateUserControlPanel().getRol().clearSelection();
-				if(user.isAdministrator()) {
-					mw.getAddUpdateUserControlPanel().getIsAdmin().setSelected(true);
-				}
-				else{
-					mw.getAddUpdateUserControlPanel().getNotAdmin().setSelected(true);
-				}
-				mw.getUserControlPanel().setVisible(false);
-				mw.getAddUpdateUserControlPanel().setVisible(true);
-				mw.getAddUpdateUserControlPanel().getTitleRegisterU().setVisible(false);
-				mw.getAddUpdateUserControlPanel().getRegisterUser().setVisible(false);
-				mw.getAddUpdateUserControlPanel().getIndRegisterUs().setVisible(false);
-				mw.getAddUpdateUserControlPanel().getTitleUpdateU().setVisible(true);
-				mw.getAddUpdateUserControlPanel().getUpdateUser().setVisible(true);
-				mw.getAddUpdateUserControlPanel().getIndUpdateUs().setVisible(true);
+				if(idUpdate!=1) {
+					UserDTO user=users.getUsers().get(idUpdate);
+					mw.getAddUpdateUserControlPanel().getNameUser().setText(user.getName());
+					mw.getAddUpdateUserControlPanel().getPassUser().setText(user.getPassword());
+					mw.getAddUpdateUserControlPanel().getQuestionUser().setText(user.getQuestion());
+					mw.getAddUpdateUserControlPanel().getAnswerUser().setText(user.getAnswer());
+					mw.getAddUpdateUserControlPanel().getRol().clearSelection();
+					if(user.isAdministrator()) {
+						mw.getAddUpdateUserControlPanel().getIsAdmin().setSelected(true);
+					}
+					else{
+						mw.getAddUpdateUserControlPanel().getNotAdmin().setSelected(true);
+					}
+					mw.getUserControlPanel().setVisible(false);
+					mw.getAddUpdateUserControlPanel().setVisible(true);
+					mw.getAddUpdateUserControlPanel().getTitleRegisterU().setVisible(false);
+					mw.getAddUpdateUserControlPanel().getRegisterUser().setVisible(false);
+					mw.getAddUpdateUserControlPanel().getIndRegisterUs().setVisible(false);
+					mw.getAddUpdateUserControlPanel().getTitleUpdateU().setVisible(true);
+					mw.getAddUpdateUserControlPanel().getUpdateUser().setVisible(true);
+					mw.getAddUpdateUserControlPanel().getIndUpdateUs().setVisible(true);
 
-				mw.getInventoryPanel().setVisible(false);
-				mw.getAddUpdateInventoryPanel().setVisible(false);
+					mw.getInventoryPanel().setVisible(false);
+					mw.getAddUpdateInventoryPanel().setVisible(false);
 
-				mw.getSupplierPanel().setVisible(false);
-				mw.getAddUpdateSupplierPanel().setVisible(false);
-				
-				mw.getSalesPanel().setVisible(false);
-				mw.getAddUpdateSalesPanel().setVisible(false);
-				
-				mw.getCashControlPanel().setVisible(false);
-				
-				mw.getPurchasePanel().setVisible(false);
-				mw.getAddPurchasePanel().setVisible(false);
-				mw.getRegisterPurchasePanel().setVisible(false);	
+					mw.getSupplierPanel().setVisible(false);
+					mw.getAddUpdateSupplierPanel().setVisible(false);
+					
+					mw.getSalesPanel().setVisible(false);
+					mw.getAddUpdateSalesPanel().setVisible(false);
+					
+					mw.getCashControlPanel().setVisible(false);
+					
+					mw.getPurchasePanel().setVisible(false);
+					mw.getAddPurchasePanel().setVisible(false);
+					mw.getRegisterPurchasePanel().setVisible(false);	
+				}
+				else {
+					PopUpMessages.informationMessage(mw, "No se puede actualizar al administrador principal.");
+				}
+			}
+			else {
+				PopUpMessages.informationMessage(mw, "No se ha seleccionado usuario a actualizar.");
 			}
 			break;
 		}
@@ -1280,9 +1342,17 @@ public class Controller implements ActionListener {
 				String question=mw.getAddUpdateUserControlPanel().getQuestionUser().getText();
 				String answer=mw.getAddUpdateUserControlPanel().getAnswerUser().getText();
 				boolean isAdmin=mw.getAddUpdateUserControlPanel().getIsAdmin().isSelected();
+				String antUsername=users.getUsers().get(idUpdate).getName();
 				users.update(idUpdate,new UserDTO(username, password, question, answer, isAdmin));
+				for(int ids:sales.getSales().keySet()) {
+					SaleDTO sale=sales.getSales().get(ids);
+					if(sale.getSeller().equals(antUsername)) {
+						sale.setSeller(username);
+						sales.update(ids, sale);
+					}
+				}
 				add=true;
-			} catch (UserException error) {
+			} catch (UserException | SaleException error) {
 				PopUpMessages.errorMessage(mw, error.getMessage());
 			}
 			if(add) {
@@ -1330,9 +1400,8 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "cashControlAdmin":{
-			
+			infoCashControl();
 			mw.getCashControlPanel().setVisible(true);
-			
 			mw.getAdminControlPanel().getTitleSupplier().setVisible(false);
 			mw.getAdminControlPanel().getTitleInventory().setVisible(false);
 			mw.getAdminControlPanel().getTitleSales().setVisible(false);
@@ -1392,27 +1461,30 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "addPurchase":{
-			
-			mw.getAddPurchasePanel().fillList(products.productsNamesAndIDs());
-			mw.getAddPurchasePanel().getTotalPurchase().setText("0");
-			productsPurchase=new HashMap<>();
-			mw.getPurchasePanel().setVisible(false);
-			mw.getAddPurchasePanel().setVisible(true);
-			mw.getRegisterPurchasePanel().setVisible(false);
-			
-			mw.getInventoryPanel().setVisible(false);
-			mw.getAddUpdateInventoryPanel().setVisible(false);
+			if(products.getProducts().size()>0) {
+				mw.getAddPurchasePanel().fillList(products.productsNamesAndIDs());
+				mw.getAddPurchasePanel().getTotalPurchase().setText("0");
+				productsPurchase=new HashMap<>();
+				mw.getPurchasePanel().setVisible(false);
+				mw.getAddPurchasePanel().setVisible(true);
+				mw.getRegisterPurchasePanel().setVisible(false);
+				
+				mw.getInventoryPanel().setVisible(false);
+				mw.getAddUpdateInventoryPanel().setVisible(false);
 
-			mw.getSupplierPanel().setVisible(false);
-			mw.getAddUpdateSupplierPanel().setVisible(false);
-			
-			mw.getSalesPanel().setVisible(false);
-			mw.getAddUpdateSalesPanel().setVisible(false);
-			
-			mw.getUserControlPanel().setVisible(false);
-			mw.getAddUpdateUserControlPanel().setVisible(false);
-			mw.getCashControlPanel().setVisible(false);
-			
+				mw.getSupplierPanel().setVisible(false);
+				mw.getAddUpdateSupplierPanel().setVisible(false);
+				
+				mw.getSalesPanel().setVisible(false);
+				mw.getAddUpdateSalesPanel().setVisible(false);
+				
+				mw.getUserControlPanel().setVisible(false);
+				mw.getAddUpdateUserControlPanel().setVisible(false);
+				mw.getCashControlPanel().setVisible(false);
+			}
+			else {
+				PopUpMessages.informationMessage(mw, "No se pueden realizar compras si no hay productos registrados.");
+			}
 			break;
 		}
 		case "addPrePurchase":{
@@ -1685,6 +1757,65 @@ public class Controller implements ActionListener {
 		
 		default:
 			break;
+		}
+	}
+	
+	public void infoCashControl(){
+		HashMap<Integer, Double> incomeByProduct=new HashMap<>();
+		for(int idp:products.getProducts().keySet()) {
+			ProductDTO pro=products.getProducts().get(idp);
+			double income=0.0;
+			for(SaleDTO sale:sales.getSales().values()) {
+				if(sale.getProducts().containsKey(idp)) {
+					int quantity=sale.getProducts().get(idp);
+					income+=(quantity*pro.getPrice());
+				}
+			}
+			incomeByProduct.put(idp, income);
+		}
+		HashMap<Integer, Double> expensesByProduct=new HashMap<>();
+		for(int idp:products.getProducts().keySet()) {
+			ProductDTO pro=products.getProducts().get(idp);
+			double expenses=0.0;
+			for(PurchaseDTO purchase:purchases.getPurchases().values()) {
+				if(purchase.getProducts().containsKey(idp)) {
+					int quantity=purchase.getProducts().get(idp);
+					expenses+=(quantity*pro.getCost());
+				}
+			}
+			expensesByProduct.put(idp, expenses);
+		}
+		Object info[][]=new Object[products.getProducts().size()][4];
+		int i=0;
+		double totalEarnigs=0.0,totalIncomes=0.0,totalExpenses=0.0;
+		for(int idp:products.getProducts().keySet()) {
+			double income=incomeByProduct.get(idp),expenses=expensesByProduct.get(idp);
+			double earnings=income-expenses;
+			info[i][0]=products.getProducts().get(idp).getName();
+			info[i][1]=income;
+			info[i][2]=expenses;
+			info[i][3]=earnings;
+			totalEarnigs+=earnings;
+			totalExpenses+=expenses;
+			totalIncomes+=income;
+			i++;
+		}
+		mw.getCashControlPanel().getTotalIncome().setText("<html>Total Ingresos<br>"+totalIncomes+"</html>");
+		mw.getCashControlPanel().getTotalExpenses().setText("<html>Total Costos<br>"+totalExpenses+"</html>");
+		mw.getCashControlPanel().getTotal().setText("<html>Total Ganancias<br>"+totalEarnigs+"</html>");
+		mw.getCashControlPanel().fillTable(info);
+	}
+	
+	
+	public void reload(String deleteOperation) {
+		if(deleteOperation.equals("supplier")) {
+			products=new ProductDAO();
+			sales=new SaleDAO();
+			purchases=new PurchaseDAO();
+		}
+		if(deleteOperation.equals("product")) {
+			sales=new SaleDAO();
+			purchases=new PurchaseDAO();
 		}
 	}
 	
