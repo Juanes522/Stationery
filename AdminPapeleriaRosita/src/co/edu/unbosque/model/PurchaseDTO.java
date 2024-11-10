@@ -4,13 +4,14 @@ import java.time.LocalDate;
 import java.util.HashMap;
 
 public class PurchaseDTO {
-	
-	private LocalDate purchaseDate; 
-	private HashMap<Integer,Integer> products;
+
+	private LocalDate purchaseDate;
+	private HashMap<Integer, Integer> products;
 	private double totalPay;
-	
-	public PurchaseDTO() {}
-	
+
+	public PurchaseDTO() {
+	}
+
 	public PurchaseDTO(LocalDate purchaseDate, double totalPay) {
 		this.purchaseDate = purchaseDate;
 		this.products = new HashMap<>();
