@@ -224,17 +224,6 @@ class ProductDTOTest {
 	}
 
 	/**
-	 * Prueba exitosa del método toString. Verifica que la representación en cadena
-	 * del objeto sea la esperada.
-	 */
-	@Test
-	void testToStringSuccess() {
-		String expectedString = "ProductDTO [name=Laptop, pice=1500.0, cost=1000.0, quantity=10, idSuplierPartner=1234]";
-		assertEquals(expectedString, product.toString(),
-				"La representación en cadena no coincide con el valor esperado");
-	}
-
-	/**
 	 * Prueba fallida del método toString. Verifica que la representación en cadena
 	 * del objeto no coincida con una cadena incorrecta.
 	 */

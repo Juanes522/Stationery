@@ -11,16 +11,37 @@ import co.edu.unbosque.controller.DBConnection;
 import co.edu.unbosque.model.PurchaseDTO;
 import co.edu.unbosque.util.exception.PurchaseException;
 
+/**
+ * Implementación de las operaciones CRUD para la entidad {@link PurchaseDTO}.
+ * Esta clase maneja las operaciones relacionadas con las compras, como la
+ * creación, actualización, eliminación y carga de las compras desde la base de
+ * datos, así como la vinculación de productos a las compras.
+ * 
+ * @autor Zenith Tech
+ * @version 1.0
+ * @desde 2024-11-11
+ */
 public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 
 	private DBConnection dbcon;
 	private HashMap<Integer, PurchaseDTO> purchases;
 
+	/**
+	 * Constructor de la clase {@link PurchaseDAO}. Inicializa la conexión con la
+	 * base de datos y carga las compras existentes.
+	 */
 	public PurchaseDAO() {
 		dbcon = new DBConnection();
 		purchases = loadPurchases();
 	}
 
+	/**
+	 * Crea una nueva compra en la base de datos.
+	 * 
+	 * @param object El objeto {@link PurchaseDTO} que representa la nueva compra.
+	 * @throws PurchaseException Si el total a pagar es 0 o si ocurre un error al
+	 *                           crear la compra.
+	 */
 	@Override
 	public void create(PurchaseDTO object) throws PurchaseException {
 		PurchaseDTO newPurchase = object;
@@ -57,11 +78,18 @@ public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 		dbcon.close();
 	}
 
+	/**
+	 * Actualiza una compra existente en la base de datos.
+	 * 
+	 * @param id     El identificador de la compra a actualizar.
+	 * @param object El objeto {@link PurchaseDTO} con los nuevos datos de la
+	 *               compra.
+	 */
 	@Override
 	public void update(int id, PurchaseDTO object) {
 		PurchaseDTO updatePurchase = object;
 		if (!purchases.containsKey(id)) {
-
+			// Si no existe la compra, no se realiza ninguna acción
 		}
 		dbcon.initConnection();
 		try {
@@ -93,10 +121,16 @@ public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 		purchases.put(id, updatePurchase);
 	}
 
+	/**
+	 * Elimina una compra de la base de datos.
+	 * 
+	 * @param id El identificador de la compra a eliminar.
+	 */
 	@Override
 	public void delete(int id) {
 		dbcon.initConnection();
 		if (!purchases.containsKey(id)) {
+			// Si la compra no existe, no se realiza ninguna acción
 		}
 		try {
 			dbcon.setPreparedstatement(
@@ -110,6 +144,12 @@ public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 		purchases.remove(id);
 	}
 
+	/**
+	 * Carga todas las compras desde la base de datos.
+	 * 
+	 * @return Un {@link HashMap} con las compras cargadas, donde la clave es el
+	 *         identificador de la compra.
+	 */
 	public HashMap<Integer, PurchaseDTO> loadPurchases() {
 		HashMap<Integer, PurchaseDTO> data = new HashMap<>();
 		dbcon.initConnection();
@@ -137,6 +177,11 @@ public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 		return data;
 	}
 
+	/**
+	 * Muestra todas las compras en formato de tabla.
+	 * 
+	 * @return Una matriz bidimensional con los datos de las compras.
+	 */
 	public String[][] showAll() {
 		String info[][] = new String[purchases.size()][3];
 		int i = 0;
@@ -149,6 +194,8 @@ public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 		}
 		return info;
 	}
+
+	// Getters y Setters
 
 	public DBConnection getDbcon() {
 		return dbcon;
@@ -165,5 +212,4 @@ public class PurchaseDAO implements OperationsDAO<PurchaseDTO> {
 	public void setPurchases(HashMap<Integer, PurchaseDTO> purchases) {
 		this.purchases = purchases;
 	}
-
 }
