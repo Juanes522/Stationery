@@ -14,6 +14,12 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.MatteBorder;
 
+/**
+ * Esta clase representa un panel en la interfaz gráfica de usuario para
+ * registrar una compra. El panel contiene campos de texto para ingresar los
+ * detalles del producto y las cantidades, así como botones para registrar la
+ * compra o cerrar el panel.
+ */
 public class RegisterPurchasePanel extends JPanel {
 
 	private JLabel formPur, titleRegisterPur, indNameProPur, indASupPur, indToCoPur, indUniCosPur, indQuaInPur,
@@ -22,23 +28,31 @@ public class RegisterPurchasePanel extends JPanel {
 	private JSpinner quantityToPur;
 	private JButton registerProPur, closePurPanel;
 
+	/**
+	 * Constructor de la clase {@link RegisterPurchasePanel}. Inicializa los
+	 * componentes visuales del panel, incluyendo los campos de entrada, los botones
+	 * y las etiquetas para registrar la compra.
+	 */
 	public RegisterPurchasePanel() {
 
 		setBounds(216, 120, 513, 382);
 		setLayout(null);
 		setBackground(Color.WHITE);
 
+		// Fondo del formulario
 		formPur = new JLabel(new ImageIcon("src/Assets/bigform.png"));
 		formPur.setBounds(0, 0, 513, 382);
 		formPur.setLayout(null);
 		add(formPur);
 
+		// Título del formulario
 		titleRegisterPur = new JLabel("Registrar Compra");
 		titleRegisterPur.setFont(new Font("Leelawadee", Font.BOLD, 26));
 		titleRegisterPur.setForeground(Color.WHITE);
 		titleRegisterPur.setBounds(145, 20, 250, 30);
 		formPur.add(titleRegisterPur);
 
+		// Botón para cerrar el panel
 		closePurPanel = new JButton(new ImageIcon("src/Assets/xwhite.png"));
 		closePurPanel.setBounds(450, 20, 32, 32);
 		closePurPanel.setFocusable(false);
@@ -46,6 +60,7 @@ public class RegisterPurchasePanel extends JPanel {
 		closePurPanel.setContentAreaFilled(false);
 		formPur.add(closePurPanel);
 
+		// Etiqueta y campo para el nombre del producto
 		indNameProPur = new JLabel("Nombre del producto");
 		indNameProPur.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indNameProPur.setForeground(Color.WHITE);
@@ -62,6 +77,7 @@ public class RegisterPurchasePanel extends JPanel {
 		nameProPur.setEditable(false);
 		formPur.add(nameProPur);
 
+		// Etiqueta y campo para el proveedor asociado
 		indASupPur = new JLabel("Proveedor Asociado");
 		indASupPur.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indASupPur.setForeground(Color.WHITE);
@@ -78,6 +94,7 @@ public class RegisterPurchasePanel extends JPanel {
 		aSupplierPur.setEditable(false);
 		formPur.add(aSupplierPur);
 
+		// Etiqueta y campo para el costo total
 		indToCoPur = new JLabel("Costo Total");
 		indToCoPur.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indToCoPur.setForeground(Color.WHITE);
@@ -94,6 +111,7 @@ public class RegisterPurchasePanel extends JPanel {
 		totalCostPur.setEditable(false);
 		formPur.add(totalCostPur);
 
+		// Etiqueta y campo para el costo unitario
 		indUniCosPur = new JLabel("Costo Unitario");
 		indUniCosPur.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indUniCosPur.setForeground(Color.WHITE);
@@ -110,6 +128,7 @@ public class RegisterPurchasePanel extends JPanel {
 		uniCostPur.setEditable(false);
 		formPur.add(uniCostPur);
 
+		// Etiqueta y campo para la cantidad en inventario
 		indQuaInPur = new JLabel("Cantidad inventario");
 		indQuaInPur.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indQuaInPur.setForeground(Color.WHITE);
@@ -126,13 +145,14 @@ public class RegisterPurchasePanel extends JPanel {
 		quantityInPur.setEditable(false);
 		formPur.add(quantityInPur);
 
+		// Etiqueta y campo para la cantidad a pedir
 		indQuaToPur = new JLabel("Cantidad a pedir");
 		indQuaToPur.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indQuaToPur.setForeground(Color.WHITE);
 		indQuaToPur.setBounds(300, 220, 220, 30);
 		formPur.add(indQuaToPur);
 
-		quantityToPur = new JSpinner(new SpinnerNumberModel(0, 0,10000, 1));
+		quantityToPur = new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
 		quantityToPur.setBounds(300, 260, 175, 30);
 		quantityToPur.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		JComponent editor = quantityToPur.getEditor();
@@ -145,8 +165,7 @@ public class RegisterPurchasePanel extends JPanel {
 		}
 		formPur.add(quantityToPur);
 
-//		boton e indicador
-
+		// Indicador y botón para registrar la compra
 		indRegisterPur = new JLabel("Registrar");
 		indRegisterPur.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indRegisterPur.setForeground(new Color(2, 58, 98));
@@ -160,6 +179,8 @@ public class RegisterPurchasePanel extends JPanel {
 		registerProPur.setContentAreaFilled(false);
 		formPur.add(registerProPur);
 	}
+
+	// Métodos getter y setter para los componentes del formulario
 
 	public JTextField getNameProPur() {
 		return nameProPur;

@@ -3,13 +3,31 @@ package co.edu.unbosque.view;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+/**
+ * Representa el panel de control para la interfaz de usuario del administrador.
+ * Este panel proporciona acceso a diversas secciones del sistema, como
+ * inventario, proveedores, ventas, control de usuarios, control de caja y
+ * compras. Incluye un diseño con botones para navegar entre estas secciones y
+ * muestra el nombre del usuario actual en la parte superior.
+ * 
+ * <p>
+ * El panel está dividido en dos secciones:
+ * </p>
+ * <ul>
+ * <li>Panel de título: Muestra el nombre del usuario actual y los títulos para
+ * cada sección.</li>
+ * <li>Panel de botones: Contiene los botones para navegar a las diferentes
+ * secciones del sistema.</li>
+ * </ul>
+ * Cada botón corresponde a una área funcional como inventario, proveedores,
+ * ventas, etc.
+ */
 public class AdminControlPanel extends JPanel {
 
 	private JLabel curretUser, nameSt, icInv, icSup, icSal, icUsCo, icCaCo, icPur, icEx;
@@ -18,31 +36,39 @@ public class AdminControlPanel extends JPanel {
 
 	private JLabel titleInventory, titleSupplier, titleSales, titleConUser, titleConCash, titlePurchase;
 
+	/**
+	 * Constructor de la clase AdminControlPanel. Inicializa todos los componentes y
+	 * el diseño del panel. Esto incluye la configuración de los límites, la adición
+	 * de etiquetas, botones e íconos en los paneles respectivos.
+	 */
 	public AdminControlPanel() {
 
+		// Establecer el tamaño y color de fondo del panel principal
 		setBounds(0, 0, 800, 600);
 		setBackground(Color.WHITE);
 		setLayout(null);
 
+		// Inicializar la etiqueta del nombre del usuario actual
 		nameSt = new JLabel(new ImageIcon("src/Assets/name.png"));
 		nameSt.setBounds(160, 150, 630, 300);
 		nameSt.setLayout(null);
 		add(nameSt).setVisible(false);
 
+		// Configuración del panel de título
 		titlePanel = new JPanel();
 		titlePanel.setBounds(0, 0, 800, 50);
 		titlePanel.setBackground(new Color(18, 143, 223));
 		titlePanel.setLayout(null);
 		add(titlePanel);
 
+		// Configuración del panel de botones
 		buttonsPanel = new JPanel();
 		buttonsPanel.setBounds(0, 50, 160, 550);
 		buttonsPanel.setBackground(new Color(2, 58, 98));
 		buttonsPanel.setLayout(null);
 		add(buttonsPanel);
 
-// titulos por paneles
-
+		// Títulos para cada sección en el panel de título
 		titleInventory = new JLabel("Inventario");
 		titleInventory.setBounds(380, 10, 370, 30);
 		titleInventory.setFont(new Font("Leelawadee", Font.BOLD, 35));
@@ -78,10 +104,8 @@ public class AdminControlPanel extends JPanel {
 		titlePurchase.setFont(new Font("Leelawadee", Font.BOLD, 35));
 		titlePurchase.setForeground(Color.WHITE);
 		titlePanel.add(titlePurchase).setVisible(false);
-//_____________________________________________________________________		
 
-//		iconos
-
+		// Configuración de los iconos en el panel de botones
 		icInv = new JLabel(new ImageIcon("src/Assets/inventory.png"));
 		icInv.setBounds(5, 17, 37, 37);
 		icInv.setLayout(null);
@@ -117,13 +141,14 @@ public class AdminControlPanel extends JPanel {
 		icEx.setLayout(null);
 		buttonsPanel.add(icEx);
 
-//--------------------------------------		
+		// Configuración de las etiquetas de texto y botones
 		curretUser = new JLabel("Nombre Usuario");
 		curretUser.setBounds(10, 0, 150, 50);
 		curretUser.setFont(new Font("Leelawadee", Font.BOLD, 18));
 		curretUser.setForeground(Color.WHITE);
 		titlePanel.add(curretUser);
 
+		// Botones de acción para cada sección
 		inventory = new JButton("Inventario");
 		inventory.setBounds(0, 0, 160, 75);
 		inventory.setFocusable(false);
@@ -180,14 +205,14 @@ public class AdminControlPanel extends JPanel {
 		buttonsPanel.add(cashControl);
 
 		purchase = new JButton("Compra");
-		purchase.setBounds(0, 375, 160, 75);
+		purchase.setBounds(0, 375, 170, 75);
 		purchase.setFocusable(false);
 		purchase.setBorderPainted(false);
 		purchase.setContentAreaFilled(false);
 		purchase.setFont(new Font("Leelawadee", Font.BOLD, 18));
+		purchase.setMargin(new Insets(0, 40, 0, 0));
+		purchase.setHorizontalAlignment(SwingConstants.CENTER);
 		purchase.setForeground(Color.WHITE);
-		purchase.setMargin(new Insets(0, 45, 0, 0));
-		purchase.setHorizontalAlignment(SwingConstants.LEADING);
 		buttonsPanel.add(purchase);
 
 		exit = new JButton("Salir");
@@ -197,11 +222,12 @@ public class AdminControlPanel extends JPanel {
 		exit.setContentAreaFilled(false);
 		exit.setFont(new Font("Leelawadee", Font.BOLD, 18));
 		exit.setForeground(Color.WHITE);
-		exit.setMargin(new Insets(0, 45, 0, 0));
-		exit.setHorizontalAlignment(SwingConstants.LEADING);
+		exit.setMargin(new Insets(0, 40, 0, 0));
+		exit.setHorizontalAlignment(SwingConstants.CENTER);
 		buttonsPanel.add(exit);
-
 	}
+
+	// getters y setters//
 
 	public JLabel getCurretUser() {
 		return curretUser;
@@ -211,68 +237,12 @@ public class AdminControlPanel extends JPanel {
 		this.curretUser = curretUser;
 	}
 
-	public JButton getInventory() {
-		return inventory;
+	public JLabel getNameSt() {
+		return nameSt;
 	}
 
-	public void setInventory(JButton inventory) {
-		this.inventory = inventory;
-	}
-
-	public JButton getSuppliers() {
-		return suppliers;
-	}
-
-	public void setSuppliers(JButton suppliers) {
-		this.suppliers = suppliers;
-	}
-
-	public JButton getSales() {
-		return sales;
-	}
-
-	public void setSales(JButton sales) {
-		this.sales = sales;
-	}
-
-	public JButton getUserControl() {
-		return userControl;
-	}
-
-	public void setUserControl(JButton userControl) {
-		this.userControl = userControl;
-	}
-
-	public JButton getCashControl() {
-		return cashControl;
-	}
-
-	public void setCashControl(JButton cashControl) {
-		this.cashControl = cashControl;
-	}
-
-	public JButton getExit() {
-		return exit;
-	}
-
-	public void setExit(JButton exit) {
-		this.exit = exit;
-	}
-
-	public JPanel getTitlePanel() {
-		return titlePanel;
-	}
-
-	public void setTitlePanel(JPanel titlePanel) {
-		this.titlePanel = titlePanel;
-	}
-
-	public JPanel getButtonsPanel() {
-		return buttonsPanel;
-	}
-
-	public void setButtonsPanel(JPanel buttonsPanel) {
-		this.buttonsPanel = buttonsPanel;
+	public void setNameSt(JLabel nameSt) {
+		this.nameSt = nameSt;
 	}
 
 	public JLabel getIcInv() {
@@ -331,12 +301,76 @@ public class AdminControlPanel extends JPanel {
 		this.icEx = icEx;
 	}
 
+	public JButton getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(JButton inventory) {
+		this.inventory = inventory;
+	}
+
+	public JButton getSuppliers() {
+		return suppliers;
+	}
+
+	public void setSuppliers(JButton suppliers) {
+		this.suppliers = suppliers;
+	}
+
+	public JButton getSales() {
+		return sales;
+	}
+
+	public void setSales(JButton sales) {
+		this.sales = sales;
+	}
+
+	public JButton getUserControl() {
+		return userControl;
+	}
+
+	public void setUserControl(JButton userControl) {
+		this.userControl = userControl;
+	}
+
+	public JButton getCashControl() {
+		return cashControl;
+	}
+
+	public void setCashControl(JButton cashControl) {
+		this.cashControl = cashControl;
+	}
+
 	public JButton getPurchase() {
 		return purchase;
 	}
 
 	public void setPurchase(JButton purchase) {
 		this.purchase = purchase;
+	}
+
+	public JButton getExit() {
+		return exit;
+	}
+
+	public void setExit(JButton exit) {
+		this.exit = exit;
+	}
+
+	public JPanel getTitlePanel() {
+		return titlePanel;
+	}
+
+	public void setTitlePanel(JPanel titlePanel) {
+		this.titlePanel = titlePanel;
+	}
+
+	public JPanel getButtonsPanel() {
+		return buttonsPanel;
+	}
+
+	public void setButtonsPanel(JPanel buttonsPanel) {
+		this.buttonsPanel = buttonsPanel;
 	}
 
 	public JLabel getTitleInventory() {
@@ -385,14 +419,6 @@ public class AdminControlPanel extends JPanel {
 
 	public void setTitlePurchase(JLabel titlePurchase) {
 		this.titlePurchase = titlePurchase;
-	}
-
-	public JLabel getNameSt() {
-		return nameSt;
-	}
-
-	public void setNameSt(JLabel nameSt) {
-		this.nameSt = nameSt;
 	}
 
 }

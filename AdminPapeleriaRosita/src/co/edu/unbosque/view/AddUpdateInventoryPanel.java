@@ -13,25 +13,51 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
 
+/**
+ * Clase {@code AddUpdateInventoryPanel} que representa un panel en la interfaz
+ * gráfica para registrar o actualizar productos en el inventario.
+ * 
+ * <p>
+ * Este panel contiene campos de texto para ingresar información sobre los
+ * productos, como nombre, cantidad, precio y costo, así como un combo box para
+ * seleccionar el proveedor asociado. Además, incluye botones para registrar o
+ * actualizar un producto en el inventario.
+ * </p>
+ * 
+ * @see JPanel
+ */
 public class AddUpdateInventoryPanel extends JPanel {
 
+	/** Formulario principal del panel */
 	private JLabel formIn, titleRegisterIn, titleUpdateIn, indNamePro, indQuaPro, indPriPro, indCosPro, indSupAss,
 			indRegisterPro, indUpdatePro;
+
+	/** Campos de texto para ingresar información del producto */
 	private JTextField namePro, quantityPro, pricePro, costPro;
+
+	/** Combo box para seleccionar el proveedor asociado */
 	private JComboBox<String> supplierA;
+
+	/** Botones de acción: registrar, actualizar y cerrar */
 	private JButton registerPro, updatePro, closeIn;
 
+	/**
+	 * Constructor que inicializa el panel para registrar o actualizar productos.
+	 * Configura el diseño y los componentes visuales del panel.
+	 */
 	public AddUpdateInventoryPanel() {
 
 		setBounds(216, 120, 513, 382);
 		setLayout(null);
 		setBackground(Color.WHITE);
 
+		// Formulario del panel
 		formIn = new JLabel(new ImageIcon("src/Assets/bigform.png"));
 		formIn.setBounds(0, 0, 513, 382);
 		formIn.setLayout(null);
 		add(formIn);
 
+		// Títulos de las acciones
 		titleRegisterIn = new JLabel("Registrar Producto");
 		titleRegisterIn.setFont(new Font("Leelawadee", Font.BOLD, 26));
 		titleRegisterIn.setForeground(Color.WHITE);
@@ -44,6 +70,7 @@ public class AddUpdateInventoryPanel extends JPanel {
 		titleUpdateIn.setBounds(125, 20, 280, 30);
 		formIn.add(titleUpdateIn).setVisible(false);
 
+		// Botón para cerrar el panel
 		closeIn = new JButton(new ImageIcon("src/Assets/xwhite.png"));
 		closeIn.setBounds(450, 20, 32, 32);
 		closeIn.setFocusable(false);
@@ -51,6 +78,7 @@ public class AddUpdateInventoryPanel extends JPanel {
 		closeIn.setContentAreaFilled(false);
 		formIn.add(closeIn);
 
+		// Etiquetas y campos de entrada para información del producto
 		indNamePro = new JLabel("Nombre del producto");
 		indNamePro.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indNamePro.setForeground(Color.WHITE);
@@ -126,8 +154,7 @@ public class AddUpdateInventoryPanel extends JPanel {
 		supplierA.setFocusable(false);
 		formIn.add(supplierA);
 
-//		botones e indicador
-
+		// Botones para registrar o actualizar producto
 		indRegisterPro = new JLabel("Registrar");
 		indRegisterPro.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indRegisterPro.setForeground(new Color(2, 58, 98));
@@ -155,13 +182,21 @@ public class AddUpdateInventoryPanel extends JPanel {
 		formIn.add(updatePro).setVisible(false);
 
 	}
-	
+
+	/**
+	 * Rellena el combo box de proveedores con los nombres de los proveedores
+	 * disponibles.
+	 * 
+	 * @param supplierNames Un conjunto de nombres de proveedores.
+	 */
 	public void addSuplliers(Set<String> supplierNames) {
 		supplierA.removeAllItems();
-		for(String sn:supplierNames) {
+		for (String sn : supplierNames) {
 			supplierA.addItem(sn);
 		}
 	}
+
+	// Métodos getters y setters
 
 	public JLabel getTitleRegisterIn() {
 		return titleRegisterIn;
@@ -258,5 +293,4 @@ public class AddUpdateInventoryPanel extends JPanel {
 	public void setCloseIn(JButton closeIn) {
 		this.closeIn = closeIn;
 	}
-
 }

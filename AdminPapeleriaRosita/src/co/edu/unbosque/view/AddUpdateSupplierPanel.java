@@ -2,7 +2,6 @@ package co.edu.unbosque.view;
 
 import java.awt.Color;
 import java.awt.Font;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,6 +10,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
 
+/**
+ * Panel para registrar y actualizar proveedores. Este panel permite al usuario
+ * registrar un nuevo proveedor o actualizar un proveedor existente.
+ */
 public class AddUpdateSupplierPanel extends JPanel {
 
 	private JLabel formS, titleRegisterS, titleUpdateS, indNameSup, indPhoneSup, indDirSup, indRegisterSup,
@@ -18,17 +21,22 @@ public class AddUpdateSupplierPanel extends JPanel {
 	private JTextField nameSup, phoneSup, directionSup;
 	private JButton registerSup, updateSup, closeSup;
 
+	/**
+	 * Constructor que inicializa el panel de registro/actualización de proveedores.
+	 */
 	public AddUpdateSupplierPanel() {
 
 		setBounds(216, 120, 512, 344);
 		setLayout(null);
 		setBackground(Color.WHITE);
 
+		// Imagen de fondo para el formulario
 		formS = new JLabel(new ImageIcon("src/Assets/form.png"));
 		formS.setBounds(0, 0, 512, 344);
 		formS.setLayout(null);
 		add(formS);
 
+		// Títulos para registrar y actualizar proveedores
 		titleRegisterS = new JLabel("Registrar Proveedor");
 		titleRegisterS.setFont(new Font("Leelawadee", Font.BOLD, 26));
 		titleRegisterS.setForeground(Color.WHITE);
@@ -41,6 +49,7 @@ public class AddUpdateSupplierPanel extends JPanel {
 		titleUpdateS.setBounds(125, 20, 280, 30);
 		formS.add(titleUpdateS).setVisible(false);
 
+		// Botón para cerrar el formulario
 		closeSup = new JButton(new ImageIcon("src/Assets/xwhite.png"));
 		closeSup.setBounds(450, 20, 32, 32);
 		closeSup.setFocusable(false);
@@ -48,6 +57,8 @@ public class AddUpdateSupplierPanel extends JPanel {
 		closeSup.setContentAreaFilled(false);
 		formS.add(closeSup);
 
+		// Etiquetas e inputs para los campos de nombre, teléfono y dirección del
+		// proveedor
 		indNameSup = new JLabel("Nombre del proveedor");
 		indNameSup.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indNameSup.setForeground(Color.WHITE);
@@ -96,8 +107,7 @@ public class AddUpdateSupplierPanel extends JPanel {
 		directionSup.setCaretColor(Color.WHITE);
 		formS.add(directionSup);
 
-//		botones e indicador
-
+		// Indicadores y botones de registro y actualización
 		indRegisterSup = new JLabel("Registrar");
 		indRegisterSup.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indRegisterSup.setForeground(new Color(2, 58, 98));
@@ -124,6 +134,8 @@ public class AddUpdateSupplierPanel extends JPanel {
 		updateSup.setContentAreaFilled(false);
 		formS.add(updateSup).setVisible(false);
 	}
+
+	// Métodos getters y setters
 
 	public JLabel getTitleRegisterS() {
 		return titleRegisterS;
@@ -204,5 +216,4 @@ public class AddUpdateSupplierPanel extends JPanel {
 	public void setCloseSup(JButton closeSup) {
 		this.closeSup = closeSup;
 	}
-
 }

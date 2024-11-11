@@ -13,37 +13,63 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
 
+/**
+ * La clase AddUpdateUserControlPanel representa un panel de interfaz de usuario
+ * para agregar o actualizar un usuario. Extiende la clase JPanel e incluye
+ * varios componentes de Swing como etiquetas, campos de texto, botones de radio
+ * y botones. Este panel está diseñado para permitir que el usuario ingrese
+ * detalles como el nombre de usuario, la contraseña, derechos administrativos y
+ * una pregunta y respuesta de seguridad.
+ * <p>
+ * El panel incluye dos secciones principales: 1. "Registrar Usuario" 2.
+ * "Actualizar Usuario". Estas secciones se alternan según si el usuario está
+ * registrando o actualizando un usuario.
+ */
 public class AddUpdateUserControlPanel extends JPanel {
 
-	private JLabel formU, titleRegisterU, titleUpdateU, indNameUs, indPassUs, indIsAdmin, indQuestion, indAnswer, indRegisterUs, indUpdateUs;
+	// Componentes del panel para la interacción con la interfaz de usuario
+	private JLabel formU, titleRegisterU, titleUpdateU, indNameUs, indPassUs, indIsAdmin, indQuestion, indAnswer,
+			indRegisterUs, indUpdateUs;
 	private JTextField nameUser, passUser, questionUser, answerUser;
 	private JButton registerUser, updateUser, closeUser;
 	private JRadioButton isAdmin, notAdmin;
 	private ButtonGroup rol;
 
+	/**
+	 * Constructor de la clase AddUpdateUserControlPanel, que inicializa los
+	 * componentes de la interfaz de usuario. Esto incluye la configuración de los
+	 * límites, la creación de etiquetas, campos de texto, botones de radio y
+	 * botones, así como agregarlos al panel. El panel está diseñado para permitir
+	 * el registro y la actualización de los detalles del usuario como el nombre de
+	 * usuario, la contraseña, el rol y las preguntas de seguridad.
+	 */
 	public AddUpdateUserControlPanel() {
 
 		setBounds(216, 120, 513, 382);
 		setLayout(null);
 		setBackground(Color.WHITE);
 
+		// Imagen de fondo
 		formU = new JLabel(new ImageIcon("src/Assets/bigform.png"));
 		formU.setBounds(0, 0, 513, 382);
 		formU.setLayout(null);
 		add(formU);
 
+		// Título para la sección de Registrar Usuario
 		titleRegisterU = new JLabel("Registrar Usuario");
 		titleRegisterU.setFont(new Font("Leelawadee", Font.BOLD, 26));
 		titleRegisterU.setForeground(Color.WHITE);
 		titleRegisterU.setBounds(145, 20, 250, 30);
 		formU.add(titleRegisterU).setVisible(false);
 
+		// Título para la sección de Actualizar Usuario
 		titleUpdateU = new JLabel("Actualizar Usuario");
 		titleUpdateU.setFont(new Font("Leelawadee", Font.BOLD, 26));
 		titleUpdateU.setForeground(Color.WHITE);
 		titleUpdateU.setBounds(145, 20, 280, 30);
 		formU.add(titleUpdateU).setVisible(false);
 
+		// Botón de cerrar
 		closeUser = new JButton(new ImageIcon("src/Assets/xwhite.png"));
 		closeUser.setBounds(450, 20, 32, 32);
 		closeUser.setFocusable(false);
@@ -51,6 +77,7 @@ public class AddUpdateUserControlPanel extends JPanel {
 		closeUser.setContentAreaFilled(false);
 		formU.add(closeUser);
 
+		// Etiquetas y campos de texto para Nombre de usuario y Contraseña
 		indNameUs = new JLabel("Nombre de usuario");
 		indNameUs.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indNameUs.setForeground(Color.WHITE);
@@ -83,6 +110,7 @@ public class AddUpdateUserControlPanel extends JPanel {
 		passUser.setCaretColor(Color.WHITE);
 		formU.add(passUser);
 
+		// Etiquetas y botones de radio para rol de administrador
 		indIsAdmin = new JLabel("Es Administrador?");
 		indIsAdmin.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indIsAdmin.setForeground(Color.WHITE);
@@ -108,19 +136,20 @@ public class AddUpdateUserControlPanel extends JPanel {
 		notAdmin.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		notAdmin.setBorderPainted(false);
 		formU.add(notAdmin);
-		
+
 		rol = new ButtonGroup();
 		rol.add(isAdmin);
 		rol.add(notAdmin);
 		rol.clearSelection();
 		notAdmin.setSelected(true);
 
+		// Etiquetas y campos de texto para Pregunta de seguridad y Respuesta
 		indQuestion = new JLabel("Pregunta de usuario");
 		indQuestion.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indQuestion.setForeground(Color.WHITE);
 		indQuestion.setBounds(290, 140, 220, 30);
 		formU.add(indQuestion);
-		
+
 		questionUser = new JTextField();
 		questionUser.setBounds(290, 180, 175, 30);
 		MatteBorder borderQ = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
@@ -130,13 +159,13 @@ public class AddUpdateUserControlPanel extends JPanel {
 		questionUser.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		questionUser.setCaretColor(Color.WHITE);
 		formU.add(questionUser);
-		
+
 		indAnswer = new JLabel("Respuesta de la pregunta");
 		indAnswer.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		indAnswer.setForeground(Color.WHITE);
 		indAnswer.setBounds(30, 220, 260, 30);
 		formU.add(indAnswer);
-		
+
 		answerUser = new JTextField();
 		answerUser.setBounds(30, 260, 175, 30);
 		MatteBorder borderA = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
@@ -146,9 +175,8 @@ public class AddUpdateUserControlPanel extends JPanel {
 		answerUser.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		answerUser.setCaretColor(Color.WHITE);
 		formU.add(answerUser);
-		
-//		botones e indicador
 
+		// Botones de acción para Registrar y Actualizar
 		indRegisterUs = new JLabel("Registrar");
 		indRegisterUs.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indRegisterUs.setForeground(new Color(2, 58, 98));
@@ -169,14 +197,14 @@ public class AddUpdateUserControlPanel extends JPanel {
 		formU.add(registerUser).setVisible(false);
 
 		updateUser = new JButton(new ImageIcon("src/Assets/update.png"));
-		updateUser.setBounds(195, 320, 123, 45);
+		updateUser.setBounds(198, 320, 115, 45);
 		updateUser.setFocusable(false);
 		updateUser.setBorderPainted(false);
 		updateUser.setContentAreaFilled(false);
 		formU.add(updateUser).setVisible(false);
-
 	}
 
+	// Métodos Getter y Setter para los componentes de la UI
 	public JLabel getTitleRegisterU() {
 		return titleRegisterU;
 	}
@@ -336,7 +364,4 @@ public class AddUpdateUserControlPanel extends JPanel {
 	public void setAnswerUser(JTextField answerUser) {
 		this.answerUser = answerUser;
 	}
-	
-	
-
 }

@@ -13,6 +13,12 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.border.MatteBorder;
 
+/**
+ * Representa el panel de inicio de sesión donde los usuarios pueden ingresar su
+ * nombre de usuario y contraseña. También proporciona la opción para que los
+ * usuarios recuperen sus credenciales y sigan pasos para la recuperación de la
+ * cuenta en caso de olvidar los datos de acceso.
+ */
 public class LoginPanel extends JPanel {
 
 	private JTextField userName;
@@ -20,45 +26,52 @@ public class LoginPanel extends JPanel {
 	private JButton join, recoverKey;
 	private JPasswordField password;
 	private JToggleButton showPass;
-	
+
 	private JLabel titleRec, indUserRec, indCancel, indFollow;
 	private JTextField userNameRec;
 	private JButton cancel, follow;
-	
+
 	private JLabel indUserChoose, indQuestion, indAnswer;
 	private JTextField answer;
 	private JButton checkanswer;
 
+	/**
+	 * Inicializa el LoginPanel con los componentes de la interfaz de usuario para
+	 * el inicio de sesión y la recuperación de cuenta. Configura las etiquetas, los
+	 * campos de texto, los campos de contraseña, los botones y los botones de
+	 * alternancia.
+	 */
 	public LoginPanel() {
-		
+
 		setBounds(0, 0, 800, 600);
 		setBackground(new Color(11, 161, 187));
 		setLayout(null);
-	
-		
+
+		// Etiqueta de título
 		title = new JLabel("Inicio de Sesión");
 		title.setFont(new Font("Leelawadee", Font.BOLD, 40));
 		title.setForeground(Color.WHITE);
 		title.setBounds(250, 30, 370, 45);
 		add(title);
-		
+
+		// Caja y sombra para la entrada del usuario
 		box = new JLabel(new ImageIcon("src/Assets/box.png"));
 		box.setBounds(200, 70, 400, 400);
 		box.setLayout(null);
 		add(box);
-		
+
 		shadow = new JLabel(new ImageIcon("src/Assets/boxshadow.png"));
 		shadow.setBounds(186, 85, 400, 400);
 		shadow.setLayout(null);
 		add(shadow);
-		
-		
+
+		// Etiqueta de nombre de usuario y campo de entrada
 		indUser = new JLabel("Nombre de Usuario");
 		indUser.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indUser.setForeground(Color.WHITE);
 		indUser.setBounds(50, 60, 220, 30);
 		box.add(indUser);
-		
+
 		userName = new JTextField();
 		userName.setBounds(50, 105, 260, 30);
 		MatteBorder border = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
@@ -67,13 +80,14 @@ public class LoginPanel extends JPanel {
 		userName.setForeground(Color.WHITE);
 		userName.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		box.add(userName);
-		
+
+		// Etiqueta de contraseña y campo de entrada
 		indPass = new JLabel("Contraseña");
 		indPass.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indPass.setForeground(Color.WHITE);
 		indPass.setBounds(50, 180, 220, 30);
 		box.add(indPass);
-		
+
 		password = new JPasswordField();
 		password.setBounds(50, 225, 260, 30);
 		MatteBorder border2 = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
@@ -82,7 +96,7 @@ public class LoginPanel extends JPanel {
 		password.setForeground(Color.WHITE);
 		password.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		box.add(password);
-		
+
 		showPass = new JToggleButton();
 		showPass.setBounds(325, 225, 30, 30);
 		showPass.setIcon(new ImageIcon("src/Assets/closedeye.png"));
@@ -90,13 +104,14 @@ public class LoginPanel extends JPanel {
 		showPass.setBorderPainted(false);
 		showPass.setContentAreaFilled(false);
 		box.add(showPass);
-		
+
+		// Botón y etiqueta de iniciar sesión
 		indButton = new JLabel("Ingresar");
 		indButton.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indButton.setForeground(Color.WHITE);
 		indButton.setBounds(155, 296, 150, 30);
 		box.add(indButton);
-		
+
 		join = new JButton();
 		join.setBounds(100, 290, 193, 47);
 		join.setIcon(new ImageIcon("src/Assets/join.png"));
@@ -104,7 +119,8 @@ public class LoginPanel extends JPanel {
 		join.setBorderPainted(false);
 		join.setContentAreaFilled(false);
 		box.add(join);
-		
+
+		// Enlace para recuperar las credenciales
 		recoverKey = new JButton("<html><u>recuperar credenciales</u></html>");
 		recoverKey.setBounds(250, 480, 270, 47);
 		recoverKey.setFocusable(false);
@@ -113,23 +129,20 @@ public class LoginPanel extends JPanel {
 		recoverKey.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		recoverKey.setForeground(Color.WHITE);
 		add(recoverKey);
-		
-		
-//------------------------------------------------------------------------------------------		
-		
+
+		// Sección de recuperación de cuenta
 		titleRec = new JLabel("Recuperación de Cuenta");
 		titleRec.setFont(new Font("Leelawadee", Font.BOLD, 40));
 		titleRec.setForeground(Color.WHITE);
 		titleRec.setBounds(170, 30, 480, 45);
 		add(titleRec).setVisible(false);
-		
-		
+
 		indUserRec = new JLabel("Nombre de Usuario");
 		indUserRec.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indUserRec.setForeground(Color.WHITE);
 		indUserRec.setBounds(50, 140, 220, 30);
 		box.add(indUserRec).setVisible(false);
-		
+
 		userNameRec = new JTextField();
 		userNameRec.setBounds(50, 185, 285, 30);
 		MatteBorder borderRec = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
@@ -138,19 +151,19 @@ public class LoginPanel extends JPanel {
 		userNameRec.setForeground(Color.WHITE);
 		userNameRec.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		box.add(userNameRec).setVisible(false);
-		
+
 		indCancel = new JLabel("Cancelar");
 		indCancel.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indCancel.setForeground(Color.WHITE);
 		indCancel.setBounds(120, 296, 150, 30);
 		box.add(indCancel).setVisible(false);
-		
+
 		indFollow = new JLabel("Siguiente");
 		indFollow.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indFollow.setForeground(Color.WHITE);
 		indFollow.setBounds(235, 296, 150, 30);
 		box.add(indFollow).setVisible(false);
-		
+
 		cancel = new JButton();
 		cancel.setBounds(110, 290, 107, 47);
 		cancel.setIcon(new ImageIcon("src/Assets/follow.png"));
@@ -158,7 +171,7 @@ public class LoginPanel extends JPanel {
 		cancel.setBorderPainted(false);
 		cancel.setContentAreaFilled(false);
 		box.add(cancel).setVisible(false);
-		
+
 		follow = new JButton();
 		follow.setBounds(230, 290, 107, 47);
 		follow.setIcon(new ImageIcon("src/Assets/follow.png"));
@@ -166,28 +179,26 @@ public class LoginPanel extends JPanel {
 		follow.setBorderPainted(false);
 		follow.setContentAreaFilled(false);
 		box.add(follow).setVisible(false);
-		
-		
-//---------------------------------------------------------------------------------------
-		
+
+		// Sección de preguntas de seguridad para la recuperación de cuenta
 		indUserChoose = new JLabel("Pregunta usuario elegido");
 		indUserChoose.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indUserChoose.setForeground(Color.WHITE);
 		indUserChoose.setBounds(50, 95, 280, 30);
 		box.add(indUserChoose).setVisible(false);
-		
+
 		indQuestion = new JLabel("¿pregunta del usuario?");
 		indQuestion.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indQuestion.setForeground(Color.WHITE);
 		indQuestion.setBounds(50, 140, 300, 30);
 		box.add(indQuestion).setVisible(false);
-		
+
 		indAnswer = new JLabel("Respuesta");
 		indAnswer.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		indAnswer.setForeground(Color.WHITE);
 		indAnswer.setBounds(50, 185, 300, 30);
 		box.add(indAnswer).setVisible(false);
-		
+
 		answer = new JTextField();
 		answer.setBounds(50, 230, 285, 30);
 		MatteBorder borderans = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE);
@@ -196,7 +207,7 @@ public class LoginPanel extends JPanel {
 		answer.setForeground(Color.WHITE);
 		answer.setFont(new Font("Leelawadee", Font.BOLD, 22));
 		box.add(answer).setVisible(false);
-			
+
 		checkanswer = new JButton();
 		checkanswer.setBounds(230, 290, 107, 47);
 		checkanswer.setIcon(new ImageIcon("src/Assets/follow.png"));
@@ -204,9 +215,20 @@ public class LoginPanel extends JPanel {
 		checkanswer.setBorderPainted(false);
 		checkanswer.setContentAreaFilled(false);
 		box.add(checkanswer).setVisible(false);
-		
 	}
 
+	// Método para alternar la visibilidad de la contraseña
+	public void togglePasswordVisibility() {
+		if (password.getEchoChar() != '\u2022') { // '\u2022' es el carácter de punto de contraseña
+			password.setEchoChar('\u2022'); // Oculta la contraseña con puntos
+			showPass.setIcon(new ImageIcon("src/Assets/closedeye.png")); // Icono de ojo cerrado
+		} else {
+			password.setEchoChar((char) 0); // Muestra la contraseña en texto plano
+			showPass.setIcon(new ImageIcon("src/Assets/openeye.png")); // Icono de ojo abierto
+		}
+	}
+
+	// Métodos getter y setter para acceder a los componentes del panel.
 	public JTextField getUserName() {
 		return userName;
 	}
@@ -390,7 +412,4 @@ public class LoginPanel extends JPanel {
 	public void setCheckanswer(JButton checkanswer) {
 		this.checkanswer = checkanswer;
 	}
-
-	
-	
 }

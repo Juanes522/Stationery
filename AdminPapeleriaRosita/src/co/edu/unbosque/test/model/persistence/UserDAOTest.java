@@ -9,7 +9,19 @@ import co.edu.unbosque.util.exception.UserException;
 import java.util.HashMap;
 
 /**
- * Clase de prueba para la clase UserDAO sin acceso a la base de datos.
+ * Clase de prueba {@code UserDAOTest} que realiza pruebas unitarias sobre la
+ * clase {@link UserDAO}. Utiliza el framework JUnit para validar las
+ * operaciones relacionadas con la gestión de usuarios, como la adición,
+ * actualización, eliminación y verificación de usuarios.
+ * 
+ * <p>
+ * Las pruebas incluyen la validación de los casos de error cuando se
+ * proporcionan datos inválidos o cuando se intentan operaciones con usuarios
+ * inexistentes. Además, se verifica el correcto funcionamiento de los métodos
+ * {@code update} y {@code delete} con usuarios válidos e inexistentes.
+ * </p>
+ * 
+ * @see UserDAO
  */
 class UserDAOTest {
 
@@ -17,7 +29,8 @@ class UserDAOTest {
 	private HashMap<Integer, UserDTO> database;
 
 	/**
-	 * Configuración inicial de cada prueba.
+	 * Configuración inicial de cada prueba. Inicializa el mapa simulado de usuarios
+	 * y la instancia de {@code UserDAO}.
 	 */
 	@BeforeEach
 	void setUp() {
@@ -25,6 +38,15 @@ class UserDAOTest {
 		mockDAO = new MockUserDAO(database);
 	}
 
+	/**
+	 * Prueba de excepción para el caso cuando el nombre de usuario ya está
+	 * registrado.
+	 * 
+	 * <p>
+	 * Este test verifica que se lance una excepción con el mensaje adecuado cuando
+	 * el nombre de usuario ya está registrado en el sistema.
+	 * </p>
+	 */
 	@Test
 	void testErrorCase1() {
 		try {
@@ -35,6 +57,15 @@ class UserDAOTest {
 		}
 	}
 
+	/**
+	 * Prueba de excepción para el caso cuando el nombre de usuario es inválido
+	 * (vacío o mayor a 45 caracteres).
+	 * 
+	 * <p>
+	 * Este test verifica que se lance una excepción con el mensaje adecuado cuando
+	 * el nombre de usuario es inválido por longitud.
+	 * </p>
+	 */
 	@Test
 	void testErrorCase2() {
 		try {
@@ -45,6 +76,15 @@ class UserDAOTest {
 		}
 	}
 
+	/**
+	 * Prueba de excepción para el caso cuando la contraseña es inválida (vacía o
+	 * mayor a 255 caracteres).
+	 * 
+	 * <p>
+	 * Este test verifica que se lance una excepción con el mensaje adecuado cuando
+	 * la contraseña es inválida.
+	 * </p>
+	 */
 	@Test
 	void testErrorCase3() {
 		try {
@@ -55,6 +95,15 @@ class UserDAOTest {
 		}
 	}
 
+	/**
+	 * Prueba de excepción para el caso cuando la pregunta de seguridad es inválida
+	 * (vacía o mayor a 80 caracteres).
+	 * 
+	 * <p>
+	 * Este test verifica que se lance una excepción con el mensaje adecuado cuando
+	 * la pregunta de seguridad es inválida.
+	 * </p>
+	 */
 	@Test
 	void testErrorCase4() {
 		try {
@@ -65,6 +114,15 @@ class UserDAOTest {
 		}
 	}
 
+	/**
+	 * Prueba de excepción para el caso cuando la respuesta de seguridad es inválida
+	 * (vacía o mayor a 80 caracteres).
+	 * 
+	 * <p>
+	 * Este test verifica que se lance una excepción con el mensaje adecuado cuando
+	 * la respuesta de seguridad es inválida.
+	 * </p>
+	 */
 	@Test
 	void testErrorCase5() {
 		try {
@@ -75,6 +133,15 @@ class UserDAOTest {
 		}
 	}
 
+	/**
+	 * Prueba de excepción para el caso cuando ocurre un error al agregar un
+	 * usuario.
+	 * 
+	 * <p>
+	 * Este test asegura que se lance una excepción con el mensaje adecuado cuando
+	 * hay un error al agregar un usuario.
+	 * </p>
+	 */
 	@Test
 	void testErrorCase6() {
 		try {
@@ -85,6 +152,14 @@ class UserDAOTest {
 		}
 	}
 
+	/**
+	 * Prueba de excepción para el caso cuando no se encuentra un usuario.
+	 * 
+	 * <p>
+	 * Este test asegura que se lance una excepción con el mensaje adecuado cuando
+	 * no se encuentra el usuario buscado.
+	 * </p>
+	 */
 	@Test
 	void testErrorCase7() {
 		try {
@@ -94,6 +169,15 @@ class UserDAOTest {
 		}
 	}
 
+	/**
+	 * Prueba de excepción para el caso cuando ocurre un error al eliminar un
+	 * usuario.
+	 * 
+	 * <p>
+	 * Este test asegura que se lance una excepción con el mensaje adecuado cuando
+	 * hay un error al eliminar un usuario.
+	 * </p>
+	 */
 	@Test
 	void testErrorCase8() {
 		try {
@@ -104,6 +188,15 @@ class UserDAOTest {
 		}
 	}
 
+	/**
+	 * Prueba de excepción para el caso cuando ocurre un error al actualizar un
+	 * usuario.
+	 * 
+	 * <p>
+	 * Este test asegura que se lance una excepción con el mensaje adecuado cuando
+	 * hay un error al actualizar un usuario.
+	 * </p>
+	 */
 	@Test
 	void testErrorCase9() {
 		try {
@@ -114,6 +207,15 @@ class UserDAOTest {
 		}
 	}
 
+	/**
+	 * Prueba de excepción para el caso por defecto de la clase
+	 * {@link UserException}.
+	 * 
+	 * <p>
+	 * Este test asegura que se lance una excepción con el mensaje por defecto
+	 * cuando el código de error no está definido.
+	 * </p>
+	 */
 	@Test
 	void testDefaultErrorCase() {
 		try {
@@ -123,7 +225,14 @@ class UserDAOTest {
 		}
 	}
 
-	// 4. Prueba exitosa para el método update.
+	/**
+	 * Prueba exitosa para el método {@code update} de {@link UserDAO}.
+	 * 
+	 * <p>
+	 * Este test verifica que se pueda actualizar un usuario correctamente en la
+	 * base de datos simulada.
+	 * </p>
+	 */
 	@Test
 	void testUpdateSuccess() {
 		try {
@@ -138,7 +247,14 @@ class UserDAOTest {
 		}
 	}
 
-	// 5. Prueba fallida para el método update con ID inexistente.
+	/**
+	 * Prueba fallida para el método {@code update} con un ID inexistente.
+	 * 
+	 * <p>
+	 * Este test verifica que se intente actualizar un usuario que no existe en la
+	 * base de datos simulada.
+	 * </p>
+	 */
 	@Test
 	void testUpdateFailureNonExistentId() {
 		UserDTO user = new UserDTO("updatedUser", "newPassword123", "What is your favorite color?", "Blue", true);
@@ -151,7 +267,14 @@ class UserDAOTest {
 		}
 	}
 
-	// 6. Prueba exitosa para el método delete.
+	/**
+	 * Prueba exitosa para el método {@code delete} de {@link UserDAO}.
+	 * 
+	 * <p>
+	 * Este test verifica que se pueda eliminar un usuario correctamente de la base
+	 * de datos simulada.
+	 * </p>
+	 */
 	@Test
 	void testDeleteSuccess() {
 		try {
@@ -164,7 +287,14 @@ class UserDAOTest {
 		}
 	}
 
-	// 7. Prueba fallida para el método delete con ID inexistente.
+	/**
+	 * Prueba fallida para el método {@code delete} con un ID inexistente.
+	 * 
+	 * <p>
+	 * Este test verifica que la eliminación de un usuario con un ID inexistente no
+	 * cause problemas en la base de datos.
+	 * </p>
+	 */
 	@Test
 	void testDeleteFailureNonExistentId() {
 		try {
@@ -175,7 +305,14 @@ class UserDAOTest {
 		}
 	}
 
-	// Clase interna que simula la implementación de UserDAO.
+	/**
+	 * Clase interna que simula la implementación de {@link UserDAO}.
+	 * 
+	 * <p>
+	 * Esta clase se utiliza para realizar pruebas unitarias sin la necesidad de
+	 * acceso a una base de datos real.
+	 * </p>
+	 */
 	private static class MockUserDAO extends UserDAO {
 		private final HashMap<Integer, UserDTO> database;
 		private int idCounter = 1;
