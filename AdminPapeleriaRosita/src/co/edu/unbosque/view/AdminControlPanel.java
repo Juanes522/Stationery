@@ -210,8 +210,6 @@ public class AdminControlPanel extends JPanel {
 		purchase.setBorderPainted(false);
 		purchase.setContentAreaFilled(false);
 		purchase.setFont(new Font("Leelawadee", Font.BOLD, 18));
-		purchase.setMargin(new Insets(0, 40, 0, 0));
-		purchase.setHorizontalAlignment(SwingConstants.CENTER);
 		purchase.setForeground(Color.WHITE);
 		buttonsPanel.add(purchase);
 
@@ -222,8 +220,6 @@ public class AdminControlPanel extends JPanel {
 		exit.setContentAreaFilled(false);
 		exit.setFont(new Font("Leelawadee", Font.BOLD, 18));
 		exit.setForeground(Color.WHITE);
-		exit.setMargin(new Insets(0, 40, 0, 0));
-		exit.setHorizontalAlignment(SwingConstants.CENTER);
 		buttonsPanel.add(exit);
 	}
 
