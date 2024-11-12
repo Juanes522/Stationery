@@ -1661,9 +1661,9 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "inventorySeller": {
+			mw.getInventoryPanel().fillTable(products.showAll(suppliers.getSuppliers()));
 			mw.getSellerControlPanel().getTitleInventorySe().setVisible(true);
 			mw.getSellerControlPanel().getTitleSalesSe().setVisible(false);
-
 			mw.getInventoryPanel().setVisible(true);
 			mw.getInventoryPanel().getTitleIn().setVisible(false);
 			mw.getInventoryPanel().getAddPro().setVisible(false);
@@ -1703,7 +1703,7 @@ public class Controller implements ActionListener {
 			break;
 		}
 		case "salesSeller": {
-
+			mw.getSalesPanel().fillTable(sales.showAll());
 			mw.getSellerControlPanel().getTitleInventorySe().setVisible(false);
 			mw.getSellerControlPanel().getTitleSalesSe().setVisible(true);
 

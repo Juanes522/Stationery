@@ -64,7 +64,7 @@ public class DBConnection {
 	private final String USERNAME = "root";
 
 	/** Contraseña para acceder a la base de datos */
-	private final String PASSWORD = "";
+	private final String PASSWORD = "p3r4o";
 
 	/**
 	 * Constructor por defecto que inicializa una nueva instancia de la clase
